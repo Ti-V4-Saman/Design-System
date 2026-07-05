@@ -29,6 +29,7 @@ export const navigation: NavSection[] = [
       { name: "Field", href: "/styleguide/components/field" },
       { name: "Survey", href: "/styleguide/components/survey" },
       { name: "Table", href: "/styleguide/components/table" },
+      { name: "Tabs", href: "/styleguide/components/tabs" },
     ],
   },
 ]
