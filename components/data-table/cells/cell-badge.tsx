@@ -16,7 +16,7 @@ const variantClasses: Record<BadgeVariant, string> = {
   destructive: "bg-destructive/10 text-destructive border-destructive/40",
   info: "bg-info text-info-foreground border-info-foreground/25",
   muted: "bg-muted text-muted-foreground border-border",
-  purple: "bg-purple-100 text-purple-700 border-purple-300",
+  purple: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/40",
 }
 
 interface CellBadgeProps {
