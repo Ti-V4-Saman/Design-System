@@ -20,6 +20,7 @@ export const navigation: NavSection[] = [
       { name: "Attachment", href: "/styleguide/components/attachment" },
       { name: "Button", href: "/styleguide/components/button" },
       { name: "Calendar", href: "/styleguide/components/calendar" },
+      { name: "Drawer", href: "/styleguide/components/drawer" },
       { name: "Survey", href: "/styleguide/components/survey" },
       { name: "Table", href: "/styleguide/components/table" },
     ],
