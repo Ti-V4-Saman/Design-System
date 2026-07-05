@@ -10,13 +10,13 @@ type BadgeVariant =
   | "purple"
 
 const variantClasses: Record<BadgeVariant, string> = {
-  primary: "bg-primary text-primary-foreground",
-  success: "bg-success/15 text-success",
-  warning: "bg-warning/20 text-warning-foreground",
-  destructive: "bg-destructive/15 text-destructive",
-  info: "bg-info text-info-foreground",
-  muted: "bg-muted text-muted-foreground",
-  purple: "bg-purple-100 text-purple-700",
+  primary: "bg-primary/10 text-primary border-primary/40",
+  success: "bg-success/10 text-success border-success/40",
+  warning: "bg-warning/15 text-warning-foreground border-warning/50",
+  destructive: "bg-destructive/10 text-destructive border-destructive/40",
+  info: "bg-info text-info-foreground border-info-foreground/25",
+  muted: "bg-muted text-muted-foreground border-border",
+  purple: "bg-purple-100 text-purple-700 border-purple-300",
 }
 
 interface CellBadgeProps {
@@ -29,7 +29,7 @@ export function CellBadge({ value, variant = "muted", className }: CellBadgeProp
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded px-2.5 py-0.5 text-xs font-semibold",
+        "inline-flex items-center rounded px-2.5 py-0.5 text-xs font-semibold border",
         variantClasses[variant],
         className
       )}
