@@ -16,6 +16,7 @@ export const navigation: NavSection[] = [
   {
     title: "Components",
     items: [
+      { name: "Accordion", href: "/styleguide/components/accordion" },
       { name: "Alert", href: "/styleguide/components/alert" },
       { name: "Alert Dialog", href: "/styleguide/components/alert-dialog" },
       { name: "Attachment", href: "/styleguide/components/attachment" },
