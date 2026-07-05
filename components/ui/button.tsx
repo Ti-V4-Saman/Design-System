@@ -23,7 +23,7 @@ const buttonVariants = cva(
           "bg-success/10 text-success hover:bg-success/20 focus-visible:border-success/40 focus-visible:ring-success/20 dark:bg-success/20 dark:hover:bg-success/30 dark:focus-visible:ring-success/40",
         warning:
           "bg-warning/15 text-warning-foreground hover:bg-warning/25 focus-visible:border-warning/50 focus-visible:ring-warning/30 dark:bg-warning/20 dark:text-warning dark:hover:bg-warning/30 dark:focus-visible:ring-warning/40",
-        info: "bg-info/10 text-info hover:bg-info/20 focus-visible:border-info/40 focus-visible:ring-info/20 dark:bg-info/20 dark:hover:bg-info/30 dark:focus-visible:ring-info/40",
+        info: "border border-info-foreground/25 bg-info/30 text-info-foreground hover:bg-info/50 focus-visible:border-info-foreground/40 focus-visible:ring-info-foreground/25 dark:bg-info/30 dark:hover:bg-info/50",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

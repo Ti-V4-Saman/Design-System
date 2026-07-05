@@ -35,7 +35,7 @@ type FileKind = {
 /** Chip do tile por tom — sempre derivado de tokens, com contraste garantido em ambos os temas. */
 const toneChip: Record<FileTone, string> = {
   neutral: "bg-muted text-muted-foreground",
-  info: "bg-info/10 text-info",
+  info: "bg-info-foreground/10 text-info-foreground",
   success: "bg-success/10 text-success",
   warning: "bg-warning/15 text-warning-foreground dark:bg-warning/25 dark:text-warning",
   destructive: "bg-destructive/10 text-destructive",
