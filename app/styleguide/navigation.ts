@@ -26,6 +26,7 @@ export const navigation: NavSection[] = [
       { name: "Dialog", href: "/styleguide/components/dialog" },
       { name: "Drawer", href: "/styleguide/components/drawer" },
       { name: "Dropdown Menu", href: "/styleguide/components/dropdown-menu" },
+      { name: "Hover Card", href: "/styleguide/components/hover-card" },
       { name: "Survey", href: "/styleguide/components/survey" },
       { name: "Table", href: "/styleguide/components/table" },
     ],
