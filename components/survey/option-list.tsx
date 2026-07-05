@@ -48,7 +48,6 @@ export function OptionList({
     }
     window.addEventListener("keydown", onKeyDown)
     return () => window.removeEventListener("keydown", onKeyDown)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disabled, options, selectedIds, multiple, onChange])
 
   return (

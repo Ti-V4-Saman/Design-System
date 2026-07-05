@@ -44,13 +44,14 @@ export function QuestionCard({
       const tag = (e.target as HTMLElement).tagName
       // Allow Enter in textareas for newlines; only intercept when target is not a textarea
       if (tag === "TEXTAREA") return
+      if (disabled) return
       if (!hasAnswer) return
       e.preventDefault()
       onNext?.()
     }
     window.addEventListener("keydown", onKeyDown)
     return () => window.removeEventListener("keydown", onKeyDown)
-  }, [hasAnswer, onNext])
+  }, [hasAnswer, onNext, disabled])
 
   return (
     <div
