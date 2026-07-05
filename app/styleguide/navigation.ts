@@ -31,6 +31,7 @@ export const navigation: NavSection[] = [
       { name: "Survey", href: "/styleguide/components/survey" },
       { name: "Table", href: "/styleguide/components/table" },
       { name: "Tabs", href: "/styleguide/components/tabs" },
+      { name: "Tooltip", href: "/styleguide/components/tooltip" },
     ],
   },
 ]
