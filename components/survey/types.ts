@@ -26,7 +26,6 @@ export interface ChoiceCardProps {
   shortcut?: string
   selected?: boolean
   disabled?: boolean
-  multiple?: boolean
   onSelect?: (id: string) => void
   className?: string
 }
