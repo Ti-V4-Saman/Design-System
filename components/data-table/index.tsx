@@ -7,10 +7,15 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   getFilteredRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   flexRender,
   type ColumnDef,
   type SortingState,
   type RowSelectionState,
+  type VisibilityState,
+  type ColumnFiltersState,
+  type FilterFn,
 } from "@tanstack/react-table"
 import {
   ChevronsUpDown,
@@ -31,36 +36,66 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 import { DataTablePagination } from "./pagination"
 import { DataTableToolbar } from "./toolbar"
-import type { CRMColumnDef, CRMDataTableProps } from "./types"
+import type { CRMColumnDef, CRMDataTableProps, DataTableDensity } from "./types"
+
+/** Keeps rows whose column value is contained in the selected multi-select filter array. */
+const facetedFilterFn: FilterFn<unknown> = (row, columnId, filterValue) => {
+  if (!Array.isArray(filterValue) || filterValue.length === 0) return true
+  return filterValue.includes(String(row.getValue(columnId)))
+}
+
+const densityStyles: Record<DataTableDensity, { head: string; cell: string }> = {
+  comfortable: { head: "px-4 py-3", cell: "px-4 py-3" },
+  compact: { head: "px-3 py-2", cell: "px-3 py-1.5" },
+}
 
 export function CRMDataTable<TData>({
   data,
   columns,
+  density = "comfortable",
   pagination = true,
+  pageSize = 10,
   selectable = false,
   searchable = false,
+  searchPlaceholder,
+  filterable = false,
+  columnVisibility: enableColumnVisibility = false,
   loading = false,
   emptyMessage = "Nenhum resultado encontrado",
   rowBorderColor,
   onRowClick,
+  toolbarActions,
 }: CRMDataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({})
   const [globalFilter, setGlobalFilter] = React.useState("")
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
 
   const tableColumns = React.useMemo((): ColumnDef<TData>[] => {
-    const cols = columns as unknown as ColumnDef<TData>[]
+    const cols = (columns as unknown as ColumnDef<TData>[]).map((c) => {
+      const crm = c as unknown as CRMColumnDef<TData>
+      if (crm.filterable) {
+        return {
+          ...c,
+          filterFn: facetedFilterFn as unknown as FilterFn<TData>,
+          enableColumnFilter: true,
+        }
+      }
+      return c
+    })
     if (selectable) {
       const selectCol: ColumnDef<TData> = {
         id: "__select__",
         enableSorting: false,
+        enableHiding: false,
         size: 40,
         cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(v) => row.toggleSelected(!!v)}
             onClick={(e) => e.stopPropagation()}
-            aria-label="Select row"
+            aria-label="Selecionar linha"
             className="border-border"
           />
         ),
@@ -74,7 +109,7 @@ export function CRMDataTable<TData>({
                 : false
             }
             onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
-            aria-label="Select all"
+            aria-label="Selecionar todos"
             className="border-border"
           />
         ),
@@ -87,15 +122,19 @@ export function CRMDataTable<TData>({
   const table = useReactTable({
     data,
     columns: tableColumns,
-    state: { sorting, rowSelection, globalFilter },
+    state: { sorting, rowSelection, globalFilter, columnVisibility, columnFilters },
     onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
+    onColumnVisibilityChange: setColumnVisibility,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: pagination ? getPaginationRowModel() : undefined,
     getFilteredRowModel: getFilteredRowModel(),
-    initialState: { pagination: { pageSize: 10 } },
+    getFacetedRowModel: filterable ? getFacetedRowModel() : undefined,
+    getFacetedUniqueValues: filterable ? getFacetedUniqueValues() : undefined,
+    initialState: { pagination: { pageSize } },
   })
 
   const alignClass = (align?: string) => {
@@ -104,17 +143,35 @@ export function CRMDataTable<TData>({
     return "text-left"
   }
 
-  const skeletonRows = Array.from({ length: table.getState().pagination.pageSize || 10 })
+  const d = densityStyles[density]
+  const showToolbar =
+    searchable || (filterable && columns.some((c) => c.filterable)) ||
+    enableColumnVisibility || !!toolbarActions
+  const visibleColumns = table.getVisibleLeafColumns()
+  const skeletonRows = Array.from({ length: table.getState().pagination.pageSize || pageSize })
 
   return (
     <div className="w-full">
-      {searchable && <DataTableToolbar table={table} />}
+      {showToolbar && (
+        <DataTableToolbar
+          table={table}
+          columns={columns}
+          searchable={searchable}
+          searchPlaceholder={searchPlaceholder}
+          filterable={filterable}
+          columnVisibility={enableColumnVisibility}
+          toolbarActions={toolbarActions}
+        />
+      )}
 
-      <div className="border border-border rounded-lg overflow-hidden bg-background">
+      <div className="overflow-hidden rounded-lg border border-border bg-background">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="hover:bg-muted/40 bg-muted/30 border-b border-border">
+              <TableRow
+                key={headerGroup.id}
+                className="border-b border-border bg-muted/30 hover:bg-muted/40"
+              >
                 {headerGroup.headers.map((header) => {
                   const col = header.column.columnDef as unknown as CRMColumnDef<TData>
                   const canSort = col.sortable && header.column.getCanSort()
@@ -122,14 +179,24 @@ export function CRMDataTable<TData>({
                     <TableHead
                       key={header.id}
                       className={cn(
-                        "px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground",
+                        d.head,
+                        "text-xs font-semibold uppercase tracking-wide text-muted-foreground",
                         alignClass(col.align),
                         col.width,
                         canSort && "cursor-pointer select-none"
                       )}
+                      aria-sort={
+                        canSort
+                          ? header.column.getIsSorted() === "asc"
+                            ? "ascending"
+                            : header.column.getIsSorted() === "desc"
+                            ? "descending"
+                            : "none"
+                          : undefined
+                      }
                       onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
                     >
-                      <div className={cn("flex items-center gap-1", col.align === "right" && "justify-end")}>
+                      <div className={cn("flex items-center gap-1", col.align === "right" && "justify-end", col.align === "center" && "justify-center")}>
                         {header.isPlaceholder
                           ? null
                           : flexRender(header.column.columnDef.header, header.getContext())}
@@ -156,8 +223,8 @@ export function CRMDataTable<TData>({
             {loading ? (
               skeletonRows.map((_, i) => (
                 <TableRow key={i} className="border-b border-border last:border-0">
-                  {tableColumns.map((_, j) => (
-                    <TableCell key={j} className="px-4 py-3">
+                  {visibleColumns.map((_, j) => (
+                    <TableCell key={j} className={d.cell}>
                       <Skeleton className="h-4 w-full rounded" />
                     </TableCell>
                   ))}
@@ -165,7 +232,7 @@ export function CRMDataTable<TData>({
               ))
             ) : table.getRowModel().rows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={tableColumns.length} className="py-16">
+                <TableCell colSpan={visibleColumns.length} className="py-16">
                   <div className="flex flex-col items-center gap-2 text-center">
                     <Inbox className="h-10 w-10 text-muted-foreground/40" />
                     <p className="text-sm text-muted-foreground">{emptyMessage}</p>
@@ -181,7 +248,7 @@ export function CRMDataTable<TData>({
                     data-state={row.getIsSelected() ? "selected" : undefined}
                     onClick={() => onRowClick?.(row.original)}
                     className={cn(
-                      "group/row border-b border-border last:border-0 transition-colors",
+                      "group/row border-b border-border transition-colors last:border-0",
                       "hover:bg-muted/40",
                       row.getIsSelected() && "bg-primary/5",
                       onRowClick && "cursor-pointer"
@@ -193,7 +260,7 @@ export function CRMDataTable<TData>({
                       return (
                         <TableCell
                           key={cell.id}
-                          className={cn("px-4 py-3", alignClass(col.align), col.width)}
+                          className={cn(d.cell, alignClass(col.align), col.width)}
                         >
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </TableCell>
@@ -206,7 +273,7 @@ export function CRMDataTable<TData>({
           </TableBody>
         </Table>
 
-        {pagination && !loading && data.length > 0 && (
+        {pagination && !loading && table.getFilteredRowModel().rows.length > 0 && (
           <DataTablePagination table={table} />
         )}
       </div>
