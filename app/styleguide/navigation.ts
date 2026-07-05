@@ -16,7 +16,8 @@ export const navigation: NavSection[] = [
   {
     title: "Components",
     items: [
-      // Componentes serão adicionados aqui pelo Prompt 2
+      { name: "Attachment", href: "/styleguide/components/attachment" },
+      { name: "Button", href: "/styleguide/components/button" },
     ],
   },
 ]
