@@ -2,6 +2,7 @@ import type { ColumnDef } from "@tanstack/react-table"
 
 export interface CRMColumnDef<TData> extends Omit<ColumnDef<TData>, "header"> {
   header: string
+  accessorKey?: string
   sortable?: boolean
   align?: "left" | "center" | "right"
   width?: string
