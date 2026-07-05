@@ -30,6 +30,7 @@ export const navigation: NavSection[] = [
       { name: "Dropdown Menu", href: "/styleguide/components/dropdown-menu" },
       { name: "Field", href: "/styleguide/components/field" },
       { name: "Hover Card", href: "/styleguide/components/hover-card" },
+      { name: "Input Group", href: "/styleguide/components/input-group" },
       { name: "Survey", href: "/styleguide/components/survey" },
       { name: "Table", href: "/styleguide/components/table" },
       { name: "Tabs", href: "/styleguide/components/tabs" },
