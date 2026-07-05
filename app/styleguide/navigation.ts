@@ -21,6 +21,7 @@ export const navigation: NavSection[] = [
       { name: "Button", href: "/styleguide/components/button" },
       { name: "Calendar", href: "/styleguide/components/calendar" },
       { name: "Chart", href: "/styleguide/components/chart" },
+      { name: "Command", href: "/styleguide/components/command" },
       { name: "Survey", href: "/styleguide/components/survey" },
       { name: "Table", href: "/styleguide/components/table" },
     ],
