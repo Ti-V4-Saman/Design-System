@@ -27,8 +27,10 @@ const menuItem = cn(
   "data-disabled:pointer-events-none data-disabled:opacity-50",
   "data-[inset]:pl-8",
   "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg]:text-muted-foreground focus:[&_svg]:text-accent-foreground",
-  // Destructive variant — token driven, never hardcoded.
-  "data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:[&_svg]:!text-destructive"
+  // Destructive variant — token driven, never hardcoded. The trailing `!` is
+  // Tailwind v4's important modifier, keeping the icon destructive even when the
+  // row is highlighted (overrides the base focus:[&_svg] rule).
+  "data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:[&_svg]:text-destructive!"
 )
 
 function DropdownMenu({
@@ -109,7 +111,9 @@ function DropdownMenuCheckboxItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-4 items-center justify-center">
         <DropdownMenuPrimitive.ItemIndicator>
-          <CheckIcon className="size-4 text-foreground" />
+          {/* On-brand check. `!` (v4 important) beats the base [&_svg]:text-muted-foreground
+              rule, mirroring the radio dot's fill-primary. */}
+          <CheckIcon className="size-4 text-primary!" />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}

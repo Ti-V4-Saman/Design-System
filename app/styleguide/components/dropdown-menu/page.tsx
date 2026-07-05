@@ -236,6 +236,30 @@ export default function DropdownMenuPage() {
       </Section>
 
       <Section
+        title="Inset (alinhamento)"
+        description="A prop inset (em Item e Label) recua o texto para alinhar itens sem indicador com os itens de checkbox/radio."
+      >
+        <Demo>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Alinhamento inset</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-56">
+              <DropdownMenuLabel inset>Visualização</DropdownMenuLabel>
+              <DropdownMenuCheckboxItem checked>Mostrar arquivados</DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem>Densidade compacta</DropdownMenuCheckboxItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem inset>Expandir tudo</DropdownMenuItem>
+              <DropdownMenuItem inset>Recolher tudo</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <span className="text-sm text-muted-foreground">
+            Os itens com <code>inset</code> ficam alinhados ao texto dos checkboxes acima.
+          </span>
+        </Demo>
+      </Section>
+
+      <Section
         title="ActionsMenu (wrapper CRM)"
         description="Menu kebab dirigido por dados — passe um array de ações e o gatilho ⋯ + menu são montados para você."
       >
