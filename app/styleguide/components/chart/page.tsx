@@ -8,6 +8,7 @@ import {
   AreaChart,
   BarChart,
   FunnelChart,
+  Heatmap,
   KpiTrend,
   LineChart,
   PieChart,
@@ -98,6 +99,24 @@ const mrrTrend = [82, 88, 91, 99, 104, 112, 118, 121, 128, 136, 142, 151]
 const churnTrend = [3.2, 3.4, 3.1, 2.9, 3.0, 2.7, 2.6, 2.8, 2.5, 2.4, 2.3, 2.1]
 const leadsTrend = [180, 210, 240, 220, 260, 300, 285, 310, 340, 360, 355, 390]
 const convTrend = [12, 13, 12.5, 14, 15, 14.5, 16, 15.5, 17, 18, 17.5, 19]
+
+/** Atividade comercial por dia da semana × faixa de horário (heatmap). */
+const heatmapXLabels = ["8h", "10h", "12h", "14h", "16h", "18h"]
+const heatmapYLabels = ["Seg", "Ter", "Qua", "Qui", "Sex"]
+const activityData = (() => {
+  const grid = [
+    [3, 8, 5, 9, 12, 4],
+    [5, 11, 6, 13, 15, 6],
+    [4, 9, 7, 12, 14, 5],
+    [6, 12, 8, 15, 18, 7],
+    [2, 6, 4, 8, 9, 3],
+  ]
+  const cells: { x: string; y: string; value: number }[] = []
+  heatmapYLabels.forEach((y, r) =>
+    heatmapXLabels.forEach((x, c) => cells.push({ x, y, value: grid[r][c] }))
+  )
+  return cells
+})()
 
 // ─── Layout helpers ──────────────────────────────────────────────────────────
 
@@ -363,17 +382,33 @@ export default function ChartPage() {
         </div>
       </div>
 
-      {/* ── Follow-up: Heatmap ── */}
-      <SectionTitle hint="Registrado como componente futuro — recharts não tem heatmap nativo.">Heatmap</SectionTitle>
-      <Card className="border-dashed">
-        <CardContent className="flex flex-col items-center justify-center gap-2 py-12 text-center">
-          <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">Em breve</span>
-          <p className="max-w-md text-sm text-muted-foreground">
-            O <strong className="text-foreground">Heatmap</strong> será um componente custom (grid CSS com rampa de
-            alpha emerald), já que o recharts não oferece um heatmap nativo. Planejado como próximo item da família.
-          </p>
-        </CardContent>
-      </Card>
+      {/* ── Heatmap ── */}
+      <SectionTitle hint="Componente custom (grid CSS com rampa emerald sobre --muted) — recharts não tem heatmap nativo.">Heatmap</SectionTitle>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ChartDemo
+          title="Atividade por horário"
+          description="Interações registradas por dia da semana × faixa de horário — melhores janelas de contato."
+        >
+          <Heatmap
+            data={activityData}
+            xLabels={heatmapXLabels}
+            yLabels={heatmapYLabels}
+            valueFormatter={int}
+          />
+        </ChartDemo>
+        <ChartDemo title="Estados" description="Loading (skeleton) e empty compartilhados com a família.">
+          <div className="space-y-4">
+            <Heatmap
+              data={activityData}
+              xLabels={heatmapXLabels}
+              yLabels={heatmapYLabels}
+              loading={loading}
+              height={140}
+            />
+            <Heatmap data={[]} xLabels={heatmapXLabels} yLabels={heatmapYLabels} height={120} />
+          </div>
+        </ChartDemo>
+      </div>
 
       {/* ── API / docs ── */}
       <SectionTitle hint="Import único via barrel. Props comuns compartilhadas entre os cartesianos.">Uso &amp; API</SectionTitle>

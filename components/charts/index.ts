@@ -6,6 +6,7 @@ export { RadarChart, type RadarChartProps } from "./radar-chart"
 export { FunnelChart, type FunnelChartProps, type FunnelStage } from "./funnel-chart"
 export { Sparkline, type SparklineProps } from "./sparkline"
 export { KpiTrend, type KpiTrendProps } from "./kpi-trend"
+export { Heatmap, type HeatmapProps, type HeatmapCell } from "./heatmap"
 
 export { CHART_PALETTE, buildConfig, resolveColor } from "./common"
 export type {
