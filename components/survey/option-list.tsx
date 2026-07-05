@@ -62,7 +62,6 @@ export function OptionList({
           shortcut={SHORTCUTS[i]}
           selected={selectedIds.includes(opt.id)}
           disabled={disabled}
-          multiple={multiple}
           onSelect={handleSelect}
         />
       ))}
