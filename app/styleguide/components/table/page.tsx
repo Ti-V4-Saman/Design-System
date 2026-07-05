@@ -45,7 +45,7 @@ const clientColumns: CRMColumnDef<Client>[] = [
   { accessorKey: "id", header: "ID", sortable: true, width: "w-16" },
   { accessorKey: "name", header: "Name", sortable: true, cell: ({ row }) => <CellLink value={row.original.name} /> },
   { accessorKey: "contact", header: "Primary contact", cell: ({ row }) => <CellAvatar name={row.original.contact.name} src={row.original.contact.src} /> },
-  { accessorKey: "phone", header: "Phone" },
+  { accessorKey: "phone", header: "Phone", sortable: true },
   { accessorKey: "groups", header: "Client groups", cell: ({ row }) => (
     <div className="flex flex-col gap-0.5">
       {row.original.groups.map((g) => <span key={g} className="text-sm text-foreground before:content-['•'] before:mr-1.5 before:text-muted-foreground">{g}</span>)}
@@ -56,10 +56,10 @@ const clientColumns: CRMColumnDef<Client>[] = [
       {row.original.labels.map((l) => <CellBadge key={l.label} value={l.label} variant={l.variant} />)}
     </div>
   )},
-  { accessorKey: "projects", header: "Projects", align: "center" },
-  { accessorKey: "invoiced", header: "Total invoiced", align: "right", cell: ({ row }) => <CellFinancial value={row.original.invoiced} /> },
-  { accessorKey: "received", header: "Payment Received", align: "right", cell: ({ row }) => <CellFinancial value={row.original.received} /> },
-  { accessorKey: "due", header: "Due", align: "right", cell: ({ row }) => <CellFinancial value={row.original.due} /> },
+  { accessorKey: "projects", header: "Projects", align: "center", sortable: true },
+  { accessorKey: "invoiced", header: "Total invoiced", align: "right", sortable: true, cell: ({ row }) => <CellFinancial value={row.original.invoiced} /> },
+  { accessorKey: "received", header: "Payment Received", align: "right", sortable: true, cell: ({ row }) => <CellFinancial value={row.original.received} /> },
+  { accessorKey: "due", header: "Due", align: "right", sortable: true, cell: ({ row }) => <CellFinancial value={row.original.due} /> },
   { id: "actions", header: "", align: "right", cell: () => <CellActions /> },
 ]
 
@@ -79,12 +79,12 @@ const projectsData: Project[] = [
 const projectColumns: CRMColumnDef<Project>[] = [
   { accessorKey: "id", header: "ID", sortable: true, width: "w-12" },
   { accessorKey: "title", header: "Title", sortable: true, cell: ({ row }) => <CellLink value={row.original.title} /> },
-  { accessorKey: "client", header: "Client", cell: ({ row }) => <CellLink value={row.original.client} /> },
-  { accessorKey: "price", header: "Price", align: "right", cell: ({ row }) => row.original.price ? <CellFinancial value={row.original.price} /> : <span className="text-muted-foreground text-sm">-</span> },
-  { accessorKey: "startDate", header: "Start date", cell: ({ row }) => <CellDate value={row.original.startDate} /> },
-  { accessorKey: "deadline", header: "Deadline", cell: ({ row }) => <CellDate value={row.original.deadline} checkOverdue /> },
-  { accessorKey: "progress", header: "Progress", cell: ({ row }) => <CellProgress value={row.original.progress} /> },
-  { accessorKey: "status", header: "Status" },
+  { accessorKey: "client", header: "Client", sortable: true, cell: ({ row }) => <CellLink value={row.original.client} /> },
+  { accessorKey: "price", header: "Price", align: "right", sortable: true, cell: ({ row }) => row.original.price ? <CellFinancial value={row.original.price} /> : <span className="text-muted-foreground text-sm">-</span> },
+  { accessorKey: "startDate", header: "Start date", sortable: true, cell: ({ row }) => <CellDate value={row.original.startDate} /> },
+  { accessorKey: "deadline", header: "Deadline", sortable: true, cell: ({ row }) => <CellDate value={row.original.deadline} checkOverdue /> },
+  { accessorKey: "progress", header: "Progress", sortable: true, cell: ({ row }) => <CellProgress value={row.original.progress} /> },
+  { accessorKey: "status", header: "Status", sortable: true },
   { id: "actions", header: "", align: "right", cell: () => <CellActions /> },
 ]
 
@@ -106,11 +106,11 @@ const contactsData: Contact[] = [
 ]
 
 const contactColumns: CRMColumnDef<Contact>[] = [
-  { accessorKey: "name", header: "Name", cell: ({ row }) => <CellAvatar name={row.original.name} onClick={() => {}} /> },
-  { accessorKey: "clientName", header: "Client name", cell: ({ row }) => <CellLink value={row.original.clientName} /> },
-  { accessorKey: "jobTitle", header: "Job Title" },
-  { accessorKey: "email", header: "Email" },
-  { accessorKey: "phone", header: "Phone" },
+  { accessorKey: "name", header: "Name", sortable: true, cell: ({ row }) => <CellAvatar name={row.original.name} onClick={() => {}} /> },
+  { accessorKey: "clientName", header: "Client name", sortable: true, cell: ({ row }) => <CellLink value={row.original.clientName} /> },
+  { accessorKey: "jobTitle", header: "Job Title", sortable: true },
+  { accessorKey: "email", header: "Email", sortable: true },
+  { accessorKey: "phone", header: "Phone", sortable: true },
   { id: "actions", header: "", align: "right", cell: () => <CellActions showView={false} /> },
 ]
 
@@ -140,20 +140,20 @@ function getTaskStatusVariant(status: string): "primary" | "success" | "warning"
 }
 
 const taskColumns: CRMColumnDef<Task>[] = [
-  { accessorKey: "id", header: "ID", width: "w-16" },
-  { accessorKey: "title", header: "Title", cell: ({ row }) => (
+  { accessorKey: "id", header: "ID", sortable: true, width: "w-16" },
+  { accessorKey: "title", header: "Title", sortable: true, cell: ({ row }) => (
     <div className="flex items-center gap-2 flex-wrap">
       <CellLink value={row.original.title} />
       {row.original.labels.map((l) => <CellBadge key={l} value={l} variant="info" />)}
     </div>
   )},
-  { accessorKey: "startDate", header: "Start date" },
-  { accessorKey: "deadline", header: "Deadline", cell: ({ row }) => <CellDate value={row.original.deadline} checkOverdue /> },
-  { accessorKey: "milestone", header: "Milestone" },
-  { accessorKey: "relatedTo", header: "Related to", cell: ({ row }) => <CellLink value={row.original.relatedTo} /> },
-  { accessorKey: "assignee", header: "Assigned to", cell: ({ row }) => <CellAvatar name={row.original.assignee} /> },
+  { accessorKey: "startDate", header: "Start date", sortable: true },
+  { accessorKey: "deadline", header: "Deadline", sortable: true, cell: ({ row }) => <CellDate value={row.original.deadline} checkOverdue /> },
+  { accessorKey: "milestone", header: "Milestone", sortable: true },
+  { accessorKey: "relatedTo", header: "Related to", sortable: true, cell: ({ row }) => <CellLink value={row.original.relatedTo} /> },
+  { accessorKey: "assignee", header: "Assigned to", sortable: true, cell: ({ row }) => <CellAvatar name={row.original.assignee} /> },
   { accessorKey: "collaborators", header: "Collaborators" },
-  { accessorKey: "status", header: "Status", cell: ({ row }) => <CellBadge value={row.original.status} variant={getTaskStatusVariant(row.original.status)} /> },
+  { accessorKey: "status", header: "Status", sortable: true, cell: ({ row }) => <CellBadge value={row.original.status} variant={getTaskStatusVariant(row.original.status)} /> },
   { id: "actions", header: "", align: "right", cell: () => <CellActions showView={false} /> },
 ]
 
@@ -186,16 +186,16 @@ const leadsData: Lead[] = [
 
 const leadColumns: CRMColumnDef<Lead>[] = [
   { accessorKey: "name", header: "Name", sortable: true, cell: ({ row }) => <CellLink value={row.original.name} /> },
-  { accessorKey: "contact", header: "Primary contact", cell: ({ row }) => <CellAvatar name={row.original.contact} /> },
+  { accessorKey: "contact", header: "Primary contact", sortable: true, cell: ({ row }) => <CellAvatar name={row.original.contact} /> },
   { accessorKey: "phones", header: "Phone", cell: ({ row }) => <CellMulti values={row.original.phones} /> },
-  { accessorKey: "owner", header: "Owner", cell: ({ row }) => <CellAvatar name={row.original.owner} /> },
+  { accessorKey: "owner", header: "Owner", sortable: true, cell: ({ row }) => <CellAvatar name={row.original.owner} /> },
   { accessorKey: "labels", header: "Labels", cell: ({ row }) => (
     <div className="flex flex-wrap gap-1">
       {row.original.labels.map((l) => <CellBadge key={l} value={l} variant="primary" />)}
     </div>
   )},
-  { accessorKey: "createdAt", header: "Created at", cell: ({ row }) => <CellDate value={row.original.createdAt} /> },
-  { accessorKey: "status", header: "Status", cell: ({ row }) => <CellBadge value={row.original.status} variant={getLeadStatusVariant(row.original.status)} /> },
+  { accessorKey: "createdAt", header: "Created at", sortable: true, cell: ({ row }) => <CellDate value={row.original.createdAt} /> },
+  { accessorKey: "status", header: "Status", sortable: true, cell: ({ row }) => <CellBadge value={row.original.status} variant={getLeadStatusVariant(row.original.status)} /> },
   { id: "actions", header: "", align: "right", cell: () => <CellActions /> },
 ]
 
@@ -229,7 +229,7 @@ export default function TablePage() {
           <section className="mb-4">
             <h2 className="text-base font-semibold mb-1">Clients Table</h2>
             <p className="text-xs text-muted-foreground mb-4">Avatar, badges, valores financeiros, 3 action icons, seleção por linha.</p>
-            <CRMDataTable data={clientsData} columns={clientColumns} pagination selectable />
+            <CRMDataTable data={clientsData} columns={clientColumns} pagination selectable searchable />
           </section>
         </TabsContent>
 
@@ -237,7 +237,7 @@ export default function TablePage() {
           <section className="mb-4">
             <h2 className="text-base font-semibold mb-1">Projects Table</h2>
             <p className="text-xs text-muted-foreground mb-4">Progress bar, status texto, datas com overdue detection.</p>
-            <CRMDataTable data={projectsData} columns={projectColumns} pagination />
+            <CRMDataTable data={projectsData} columns={projectColumns} pagination searchable />
           </section>
         </TabsContent>
 
@@ -259,6 +259,7 @@ export default function TablePage() {
               pagination
               selectable
               rowBorderColor={(row) => row.borderColor}
+              searchable
             />
           </section>
         </TabsContent>
@@ -267,7 +268,7 @@ export default function TablePage() {
           <section className="mb-4">
             <h2 className="text-base font-semibold mb-1">Leads Table</h2>
             <p className="text-xs text-muted-foreground mb-4">Múltiplos telefones empilhados, avatar no owner, status badges coloridos.</p>
-            <CRMDataTable data={leadsData} columns={leadColumns} pagination />
+            <CRMDataTable data={leadsData} columns={leadColumns} pagination searchable />
           </section>
         </TabsContent>
       </Tabs>

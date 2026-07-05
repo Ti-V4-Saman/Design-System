@@ -17,7 +17,7 @@ export function CellActions({
   showView = true,
 }: CellActionsProps) {
   return (
-    <div className="flex items-center gap-1 justify-end opacity-0 group-hover/row:opacity-100 transition-opacity">
+    <div className="flex items-center gap-1 justify-end">
       {showView && (
         <button
           onClick={(e) => { e.stopPropagation(); onView?.() }}

@@ -46,6 +46,7 @@ export function CRMDataTable<TData>({
 }: CRMDataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({})
+  const [globalFilter, setGlobalFilter] = React.useState("")
 
   const tableColumns = React.useMemo((): ColumnDef<TData>[] => {
     const cols = columns as unknown as ColumnDef<TData>[]
@@ -86,9 +87,10 @@ export function CRMDataTable<TData>({
   const table = useReactTable({
     data,
     columns: tableColumns,
-    state: { sorting, rowSelection },
+    state: { sorting, rowSelection, globalFilter },
     onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: pagination ? getPaginationRowModel() : undefined,
@@ -112,7 +114,7 @@ export function CRMDataTable<TData>({
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="hover:bg-transparent border-b border-border">
+              <TableRow key={headerGroup.id} className="hover:bg-muted/40 bg-muted/30 border-b border-border">
                 {headerGroup.headers.map((header) => {
                   const col = header.column.columnDef as unknown as CRMColumnDef<TData>
                   const canSort = col.sortable && header.column.getCanSort()
