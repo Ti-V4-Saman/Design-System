@@ -635,7 +635,7 @@ import { Mail, Phone, Eye } from "lucide-react"
 /** Static rendering of the person card content, for the light/dark comparison. */
 function StaticPersonCard() {
   return (
-    <div className="w-80 rounded-lg bg-popover p-4 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10">
+    <div className="w-80 rounded-lg border border-border bg-popover p-4 text-sm text-popover-foreground shadow-[var(--shadow-dropdown)]">
       <div className="flex flex-col gap-3">
         <div className="flex items-start gap-3">
           <Avatar size="lg">
