@@ -1,7 +1,11 @@
 "use client"
 
 import * as React from "react"
+import { Plus, Download, Check, X } from "lucide-react"
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { CRMDataTable } from "@/components/data-table"
 import { CellLink } from "@/components/data-table/cells/cell-link"
 import { CellAvatar } from "@/components/data-table/cells/cell-avatar"
@@ -13,7 +17,132 @@ import { CellFinancial } from "@/components/data-table/cells/cell-financial"
 import { CellMulti } from "@/components/data-table/cells/cell-multi"
 import type { CRMColumnDef } from "@/components/data-table/types"
 
-// ─── Mock data ───────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------------------------------------------
+ * Page-local presentation helpers (same conventions as the Button showcase)
+ * -----------------------------------------------------------------------------------------------*/
+
+function Section({
+  title,
+  description,
+  children,
+}: {
+  title: string
+  description?: React.ReactNode
+  children: React.ReactNode
+}) {
+  return (
+    <section className="scroll-mt-8 space-y-4">
+      <div className="space-y-1">
+        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
+        {description && (
+          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
+        )}
+      </div>
+      {children}
+    </section>
+  )
+}
+
+function CodeBlock({ children }: { children: string }) {
+  return (
+    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
+      <code className="font-mono text-foreground">{children}</code>
+    </pre>
+  )
+}
+
+function ApiTable({
+  caption,
+  rows,
+}: {
+  caption?: string
+  rows: Array<[string, string, string, string]>
+}) {
+  return (
+    <div className="overflow-x-auto rounded-lg border">
+      <table className="w-full text-left text-sm">
+        <thead className="border-b bg-muted/50 text-xs text-muted-foreground">
+          <tr>
+            <th className="px-4 py-2 font-medium">Prop</th>
+            <th className="px-4 py-2 font-medium">Tipo</th>
+            <th className="px-4 py-2 font-medium">Padrão</th>
+            <th className="px-4 py-2 font-medium">Descrição</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y">
+          {rows.map(([prop, type, def, desc]) => (
+            <tr key={prop} className="align-top">
+              <td className="px-4 py-2">
+                <code className="font-mono text-xs text-foreground">{prop}</code>
+              </td>
+              <td className="px-4 py-2">
+                <code className="font-mono text-xs text-muted-foreground">{type}</code>
+              </td>
+              <td className="px-4 py-2">
+                <code className="font-mono text-xs text-muted-foreground">{def}</code>
+              </td>
+              <td className="px-4 py-2 text-muted-foreground">{desc}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {caption && <p className="px-4 py-2 text-xs text-muted-foreground">{caption}</p>}
+    </div>
+  )
+}
+
+function GuidelineCard({
+  tone,
+  title,
+  items,
+}: {
+  tone: "do" | "dont"
+  title: string
+  items: string[]
+}) {
+  const isDo = tone === "do"
+  return (
+    <div className="rounded-xl border bg-card p-5">
+      <div className="mb-3 flex items-center gap-2">
+        <span
+          className={
+            "flex size-6 items-center justify-center rounded-full " +
+            (isDo
+              ? "bg-success/15 text-success"
+              : "bg-destructive/10 text-destructive")
+          }
+        >
+          {isDo ? <Check className="size-3.5" /> : <X className="size-3.5" />}
+        </span>
+        <h3 className="text-sm font-semibold">{title}</h3>
+      </div>
+      <ul className="space-y-2 text-sm text-muted-foreground">
+        {items.map((item, i) => (
+          <li key={i} className="flex gap-2">
+            <span
+              className={
+                "mt-1.5 size-1 shrink-0 rounded-full " +
+                (isDo ? "bg-success" : "bg-destructive")
+              }
+            />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+type StatusVariant =
+  | "primary"
+  | "success"
+  | "warning"
+  | "destructive"
+  | "info"
+  | "muted"
+  | "purple"
+
+// ─── Clients ─────────────────────────────────────────────────────────────────
 
 type Client = {
   id: number
@@ -21,7 +150,7 @@ type Client = {
   contact: { name: string; src?: string }
   phone: string
   groups: string[]
-  labels: { label: string; variant: "primary" | "success" | "warning" | "destructive" | "info" | "muted" | "purple" }[]
+  labels: { label: string; variant: StatusVariant }[]
   projects: number
   invoiced: number
   received: number
@@ -42,13 +171,13 @@ const clientsData: Client[] = [
 ]
 
 const clientColumns: CRMColumnDef<Client>[] = [
-  { accessorKey: "id", header: "ID", sortable: true, width: "w-16" },
-  { accessorKey: "name", header: "Name", sortable: true, cell: ({ row }) => <CellLink value={row.original.name} /> },
+  { accessorKey: "id", header: "ID", sortable: true, width: "w-16", enableHiding: false },
+  { accessorKey: "name", header: "Name", sortable: true, enableHiding: false, cell: ({ row }) => <CellLink value={row.original.name} /> },
   { accessorKey: "contact", header: "Primary contact", cell: ({ row }) => <CellAvatar name={row.original.contact.name} src={row.original.contact.src} /> },
   { accessorKey: "phone", header: "Phone", sortable: true },
   { accessorKey: "groups", header: "Client groups", cell: ({ row }) => (
     <div className="flex flex-col gap-0.5">
-      {row.original.groups.map((g) => <span key={g} className="text-sm text-foreground before:content-['•'] before:mr-1.5 before:text-muted-foreground">{g}</span>)}
+      {row.original.groups.map((g) => <span key={g} className="text-sm text-foreground before:mr-1.5 before:text-muted-foreground before:content-['•']">{g}</span>)}
     </div>
   )},
   { accessorKey: "labels", header: "Labels", cell: ({ row }) => (
@@ -69,22 +198,30 @@ type Project = { id: number; title: string; client: string; price: number | null
 
 const projectsData: Project[] = [
   { id: 6, title: "Video Animation and Editing", client: "Kevin Johnston", price: null, startDate: "05-07-2026", deadline: "08-09-2023", progress: 100, status: "Completed" },
-  { id: 10, title: "Software Development for CRM", client: "Adrain Ondricka", price: 1000, startDate: "19-06-2026", deadline: "24-07-2026", progress: 100, status: "Completed" },
+  { id: 10, title: "Software Development for CRM", client: "Adrain Ondricka", price: 1000, startDate: "19-06-2026", deadline: "24-07-2026", progress: 60, status: "In progress" },
   { id: 3, title: "Social Media Marketing Campaign", client: "Fritsch, Okuneva and Armstrong", price: null, startDate: "23-05-2026", deadline: "27-06-2026", progress: 100, status: "Completed" },
-  { id: 29, title: "Social Media Content Calendar", client: "Adrain Ondricka", price: 4000, startDate: "03-07-2026", deadline: "04-10-2023", progress: 100, status: "Completed" },
-  { id: 27, title: "Podcast Production and Editing", client: "Adrain Ondricka", price: null, startDate: "24-06-2026", deadline: "11-09-2023", progress: 100, status: "Completed" },
-  { id: 26, title: "Infographic Creation and Visualizations", client: "Alta Cassin", price: null, startDate: "31-05-2026", deadline: "28-06-2026", progress: 100, status: "Completed" },
+  { id: 29, title: "Social Media Content Calendar", client: "Adrain Ondricka", price: 4000, startDate: "03-07-2026", deadline: "04-10-2023", progress: 35, status: "In progress" },
+  { id: 27, title: "Podcast Production and Editing", client: "Adrain Ondricka", price: null, startDate: "24-06-2026", deadline: "11-09-2023", progress: 80, status: "Review" },
+  { id: 26, title: "Infographic Creation and Visualizations", client: "Alta Cassin", price: null, startDate: "31-05-2026", deadline: "28-06-2026", progress: 10, status: "To do" },
 ]
 
+function getProjectStatusVariant(status: string): StatusVariant {
+  if (status === "Completed") return "success"
+  if (status === "In progress") return "primary"
+  if (status === "Review") return "purple"
+  if (status === "To do") return "warning"
+  return "muted"
+}
+
 const projectColumns: CRMColumnDef<Project>[] = [
-  { accessorKey: "id", header: "ID", sortable: true, width: "w-12" },
-  { accessorKey: "title", header: "Title", sortable: true, cell: ({ row }) => <CellLink value={row.original.title} /> },
+  { accessorKey: "id", header: "ID", sortable: true, width: "w-12", enableHiding: false },
+  { accessorKey: "title", header: "Title", sortable: true, enableHiding: false, cell: ({ row }) => <CellLink value={row.original.title} /> },
   { accessorKey: "client", header: "Client", sortable: true, cell: ({ row }) => <CellLink value={row.original.client} /> },
-  { accessorKey: "price", header: "Price", align: "right", sortable: true, cell: ({ row }) => row.original.price ? <CellFinancial value={row.original.price} /> : <span className="text-muted-foreground text-sm">-</span> },
+  { accessorKey: "price", header: "Price", align: "right", sortable: true, cell: ({ row }) => row.original.price ? <CellFinancial value={row.original.price} /> : <span className="text-sm text-muted-foreground">-</span> },
   { accessorKey: "startDate", header: "Start date", sortable: true, cell: ({ row }) => <CellDate value={row.original.startDate} /> },
   { accessorKey: "deadline", header: "Deadline", sortable: true, cell: ({ row }) => <CellDate value={row.original.deadline} checkOverdue /> },
   { accessorKey: "progress", header: "Progress", sortable: true, cell: ({ row }) => <CellProgress value={row.original.progress} /> },
-  { accessorKey: "status", header: "Status", sortable: true },
+  { accessorKey: "status", header: "Status", sortable: true, filterable: true, cell: ({ row }) => <CellBadge value={row.original.status} variant={getProjectStatusVariant(row.original.status)} /> },
   { id: "actions", header: "", align: "right", cell: () => <CellActions /> },
 ]
 
@@ -106,7 +243,7 @@ const contactsData: Contact[] = [
 ]
 
 const contactColumns: CRMColumnDef<Contact>[] = [
-  { accessorKey: "name", header: "Name", sortable: true, cell: ({ row }) => <CellAvatar name={row.original.name} onClick={() => {}} /> },
+  { accessorKey: "name", header: "Name", sortable: true, enableHiding: false, cell: ({ row }) => <CellAvatar name={row.original.name} onClick={() => {}} /> },
   { accessorKey: "clientName", header: "Client name", sortable: true, cell: ({ row }) => <CellLink value={row.original.clientName} /> },
   { accessorKey: "jobTitle", header: "Job Title", sortable: true },
   { accessorKey: "email", header: "Email", sortable: true },
@@ -116,22 +253,22 @@ const contactColumns: CRMColumnDef<Contact>[] = [
 
 // ─── Tasks ───────────────────────────────────────────────────────────────────
 
-type Task = { id: number; title: string; labels: string[]; priority?: boolean; startDate: string; deadline: string; milestone: string; relatedTo: string; assignee: string; collaborators: string; status: string; borderColor: string }
+type Task = { id: number; title: string; labels: string[]; startDate: string; deadline: string; milestone: string; relatedTo: string; assignee: string; collaborators: string; status: string; borderColor: string }
 
 const tasksData: Task[] = [
-  { id: 3642, title: "Add company logo and contact details", labels: [], priority: false, startDate: "-", deadline: "17-05-2026", milestone: "Beta Release", relatedTo: "Business Card and Stationery Design", assignee: "John Doe", collaborators: "-", status: "To do", borderColor: "var(--warning)" },
-  { id: 3623, title: "Use VR for training and simulations", labels: ["Design"], priority: true, startDate: "-", deadline: "07-07-2026", milestone: "Beta Release", relatedTo: "Virtual Reality Experience Design", assignee: "John Doe", collaborators: "-", status: "In progress", borderColor: "var(--success)" },
-  { id: 3617, title: "Optimize VR performance and frame rate", labels: [], priority: false, startDate: "-", deadline: "07-07-2026", milestone: "Release", relatedTo: "Virtual Reality Experience Design", assignee: "John Doe", collaborators: "-", status: "Review", borderColor: "oklch(0.55 0.22 310)" },
-  { id: 3615, title: "Develop VR navigation and interactions", labels: ["Feedback"], priority: true, startDate: "-", deadline: "07-07-2026", milestone: "Release", relatedTo: "Virtual Reality Experience Design", assignee: "John Doe", collaborators: "-", status: "In progress", borderColor: "var(--success)" },
-  { id: 3578, title: "Create data dashboards and reports", labels: ["Enhancement"], priority: true, startDate: "-", deadline: "07-07-2026", milestone: "Release", relatedTo: "Data Analysis and Insights", assignee: "John Doe", collaborators: "-", status: "Review", borderColor: "oklch(0.55 0.22 310)" },
-  { id: 3576, title: "Perform data visualization and charts", labels: [], priority: true, startDate: "-", deadline: "16-06-2026", milestone: "Beta Release", relatedTo: "Data Analysis and Insights", assignee: "John Doe", collaborators: "-", status: "Review", borderColor: "oklch(0.55 0.22 310)" },
-  { id: 3571, title: "Implement product barcodes and labels", labels: [], priority: false, startDate: "-", deadline: "24-05-2026", milestone: "Beta Release", relatedTo: "Product Packaging Design", assignee: "John Doe", collaborators: "-", status: "To do", borderColor: "var(--warning)" },
-  { id: 3570, title: "Test packaging durability and usability", labels: [], priority: false, startDate: "-", deadline: "24-05-2026", milestone: "Beta Release", relatedTo: "Product Packaging Design", assignee: "John Doe", collaborators: "-", status: "In progress", borderColor: "var(--success)" },
-  { id: 3546, title: "A/B test ad variations", labels: [], priority: false, startDate: "-", deadline: "26-05-2026", milestone: "Beta Release", relatedTo: "Copywriting for Advertisements", assignee: "John Doe", collaborators: "-", status: "In progress", borderColor: "var(--success)" },
-  { id: 3530, title: "Design game characters and assets", labels: ["Bug"], priority: false, startDate: "-", deadline: "30-07-2026", milestone: "Release", relatedTo: "Mobile Game Development", assignee: "John Doe", collaborators: "-", status: "To do", borderColor: "var(--warning)" },
+  { id: 3642, title: "Add company logo and contact details", labels: [], startDate: "-", deadline: "17-05-2026", milestone: "Beta Release", relatedTo: "Business Card and Stationery Design", assignee: "John Doe", collaborators: "-", status: "To do", borderColor: "var(--warning)" },
+  { id: 3623, title: "Use VR for training and simulations", labels: ["Design"], startDate: "-", deadline: "07-07-2026", milestone: "Beta Release", relatedTo: "Virtual Reality Experience Design", assignee: "John Doe", collaborators: "-", status: "In progress", borderColor: "var(--success)" },
+  { id: 3617, title: "Optimize VR performance and frame rate", labels: [], startDate: "-", deadline: "07-07-2026", milestone: "Release", relatedTo: "Virtual Reality Experience Design", assignee: "John Doe", collaborators: "-", status: "Review", borderColor: "oklch(0.55 0.22 310)" },
+  { id: 3615, title: "Develop VR navigation and interactions", labels: ["Feedback"], startDate: "-", deadline: "07-07-2026", milestone: "Release", relatedTo: "Virtual Reality Experience Design", assignee: "John Doe", collaborators: "-", status: "In progress", borderColor: "var(--success)" },
+  { id: 3578, title: "Create data dashboards and reports", labels: ["Enhancement"], startDate: "-", deadline: "07-07-2026", milestone: "Release", relatedTo: "Data Analysis and Insights", assignee: "John Doe", collaborators: "-", status: "Review", borderColor: "oklch(0.55 0.22 310)" },
+  { id: 3576, title: "Perform data visualization and charts", labels: [], startDate: "-", deadline: "16-06-2026", milestone: "Beta Release", relatedTo: "Data Analysis and Insights", assignee: "John Doe", collaborators: "-", status: "Review", borderColor: "oklch(0.55 0.22 310)" },
+  { id: 3571, title: "Implement product barcodes and labels", labels: [], startDate: "-", deadline: "24-05-2026", milestone: "Beta Release", relatedTo: "Product Packaging Design", assignee: "John Doe", collaborators: "-", status: "To do", borderColor: "var(--warning)" },
+  { id: 3570, title: "Test packaging durability and usability", labels: [], startDate: "-", deadline: "24-05-2026", milestone: "Beta Release", relatedTo: "Product Packaging Design", assignee: "John Doe", collaborators: "-", status: "In progress", borderColor: "var(--success)" },
+  { id: 3546, title: "A/B test ad variations", labels: [], startDate: "-", deadline: "26-05-2026", milestone: "Beta Release", relatedTo: "Copywriting for Advertisements", assignee: "John Doe", collaborators: "-", status: "In progress", borderColor: "var(--success)" },
+  { id: 3530, title: "Design game characters and assets", labels: ["Bug"], startDate: "-", deadline: "30-07-2026", milestone: "Release", relatedTo: "Mobile Game Development", assignee: "John Doe", collaborators: "-", status: "To do", borderColor: "var(--warning)" },
 ]
 
-function getTaskStatusVariant(status: string): "primary" | "success" | "warning" | "destructive" | "info" | "muted" | "purple" {
+function getTaskStatusVariant(status: string): StatusVariant {
   if (status === "Completed") return "success"
   if (status === "In progress") return "primary"
   if (status === "Review") return "purple"
@@ -140,9 +277,9 @@ function getTaskStatusVariant(status: string): "primary" | "success" | "warning"
 }
 
 const taskColumns: CRMColumnDef<Task>[] = [
-  { accessorKey: "id", header: "ID", sortable: true, width: "w-16" },
-  { accessorKey: "title", header: "Title", sortable: true, cell: ({ row }) => (
-    <div className="flex items-center gap-2 flex-wrap">
+  { accessorKey: "id", header: "ID", sortable: true, width: "w-16", enableHiding: false },
+  { accessorKey: "title", header: "Title", sortable: true, enableHiding: false, cell: ({ row }) => (
+    <div className="flex flex-wrap items-center gap-2">
       <CellLink value={row.original.title} />
       {row.original.labels.map((l) => <CellBadge key={l} value={l} variant="info" />)}
     </div>
@@ -153,7 +290,7 @@ const taskColumns: CRMColumnDef<Task>[] = [
   { accessorKey: "relatedTo", header: "Related to", sortable: true, cell: ({ row }) => <CellLink value={row.original.relatedTo} /> },
   { accessorKey: "assignee", header: "Assigned to", sortable: true, cell: ({ row }) => <CellAvatar name={row.original.assignee} /> },
   { accessorKey: "collaborators", header: "Collaborators" },
-  { accessorKey: "status", header: "Status", sortable: true, cell: ({ row }) => <CellBadge value={row.original.status} variant={getTaskStatusVariant(row.original.status)} /> },
+  { accessorKey: "status", header: "Status", sortable: true, filterable: true, cell: ({ row }) => <CellBadge value={row.original.status} variant={getTaskStatusVariant(row.original.status)} /> },
   { id: "actions", header: "", align: "right", cell: () => <CellActions showView={false} /> },
 ]
 
@@ -161,7 +298,7 @@ const taskColumns: CRMColumnDef<Task>[] = [
 
 type Lead = { name: string; contact: string; phones: string[]; owner: string; labels: string[]; createdAt: string; status: string }
 
-function getLeadStatusVariant(status: string): "primary" | "success" | "warning" | "destructive" | "info" | "muted" | "purple" {
+function getLeadStatusVariant(status: string): StatusVariant {
   if (status === "Won") return "success"
   if (status === "Lost") return "destructive"
   if (status === "New") return "warning"
@@ -185,7 +322,7 @@ const leadsData: Lead[] = [
 ]
 
 const leadColumns: CRMColumnDef<Lead>[] = [
-  { accessorKey: "name", header: "Name", sortable: true, cell: ({ row }) => <CellLink value={row.original.name} /> },
+  { accessorKey: "name", header: "Name", sortable: true, enableHiding: false, cell: ({ row }) => <CellLink value={row.original.name} /> },
   { accessorKey: "contact", header: "Primary contact", sortable: true, cell: ({ row }) => <CellAvatar name={row.original.contact} /> },
   { accessorKey: "phones", header: "Phone", cell: ({ row }) => <CellMulti values={row.original.phones} /> },
   { accessorKey: "owner", header: "Owner", sortable: true, cell: ({ row }) => <CellAvatar name={row.original.owner} /> },
@@ -195,106 +332,438 @@ const leadColumns: CRMColumnDef<Lead>[] = [
     </div>
   )},
   { accessorKey: "createdAt", header: "Created at", sortable: true, cell: ({ row }) => <CellDate value={row.original.createdAt} /> },
-  { accessorKey: "status", header: "Status", sortable: true, cell: ({ row }) => <CellBadge value={row.original.status} variant={getLeadStatusVariant(row.original.status)} /> },
+  { accessorKey: "status", header: "Status", sortable: true, filterable: true, cell: ({ row }) => <CellBadge value={row.original.status} variant={getLeadStatusVariant(row.original.status)} /> },
   { id: "actions", header: "", align: "right", cell: () => <CellActions /> },
 ]
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------------------------------------------
+ * Interactive: loading toggle
+ * -----------------------------------------------------------------------------------------------*/
 
-export default function TablePage() {
-  const [loadingDemo, setLoadingDemo] = React.useState(false)
+function LoadingDemo() {
+  const [loading, setLoading] = React.useState(false)
+  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+
+  React.useEffect(() => () => clearTimeout(timer.current), [])
+
+  const run = () => {
+    setLoading(true)
+    timer.current = setTimeout(() => setLoading(false), 2000)
+  }
 
   return (
-    <div className="p-8 max-w-7xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-foreground mb-1">DataTable</h1>
-        <p className="text-sm text-muted-foreground">
-          Componente base reutilizável. Cada exemplo usa o mesmo{" "}
-          <code className="font-mono text-xs bg-muted px-1 py-0.5 rounded">CRMDataTable</code>{" "}
-          com diferentes <code className="font-mono text-xs bg-muted px-1 py-0.5 rounded">columns</code> e{" "}
-          <code className="font-mono text-xs bg-muted px-1 py-0.5 rounded">data</code>.
+    <div className="space-y-3">
+      <Button size="sm" variant="outline" onClick={run} loading={loading}>
+        {loading ? "Carregando…" : "Simular carregamento (2s)"}
+      </Button>
+      <CRMDataTable data={loading ? [] : clientsData.slice(0, 4)} columns={clientColumns} loading={loading} pagination={false} />
+    </div>
+  )
+}
+
+/* -------------------------------------------------------------------------------------------------
+ * Props documentation
+ * -----------------------------------------------------------------------------------------------*/
+
+const TABLE_PROPS: Array<[string, string, string, string]> = [
+  ["data", "TData[]", "—", "Linhas a renderizar."],
+  ["columns", "CRMColumnDef<TData>[]", "—", "Definição das colunas (ver tabela abaixo)."],
+  ["density", `"comfortable" | "compact"`, `"comfortable"`, "Altura das linhas. compact para listas densas."],
+  ["pagination", "boolean", "true", "Exibe o rodapé de paginação."],
+  ["pageSize", "number", "10", "Linhas por página inicial."],
+  ["selectable", "boolean", "false", "Coluna de checkbox para seleção por linha."],
+  ["searchable", "boolean", "false", "Campo de busca global na toolbar."],
+  ["searchPlaceholder", "string", `"Buscar..."`, "Placeholder do campo de busca."],
+  ["filterable", "boolean", "false", "Ativa filtros por coluna (colunas com filterable)."],
+  ["columnVisibility", "boolean", "false", "Botão de visibilidade de colunas na toolbar."],
+  ["loading", "boolean", "false", "Renderiza linhas de esqueleto."],
+  ["emptyMessage", "string", `"Nenhum resultado…"`, "Mensagem do estado vazio."],
+  ["rowBorderColor", "(row) => string | undefined", "—", "Borda esquerda colorida por linha (ex.: status)."],
+  ["onRowClick", "(row) => void", "—", "Torna a linha clicável (cursor + hover)."],
+  ["toolbarActions", "React.ReactNode", "—", "Controles extras à direita da toolbar (ex.: botão Adicionar)."],
+]
+
+const COLUMN_PROPS: Array<[string, string, string, string]> = [
+  ["header", "string", "—", "Rótulo de texto. Também usado no menu de colunas."],
+  ["accessorKey", "string", "—", "Chave do dado. Necessária para ordenar/filtrar."],
+  ["sortable", "boolean", "false", "Habilita ordenação clicando no cabeçalho."],
+  ["align", `"left" | "center" | "right"`, `"left"`, "Alinhamento horizontal da coluna."],
+  ["width", "string", "—", "Utilitário Tailwind de largura, ex.: w-16."],
+  ["filterable", "boolean", "false", "Expõe um filtro multi-seleção na toolbar."],
+  ["filterOptions", "{ label; value }[]", "inferido", "Opções do filtro; inferidas do dado se omitido."],
+  ["enableHiding", "boolean", "true", "Permite ocultar a coluna pelo menu de colunas."],
+  ["cell", "(ctx) => ReactNode", "valor bruto", "Renderer customizado (use os componentes Cell*)."],
+]
+
+/* -------------------------------------------------------------------------------------------------
+ * Page
+ * -----------------------------------------------------------------------------------------------*/
+
+export default function TablePage() {
+  return (
+    <div className="mx-auto max-w-6xl space-y-14 p-8 md:p-12">
+      {/* Header */}
+      <header className="space-y-3">
+        <Badge variant="secondary">Core · Dados</Badge>
+        <h1 className="text-4xl font-bold tracking-tight">DataTable</h1>
+        <p className="max-w-2xl text-muted-foreground">
+          Tabela de dados do CRM V4, construída sobre{" "}
+          <code className="font-mono text-sm">@tanstack/react-table</code>. Um único{" "}
+          <code className="font-mono text-sm">CRMDataTable</code> cobre ordenação, busca,
+          filtros por coluna, seleção, paginação, densidade, visibilidade de colunas e os
+          estados de carregamento e vazio — sempre a partir dos tokens do design system.
         </p>
-      </div>
+      </header>
 
-      <Tabs defaultValue="clients">
-        <TabsList className="mb-6">
-          <TabsTrigger value="clients">Clients</TabsTrigger>
-          <TabsTrigger value="projects">Projects</TabsTrigger>
-          <TabsTrigger value="contacts">Contacts</TabsTrigger>
-          <TabsTrigger value="tasks">Tasks</TabsTrigger>
-          <TabsTrigger value="leads">Leads</TabsTrigger>
-        </TabsList>
+      {/* Real examples */}
+      <Section
+        title="Exemplos reais"
+        description="A mesma API com columns e data diferentes cobre os principais módulos do CRM. Ordene pelos cabeçalhos, busque, filtre por status e alterne colunas."
+      >
+        <Tabs defaultValue="clients">
+          <TabsList className="mb-4">
+            <TabsTrigger value="clients">Clients</TabsTrigger>
+            <TabsTrigger value="projects">Projects</TabsTrigger>
+            <TabsTrigger value="contacts">Contacts</TabsTrigger>
+            <TabsTrigger value="tasks">Tasks</TabsTrigger>
+            <TabsTrigger value="leads">Leads</TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="clients">
-          <section className="mb-4">
-            <h2 className="text-base font-semibold mb-1">Clients Table</h2>
-            <p className="text-xs text-muted-foreground mb-4">Avatar, badges, valores financeiros, 3 action icons, seleção por linha.</p>
-            <CRMDataTable data={clientsData} columns={clientColumns} pagination selectable searchable />
-          </section>
-        </TabsContent>
-
-        <TabsContent value="projects">
-          <section className="mb-4">
-            <h2 className="text-base font-semibold mb-1">Projects Table</h2>
-            <p className="text-xs text-muted-foreground mb-4">Progress bar, status texto, datas com overdue detection.</p>
-            <CRMDataTable data={projectsData} columns={projectColumns} pagination searchable />
-          </section>
-        </TabsContent>
-
-        <TabsContent value="contacts">
-          <section className="mb-4">
-            <h2 className="text-base font-semibold mb-1">Contacts Table</h2>
-            <p className="text-xs text-muted-foreground mb-4">Avatar + nome, email, telefone, delete icon.</p>
-            <CRMDataTable data={contactsData} columns={contactColumns} pagination searchable />
-          </section>
-        </TabsContent>
-
-        <TabsContent value="tasks">
-          <section className="mb-4">
-            <h2 className="text-base font-semibold mb-1">Tasks Table</h2>
-            <p className="text-xs text-muted-foreground mb-4">Checkbox por linha, borda lateral colorida por status, labels inline, datas overdue em vermelho.</p>
+          <TabsContent value="clients">
+            <p className="mb-3 text-xs text-muted-foreground">Avatar, badges, valores financeiros, ações por linha, seleção e visibilidade de colunas.</p>
             <CRMDataTable
-              data={tasksData}
-              columns={taskColumns}
-              pagination
+              data={clientsData}
+              columns={clientColumns}
               selectable
-              rowBorderColor={(row) => row.borderColor}
               searchable
+              columnVisibility
+              toolbarActions={
+                <Button size="sm">
+                  <Plus data-icon="inline-start" />
+                  Add client
+                </Button>
+              }
             />
-          </section>
-        </TabsContent>
+          </TabsContent>
 
-        <TabsContent value="leads">
-          <section className="mb-4">
-            <h2 className="text-base font-semibold mb-1">Leads Table</h2>
-            <p className="text-xs text-muted-foreground mb-4">Múltiplos telefones empilhados, avatar no owner, status badges coloridos.</p>
-            <CRMDataTable data={leadsData} columns={leadColumns} pagination searchable />
-          </section>
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="projects">
+            <p className="mb-3 text-xs text-muted-foreground">Barra de progresso, filtro por status, datas com detecção de atraso.</p>
+            <CRMDataTable data={projectsData} columns={projectColumns} searchable filterable columnVisibility />
+          </TabsContent>
 
-      {/* States section */}
-      <div className="mt-12 border-t border-border pt-8 space-y-8">
-        <h2 className="text-lg font-semibold">Estados</h2>
+          <TabsContent value="contacts">
+            <p className="mb-3 text-xs text-muted-foreground">Avatar + nome clicável, e-mail, telefone, ação de excluir.</p>
+            <CRMDataTable data={contactsData} columns={contactColumns} searchable columnVisibility />
+          </TabsContent>
 
-        <div>
-          <h3 className="text-sm font-semibold mb-1 text-muted-foreground uppercase tracking-wide">Loading</h3>
-          <div className="flex items-center gap-3 mb-3">
-            <button
-              onClick={() => { setLoadingDemo(true); setTimeout(() => setLoadingDemo(false), 2000) }}
-              className="text-xs px-3 py-1.5 rounded bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-            >
-              Simular loading (2s)
-            </button>
+          <TabsContent value="tasks">
+            <p className="mb-3 text-xs text-muted-foreground">Seleção por linha, borda lateral colorida por status, filtro por status, datas em atraso em vermelho.</p>
+            <CRMDataTable data={tasksData} columns={taskColumns} selectable searchable filterable rowBorderColor={(row) => row.borderColor} />
+          </TabsContent>
+
+          <TabsContent value="leads">
+            <p className="mb-3 text-xs text-muted-foreground">Múltiplos telefones empilhados, avatar no owner, filtro e badges de status coloridos.</p>
+            <CRMDataTable data={leadsData} columns={leadColumns} searchable filterable columnVisibility />
+          </TabsContent>
+        </Tabs>
+      </Section>
+
+      {/* Density */}
+      <Section
+        title="Densidade"
+        description="comfortable (padrão) prioriza legibilidade; compact reduz o padding vertical para exibir mais linhas em telas densas, mantendo a mesma tipografia e alinhamento."
+      >
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-muted-foreground">comfortable</p>
+            <CRMDataTable data={projectsData.slice(0, 5)} columns={projectColumns} pagination={false} density="comfortable" />
           </div>
-          <CRMDataTable data={loadingDemo ? [] : clientsData.slice(0, 3)} columns={clientColumns} loading={loadingDemo} pagination={false} />
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-muted-foreground">compact</p>
+            <CRMDataTable data={projectsData.slice(0, 5)} columns={projectColumns} pagination={false} density="compact" />
+          </div>
         </div>
+        <CodeBlock>{`<CRMDataTable data={data} columns={columns} density="compact" />`}</CodeBlock>
+      </Section>
 
-        <div>
-          <h3 className="text-sm font-semibold mb-1 text-muted-foreground uppercase tracking-wide">Empty State</h3>
-          <CRMDataTable data={[]} columns={clientColumns} pagination={false} emptyMessage="Nenhum cliente encontrado. Clique em 'Add client' para começar." />
+      {/* Toolbar: search, filters, column visibility */}
+      <Section
+        title="Busca, filtros e colunas"
+        description="A toolbar reúne busca global, filtros multi-seleção por coluna (marque a coluna com filterable) e o menu de visibilidade. Um botão Limpar aparece enquanto houver filtros ativos."
+      >
+        <CRMDataTable
+          data={leadsData}
+          columns={leadColumns}
+          searchable
+          searchPlaceholder="Buscar leads…"
+          filterable
+          columnVisibility
+          toolbarActions={
+            <Button size="sm" variant="outline">
+              <Download data-icon="inline-start" />
+              Exportar
+            </Button>
+          }
+        />
+        <CodeBlock>{`// marque a coluna de status como filtrável
+const columns: CRMColumnDef<Lead>[] = [
+  // ...
+  { accessorKey: "status", header: "Status", sortable: true, filterable: true,
+    cell: ({ row }) => <CellBadge value={row.original.status} variant={variant} /> },
+]
+
+<CRMDataTable
+  data={leads}
+  columns={columns}
+  searchable
+  filterable
+  columnVisibility
+  toolbarActions={<Button size="sm" variant="outline">Exportar</Button>}
+/>`}</CodeBlock>
+      </Section>
+
+      {/* Selection */}
+      <Section
+        title="Seleção"
+        description="selectable injeta uma coluna de checkbox com estado indeterminado no cabeçalho. Linhas selecionadas recebem um leve realce em primary/5."
+      >
+        <CRMDataTable data={clientsData.slice(0, 5)} columns={clientColumns} selectable pagination={false} />
+      </Section>
+
+      {/* States */}
+      <Section
+        title="Estados"
+        description="Carregamento com linhas de esqueleto e estado vazio com ícone e mensagem customizável."
+      >
+        <div className="space-y-8">
+          <div className="space-y-2">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Loading</p>
+            <LoadingDemo />
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Empty</p>
+            <CRMDataTable data={[]} columns={clientColumns} pagination={false} emptyMessage="Nenhum cliente encontrado. Clique em 'Add client' para começar." />
+          </div>
         </div>
-      </div>
+      </Section>
+
+      {/* Responsive */}
+      <Section
+        title="Responsivo"
+        description="O contêiner da tabela rola horizontalmente quando as colunas excedem a largura disponível — os dados nunca são truncados. A toolbar quebra em várias linhas e a busca ocupa a largura total no mobile. Redimensione a janela para ver."
+      >
+        <div className="mx-auto max-w-md">
+          <p className="mb-2 text-xs font-medium text-muted-foreground">Contêiner estreito (max-w-md) — role a tabela na horizontal</p>
+          <CRMDataTable data={leadsData.slice(0, 4)} columns={leadColumns} pagination={false} />
+        </div>
+      </Section>
+
+      {/* Dark mode */}
+      <Section
+        title="Dark mode"
+        description="Todos os tokens têm par -foreground e overrides no tema escuro. Painel direito forçado em dark."
+      >
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="rounded-xl border bg-card p-4">
+            <p className="mb-3 text-xs font-medium text-muted-foreground">Light</p>
+            <CRMDataTable data={projectsData.slice(0, 4)} columns={projectColumns} pagination={false} density="compact" />
+          </div>
+          <div className="dark rounded-xl border border-border bg-card p-4 text-card-foreground">
+            <p className="mb-3 text-xs font-medium text-muted-foreground">Dark</p>
+            <CRMDataTable data={projectsData.slice(0, 4)} columns={projectColumns} pagination={false} density="compact" />
+          </div>
+        </div>
+      </Section>
+
+      {/* Cells */}
+      <Section
+        title="Células"
+        description="Componentes de célula reutilizáveis em components/data-table/cells. Componha-os no cell de cada coluna para manter a consistência visual entre tabelas."
+      >
+        <div className="overflow-x-auto rounded-xl border bg-card p-5">
+          <table className="w-full text-left text-sm">
+            <thead className="text-xs text-muted-foreground">
+              <tr>
+                <th className="pb-3 font-medium">Componente</th>
+                <th className="pb-3 font-medium">Uso</th>
+                <th className="pb-3 font-medium">Exemplo</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              <tr>
+                <td className="py-3 pr-4"><code className="font-mono text-xs">CellLink</code></td>
+                <td className="py-3 pr-4 text-muted-foreground">Nome/título navegável</td>
+                <td className="py-3"><CellLink value="Adrain Ondricka" /></td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4"><code className="font-mono text-xs">CellAvatar</code></td>
+                <td className="py-3 pr-4 text-muted-foreground">Pessoa com iniciais</td>
+                <td className="py-3"><CellAvatar name="Emily Smith" /></td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4"><code className="font-mono text-xs">CellBadge</code></td>
+                <td className="py-3 pr-4 text-muted-foreground">Status semântico</td>
+                <td className="py-3">
+                  <div className="flex flex-wrap gap-1">
+                    <CellBadge value="Won" variant="success" />
+                    <CellBadge value="New" variant="warning" />
+                    <CellBadge value="Lost" variant="destructive" />
+                    <CellBadge value="Negotiation" variant="purple" />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4"><code className="font-mono text-xs">CellFinancial</code></td>
+                <td className="py-3 pr-4 text-muted-foreground">Moeda (tabular)</td>
+                <td className="py-3"><CellFinancial value={9166} /></td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4"><code className="font-mono text-xs">CellDate</code></td>
+                <td className="py-3 pr-4 text-muted-foreground">Data + atraso</td>
+                <td className="py-3"><CellDate value="08-09-2023" checkOverdue /></td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4"><code className="font-mono text-xs">CellProgress</code></td>
+                <td className="py-3 pr-4 text-muted-foreground">Percentual</td>
+                <td className="py-3"><div className="max-w-[160px]"><CellProgress value={60} /></div></td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4"><code className="font-mono text-xs">CellMulti</code></td>
+                <td className="py-3 pr-4 text-muted-foreground">Valores empilhados</td>
+                <td className="py-3"><CellMulti values={["+1 (978) 734-9460", "(520) 897-7509"]} /></td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4"><code className="font-mono text-xs">CellActions</code></td>
+                <td className="py-3 pr-4 text-muted-foreground">Ações por linha</td>
+                <td className="py-3"><CellActions /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Section>
+
+      {/* Code */}
+      <Section title="Código" description="Do uso básico à composição completa.">
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-muted-foreground">Básico</p>
+            <CodeBlock>{`import { CRMDataTable } from "@/components/data-table"
+import type { CRMColumnDef } from "@/components/data-table/types"
+
+type Client = { id: number; name: string; due: number }
+
+const columns: CRMColumnDef<Client>[] = [
+  { accessorKey: "id", header: "ID", sortable: true, width: "w-16" },
+  { accessorKey: "name", header: "Name", sortable: true },
+  { accessorKey: "due", header: "Due", align: "right", sortable: true },
+]
+
+<CRMDataTable data={clients} columns={columns} />`}</CodeBlock>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-muted-foreground">Avançado — células, filtros, seleção e ações</p>
+            <CodeBlock>{`import { CRMDataTable } from "@/components/data-table"
+import { CellLink } from "@/components/data-table/cells/cell-link"
+import { CellBadge } from "@/components/data-table/cells/cell-badge"
+import { CellActions } from "@/components/data-table/cells/cell-actions"
+
+const columns: CRMColumnDef<Lead>[] = [
+  { accessorKey: "name", header: "Name", sortable: true, enableHiding: false,
+    cell: ({ row }) => <CellLink value={row.original.name} /> },
+  { accessorKey: "status", header: "Status", sortable: true, filterable: true,
+    cell: ({ row }) => <CellBadge value={row.original.status} variant={variant(row.original.status)} /> },
+  { id: "actions", header: "", align: "right", cell: () => <CellActions /> },
+]
+
+<CRMDataTable
+  data={leads}
+  columns={columns}
+  density="compact"
+  selectable
+  searchable
+  filterable
+  columnVisibility
+  pageSize={25}
+  onRowClick={(lead) => router.push(\`/leads/\${lead.id}\`)}
+  toolbarActions={<Button size="sm"><Plus data-icon="inline-start" />Novo lead</Button>}
+/>`}</CodeBlock>
+          </div>
+        </div>
+      </Section>
+
+      {/* Props */}
+      <Section title="Props" description="API do CRMDataTable e da definição de coluna CRMColumnDef.">
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <h3 className="text-sm font-semibold">CRMDataTable</h3>
+            <ApiTable rows={TABLE_PROPS} />
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-sm font-semibold">CRMColumnDef</h3>
+            <ApiTable
+              caption="Estende ColumnDef do @tanstack/react-table — todas as opções nativas (id, size, meta, etc.) continuam disponíveis."
+              rows={COLUMN_PROPS}
+            />
+          </div>
+        </div>
+      </Section>
+
+      {/* Guidelines */}
+      <Section title="Boas práticas" description="Diretrizes para tabelas consistentes no CRM.">
+        <div className="grid gap-4 md:grid-cols-2">
+          <GuidelineCard
+            tone="do"
+            title="Faça"
+            items={[
+              "Use os componentes Cell* para manter tipografia e cores consistentes entre tabelas.",
+              "Marque como filterable colunas categóricas de baixa cardinalidade (status, tipo, estágio).",
+              "Reserve enableHiding: false para colunas de identidade (ID, nome).",
+              "Use density=\"compact\" em listas longas e em painéis laterais estreitos.",
+              "Forneça um emptyMessage acionável que diga o próximo passo.",
+            ]}
+          />
+          <GuidelineCard
+            tone="dont"
+            title="Evite"
+            items={[
+              "Cores hardcoded nas células — use sempre tokens (text-foreground, text-muted-foreground).",
+              "Filtro faceted em colunas de alta cardinalidade (nomes, e-mails); prefira a busca global.",
+              "Habilitar onRowClick e ações na linha que disparem a mesma navegação sem stopPropagation.",
+              "Mais de ~7 colunas visíveis sem oferecer columnVisibility.",
+              "Colocar textos longos em células sem permitir a rolagem horizontal do contêiner.",
+            ]}
+          />
+        </div>
+      </Section>
+
+      {/* Accessibility */}
+      <Section title="Acessibilidade" description="Garantias embutidas no componente.">
+        <div className="rounded-lg border bg-card p-5">
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li>
+              <span className="font-medium text-foreground">Tabela semântica:</span>{" "}
+              renderiza <code className="font-mono text-xs">&lt;table&gt;</code>/<code className="font-mono text-xs">&lt;th&gt;</code>/<code className="font-mono text-xs">&lt;td&gt;</code> reais, navegáveis por leitores de tela.
+            </li>
+            <li>
+              <span className="font-medium text-foreground">Ordenação:</span>{" "}
+              cabeçalhos ordenáveis expõem <code className="font-mono text-xs">aria-sort</code> (ascending/descending/none).
+            </li>
+            <li>
+              <span className="font-medium text-foreground">Seleção:</span>{" "}
+              checkboxes Radix com estado <code className="font-mono text-xs">indeterminate</code> no cabeçalho e{" "}
+              <code className="font-mono text-xs">aria-label</code> em cada linha.
+            </li>
+            <li>
+              <span className="font-medium text-foreground">Filtros e colunas:</span>{" "}
+              acionados por botões reais dentro de <code className="font-mono text-xs">Popover</code> (foco preso, fecha no Esc).
+            </li>
+            <li>
+              <span className="font-medium text-foreground">Foco por teclado:</span>{" "}
+              todos os controles (busca, filtros, paginação, ações) são focáveis via Tab, com anel de foco visível.
+            </li>
+          </ul>
+        </div>
+      </Section>
     </div>
   )
 }
