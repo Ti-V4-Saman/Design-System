@@ -204,7 +204,7 @@ export function CRMDataTable<TData>({
           </TableBody>
         </Table>
 
-        {pagination && !loading && table.getRowModel().rows.length > 0 && (
+        {pagination && !loading && data.length > 0 && (
           <DataTablePagination table={table} />
         )}
       </div>
