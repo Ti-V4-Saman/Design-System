@@ -5,7 +5,7 @@ import { CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
-import { CalendarDays, GripVertical } from "lucide-react"
+import { CalendarDays } from "lucide-react"
 import { CRMBaseCard } from "./base-card"
 import type { TaskCardProps, CardVariant } from "./types"
 

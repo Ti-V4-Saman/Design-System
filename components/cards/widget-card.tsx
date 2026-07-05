@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from "@/components/ui/card"
+import { CardHeader, CardTitle, CardContent, CardAction } from "@/components/ui/card"
 import { TrendingUp, TrendingDown } from "lucide-react"
 import { CRMBaseCard } from "./base-card"
 import type { WidgetCardProps } from "./types"

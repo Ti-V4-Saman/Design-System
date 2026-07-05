@@ -3,7 +3,6 @@
 import * as React from "react"
 import { CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import { Check, X } from "lucide-react"
 import { CRMBaseCard } from "./base-card"
 import type { IntegrationCardProps, CardVariant } from "./types"
 
@@ -56,7 +55,7 @@ export function IntegrationCard({
         >
           <span
             className={cn(
-              "pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-md transform ring-0 transition duration-200 ease-in-out",
+              "pointer-events-none inline-block h-5 w-5 rounded-full bg-background shadow-md transform ring-0 transition duration-200 ease-in-out",
               connected ? "translate-x-5" : "translate-x-0"
             )}
           />
