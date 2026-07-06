@@ -29,6 +29,7 @@ export const navigation: NavSection[] = [
       { name: "Chart", href: "/styleguide/components/chart" },
       { name: "Collapsible", href: "/styleguide/components/collapsible" },
       { name: "Command", href: "/styleguide/components/command" },
+      { name: "Context Menu", href: "/styleguide/components/context-menu" },
       { name: "Dialog", href: "/styleguide/components/dialog" },
       { name: "Drawer", href: "/styleguide/components/drawer" },
       { name: "Dropdown Menu", href: "/styleguide/components/dropdown-menu" },
