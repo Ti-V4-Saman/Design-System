@@ -12,94 +12,20 @@ import {
   Trash2,
 } from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { RichTooltip, SimpleTooltip, TooltipShortcut } from "@/components/tooltip"
-
-// ─── Page helpers (padrão do styleguide CRM V4) ──────────────────────────────
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-lg font-semibold text-foreground">{title}</h2>
-        {description ? (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        ) : null}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div className={cn("flex flex-wrap items-center gap-4 rounded-lg border border-border bg-card p-6", className)}>
-      {children}
-    </div>
-  )
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 font-mono text-xs leading-relaxed text-foreground">
-      {children}
-    </pre>
-  )
-}
-
-function ApiTable({
-  rows,
-}: {
-  rows: Array<{ prop: string; type: string; def?: string; desc: string }>
-}) {
-  return (
-    <div className="overflow-x-auto rounded-lg border border-border">
-      <table className="w-full text-left text-sm">
-        <thead className="bg-muted/50 text-muted-foreground">
-          <tr>
-            <th className="px-4 py-2 font-medium">Prop</th>
-            <th className="px-4 py-2 font-medium">Tipo</th>
-            <th className="px-4 py-2 font-medium">Default</th>
-            <th className="px-4 py-2 font-medium">Descrição</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border">
-          {rows.map((r) => (
-            <tr key={r.prop}>
-              <td className="px-4 py-2 font-mono text-xs text-foreground">{r.prop}</td>
-              <td className="px-4 py-2 font-mono text-xs text-muted-foreground">{r.type}</td>
-              <td className="px-4 py-2 font-mono text-xs text-muted-foreground">{r.def ?? "—"}</td>
-              <td className="px-4 py-2 text-muted-foreground">{r.desc}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-function GuidelineCard({ tone, title, items }: { tone: "do" | "dont"; title: string; items: string[] }) {
-  const isDo = tone === "do"
-  return (
-    <div className={cn("rounded-lg border p-4", isDo ? "border-success/30 bg-success/5" : "border-destructive/30 bg-destructive/5")}>
-      <p className={cn("mb-2 text-sm font-semibold", isDo ? "text-success" : "text-destructive")}>{title}</p>
-      <ul className="space-y-1.5 text-sm text-muted-foreground">
-        {items.map((i) => <li key={i}>• {i}</li>)}
-      </ul>
-    </div>
-  )
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 function IconButton({ children, label }: { children: React.ReactNode; label: string }) {
   return (
@@ -109,25 +35,24 @@ function IconButton({ children, label }: { children: React.ReactNode; label: str
   )
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function TooltipPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      {/* Overview */}
-      <div className="space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">Tooltip</h1>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Dicas contextuais transitórias exibidas ao passar o mouse ou focar um elemento. Base Radix
-          (acessível); superfície clara consistente com Popover/Dropdown (<code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-popover</code>,
-          borda discreta, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">shadow-dropdown</code>),
-          delay padrão de 200&nbsp;ms.
-        </p>
-      </div>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Tooltip"
+        description={
+          <>
+            Dicas contextuais transitórias exibidas ao passar o mouse ou focar um elemento. Base Radix
+            (acessível); superfície clara consistente com Popover/Dropdown (<code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-popover</code>,
+            borda discreta, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">shadow-dropdown</code>),
+            delay padrão de 200&nbsp;ms.
+          </>
+        }
+      />
 
       {/* Padrão */}
       <Section title="Tooltip padrão" description="Um rótulo curto no hover/focus. Use SimpleTooltip ou compor Tooltip diretamente.">
-        <Demo>
+        <Demo center>
           <SimpleTooltip label="Editar cliente">
             <Button variant="outline">Passe o mouse</Button>
           </SimpleTooltip>
@@ -139,7 +64,7 @@ export default function TooltipPage() {
 
       {/* Com ícone */}
       <Section title="Tooltip com ícone" description="Ícone antes do texto para reforçar a intenção.">
-        <Demo>
+        <Demo center>
           <SimpleTooltip label="Informação verificada" icon={<Info className="size-3.5 text-primary" />}>
             <Button variant="outline" size="icon-sm" aria-label="Info"><Info /></Button>
           </SimpleTooltip>
@@ -151,7 +76,7 @@ export default function TooltipPage() {
 
       {/* Com atalho */}
       <Section title="Tooltip com atalho" description="Exibe o atalho de teclado ao lado do rótulo.">
-        <Demo>
+        <Demo center>
           <SimpleTooltip label="Novo lead" shortcut="N L">
             <Button variant="outline" size="icon-sm" aria-label="Novo lead"><Pencil /></Button>
           </SimpleTooltip>
@@ -166,7 +91,7 @@ export default function TooltipPage() {
 
       {/* Rico */}
       <Section title="Tooltip rico" description="Título + descrição para explicar métricas ou conceitos.">
-        <Demo>
+        <Demo center>
           <RichTooltip
             title="MRR"
             description="Receita recorrente mensal — soma das assinaturas ativas normalizada por mês."
@@ -189,7 +114,7 @@ export default function TooltipPage() {
         title="Tooltip com ações"
         description="Título, descrição e ações. Atenção: ações no tooltip são alcançáveis apenas pelo mouse — para ações críticas por teclado, use Popover/HoverCard."
       >
-        <Demo>
+        <Demo center>
           <RichTooltip
             title="Halvorson Inc"
             description="Cliente Gold · Sara Ann · MRR R$ 12.400"
@@ -208,7 +133,7 @@ export default function TooltipPage() {
 
       {/* Posicionamentos */}
       <Section title="Posicionamentos" description="side: top, right, bottom, left.">
-        <Demo className="justify-center gap-3">
+        <Demo center className="justify-center gap-3">
           {(["top", "right", "bottom", "left"] as const).map((side) => (
             <SimpleTooltip key={side} label={`side="${side}"`} side={side}>
               <Button variant="outline" className="capitalize">{side}</Button>
@@ -219,7 +144,7 @@ export default function TooltipPage() {
 
       {/* Alinhamentos */}
       <Section title="Alinhamentos" description="align: start, center, end (relativo ao gatilho).">
-        <Demo className="gap-3">
+        <Demo center className="gap-3">
           {(["start", "center", "end"] as const).map((align) => (
             <SimpleTooltip key={align} label={`align="${align}"`} side="bottom" align={align}>
               <Button variant="outline" className="w-40 capitalize">{align}</Button>
@@ -230,7 +155,7 @@ export default function TooltipPage() {
 
       {/* Delay */}
       <Section title="Delay" description="delayDuration controla o tempo até abrir (ms). Passe o mouse para sentir a diferença.">
-        <Demo className="gap-3">
+        <Demo center className="gap-3">
           <SimpleTooltip label="Abre imediatamente" delayDuration={0}>
             <Button variant="outline">0 ms</Button>
           </SimpleTooltip>
@@ -245,7 +170,7 @@ export default function TooltipPage() {
 
       {/* Estados */}
       <Section title="Estados" description="default (ativo) e disabled (sem tooltip). Para gatilhos desabilitados, envolva-os em um <span> para preservar os eventos de hover.">
-        <Demo className="gap-3">
+        <Demo center className="gap-3">
           <SimpleTooltip label="Tooltip ativo">
             <Button variant="outline">Default</Button>
           </SimpleTooltip>
@@ -286,7 +211,7 @@ export default function TooltipPage() {
 
       {/* Real CRM */}
       <Section title="Exemplos reais no CRM" description="Barra de ações da tabela, métricas e conteúdo truncado.">
-        <Demo className="flex-col items-stretch gap-5">
+        <Demo center className="flex-col items-stretch gap-5">
           <div>
             <p className="mb-2 text-xs font-medium text-muted-foreground">Ações da linha (ícones + atalho)</p>
             <div className="flex items-center gap-1 rounded-md border border-border p-1 w-fit">
@@ -321,15 +246,16 @@ export default function TooltipPage() {
       </Section>
 
       {/* Accessibility */}
-      <Section title="Acessibilidade & teclado">
-        <ul className="space-y-1.5 text-sm text-muted-foreground">
-          <li>• Abre no <strong className="text-foreground">hover</strong> e no <strong className="text-foreground">foco por teclado</strong> (Tab até o gatilho).</li>
-          <li>• Fecha com <kbd className="rounded border border-border bg-muted px-1 text-xs">Esc</kbd>, ao sair o foco ou o ponteiro.</li>
-          <li>• O gatilho deve ter rótulo acessível (texto ou <code className="font-mono text-xs">aria-label</code> em icon buttons).</li>
-          <li>• Tooltips não devem conter conteúdo essencial nem controles críticos — não são alcançáveis por teclado. Use <strong className="text-foreground">Popover/HoverCard</strong> para ações.</li>
-          <li>• Gatilhos desabilitados não emitem hover — envolva em <code className="font-mono text-xs">&lt;span&gt;</code> para exibir o tooltip.</li>
-        </ul>
-      </Section>
+      <AccessibilitySection
+        title="Acessibilidade & teclado"
+        items={[
+          <>Abre no <strong className="text-foreground">hover</strong> e no <strong className="text-foreground">foco por teclado</strong> (Tab até o gatilho).</>,
+          <>Fecha com <kbd className="rounded border border-border bg-muted px-1 text-xs">Esc</kbd>, ao sair o foco ou o ponteiro.</>,
+          <>O gatilho deve ter rótulo acessível (texto ou <code className="font-mono text-xs">aria-label</code> em icon buttons).</>,
+          <>Tooltips não devem conter conteúdo essencial nem controles críticos — não são alcançáveis por teclado. Use <strong className="text-foreground">Popover/HoverCard</strong> para ações.</>,
+          <>Gatilhos desabilitados não emitem hover — envolva em <code className="font-mono text-xs">&lt;span&gt;</code> para exibir o tooltip.</>,
+        ]}
+      />
 
       {/* Code */}
       <Section title="Código">
@@ -354,54 +280,40 @@ export default function TooltipPage() {
       </Section>
 
       {/* API */}
-      <Section title="API / Props">
-        <div className="space-y-4">
-          <ApiTable
-            rows={[
-              { prop: "SimpleTooltip.label", type: "ReactNode", desc: "Texto do tooltip." },
-              { prop: "icon / shortcut", type: "ReactNode / string", desc: "Ícone e atalho opcionais." },
-              { prop: "side", type: '"top"|"right"|"bottom"|"left"', def: '"top"', desc: "Posição relativa ao gatilho." },
-              { prop: "align", type: '"start"|"center"|"end"', def: '"center"', desc: "Alinhamento no eixo." },
-              { prop: "delayDuration", type: "number", def: "200", desc: "Atraso até abrir (ms)." },
-              { prop: "disabled", type: "boolean", def: "false", desc: "Renderiza só o gatilho." },
-            ]}
-          />
-          <ApiTable
-            rows={[
-              { prop: "RichTooltip.title", type: "ReactNode", desc: "Título em destaque." },
-              { prop: "description", type: "ReactNode", desc: "Texto de apoio (multi-linha)." },
-              { prop: "actions", type: "ReactNode", desc: "Ações (apenas mouse — ver acessibilidade)." },
-              { prop: "TooltipContent.sideOffset", type: "number", def: "6", desc: "Distância do gatilho." },
-            ]}
-          />
-        </div>
-      </Section>
+      <ApiSection
+        groups={[
+          [
+            { prop: "SimpleTooltip.label", type: "ReactNode", description: "Texto do tooltip." },
+            { prop: "icon / shortcut", type: "ReactNode / string", description: "Ícone e atalho opcionais." },
+            { prop: "side", type: '"top"|"right"|"bottom"|"left"', default: '"top"', description: "Posição relativa ao gatilho." },
+            { prop: "align", type: '"start"|"center"|"end"', default: '"center"', description: "Alinhamento no eixo." },
+            { prop: "delayDuration", type: "number", default: "200", description: "Atraso até abrir (ms)." },
+            { prop: "disabled", type: "boolean", default: "false", description: "Renderiza só o gatilho." },
+          ],
+          [
+            { prop: "RichTooltip.title", type: "ReactNode", description: "Título em destaque." },
+            { prop: "description", type: "ReactNode", description: "Texto de apoio (multi-linha)." },
+            { prop: "actions", type: "ReactNode", description: "Ações (apenas mouse — ver acessibilidade)." },
+            { prop: "TooltipContent.sideOffset", type: "number", default: "6", description: "Distância do gatilho." },
+          ],
+        ]}
+      />
 
       {/* Do / Don't */}
-      <Section title="Boas práticas">
-        <div className="grid gap-4 md:grid-cols-2">
-          <GuidelineCard
-            tone="do"
-            title="Do"
-            items={[
-              "Use para rótulos de icon buttons e dicas curtas.",
-              "Inclua o atalho de teclado quando existir.",
-              "Dê rótulo acessível ao gatilho (aria-label).",
-              "Use RichTooltip para explicar métricas/conceitos.",
-            ]}
-          />
-          <GuidelineCard
-            tone="dont"
-            title="Don't"
-            items={[
-              "Não coloque informação essencial só no tooltip.",
-              "Não use ações críticas por teclado — prefira Popover.",
-              "Não escreva textos longos; seja conciso.",
-              "Não dispare tooltip em elementos não interativos sem foco.",
-            ]}
-          />
-        </div>
-      </Section>
-    </div>
+      <GuidelinesSection
+        dos={[
+          "Use para rótulos de icon buttons e dicas curtas.",
+          "Inclua o atalho de teclado quando existir.",
+          "Dê rótulo acessível ao gatilho (aria-label).",
+          "Use RichTooltip para explicar métricas/conceitos.",
+        ]}
+        donts={[
+          "Não coloque informação essencial só no tooltip.",
+          "Não use ações críticas por teclado — prefira Popover.",
+          "Não escreva textos longos; seja conciso.",
+          "Não dispare tooltip em elementos não interativos sem foco.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

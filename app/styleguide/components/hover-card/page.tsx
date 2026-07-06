@@ -5,17 +5,14 @@ import {
   ArrowUpRight,
   Building2,
   Calendar,
-  Check,
   Eye,
   Globe,
   Mail,
   MapPin,
   Phone,
   TrendingUp,
-  X,
 } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   HoverCard,
@@ -27,132 +24,20 @@ import {
   CompanyHoverCard,
   LeadHoverCard,
 } from "@/components/hover-card"
+import {
+  AccessibilitySection,
+  ApiTable,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+  type ApiRow,
+} from "@/app/styleguide/_components"
 
-/* ---------- page-local presentation helpers (same as other showcases) ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className={"rounded-xl border bg-card p-6 " + (className ?? "")}>
-      {children}
-    </div>
-  )
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      <code className="font-mono text-foreground">{children}</code>
-    </pre>
-  )
-}
-
-function ApiTable({
-  rows,
-  caption,
-}: {
-  rows: Array<[string, string, string, string]>
-  caption?: string
-}) {
-  return (
-    <div className="overflow-x-auto rounded-lg border">
-      <table className="w-full text-left text-sm">
-        <thead className="border-b bg-muted/50 text-xs text-muted-foreground">
-          <tr>
-            <th className="px-4 py-2 font-medium">Prop</th>
-            <th className="px-4 py-2 font-medium">Tipo</th>
-            <th className="px-4 py-2 font-medium">Padrão</th>
-            <th className="px-4 py-2 font-medium">Descrição</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {rows.map(([prop, type, def, desc]) => (
-            <tr key={prop} className="align-top">
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-foreground">{prop}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{type}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{def}</code>
-              </td>
-              <td className="px-4 py-2 text-muted-foreground">{desc}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {caption && <p className="px-4 py-2 text-xs text-muted-foreground">{caption}</p>}
-    </div>
-  )
-}
-
-function GuidelineCard({
-  tone,
-  title,
-  items,
-}: {
-  tone: "do" | "dont"
-  title: string
-  items: string[]
-}) {
-  const isDo = tone === "do"
-  return (
-    <div className="rounded-xl border bg-card p-5">
-      <div className="mb-3 flex items-center gap-2">
-        <span
-          className={
-            "flex size-6 items-center justify-center rounded-full " +
-            (isDo ? "bg-success/15 text-success" : "bg-destructive/10 text-destructive")
-          }
-        >
-          {isDo ? <Check className="size-3.5" /> : <X className="size-3.5" />}
-        </span>
-        <h3 className="text-sm font-semibold">{title}</h3>
-      </div>
-      <ul className="space-y-2 text-sm text-muted-foreground">
-        {items.map((item, i) => (
-          <li key={i} className="flex gap-2">
-            <span
-              className={
-                "mt-1.5 size-1 shrink-0 rounded-full " +
-                (isDo ? "bg-success" : "bg-destructive")
-              }
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
+/* ---------- page-local presentation helpers ---------- */
 
 /** Inline link-style trigger, matching the DataTable's CellLink. */
 function TriggerLink({ children }: { children: React.ReactNode }) {
@@ -246,24 +131,24 @@ function LeadExample({ children }: { children: React.ReactNode }) {
  * Docs data
  * -----------------------------------------------------------------------------------------------*/
 
-const PRIMITIVE_PROPS: Array<[string, string, string, string]> = [
-  ["openDelay", "number", "200", "Atraso (ms) para abrir ao passar o mouse."],
-  ["closeDelay", "number", "150", "Atraso (ms) para fechar ao sair."],
-  ["align", `"start" | "center" | "end"`, `"center"`, "Alinhamento do conteúdo em relação ao trigger."],
-  ["sideOffset", "number", "8", "Distância (px) entre trigger e conteúdo."],
-  ["...props", "Radix HoverCard.*", "—", "Todas as props dos primitivos Radix HoverCard."],
+const PRIMITIVE_PROPS: ApiRow[] = [
+  { prop: "openDelay", type: "number", default: "200", description: "Atraso (ms) para abrir ao passar o mouse." },
+  { prop: "closeDelay", type: "number", default: "150", description: "Atraso (ms) para fechar ao sair." },
+  { prop: "align", type: `"start" | "center" | "end"`, default: `"center"`, description: "Alinhamento do conteúdo em relação ao trigger." },
+  { prop: "sideOffset", type: "number", default: "8", description: "Distância (px) entre trigger e conteúdo." },
+  { prop: "...props", type: "Radix HoverCard.*", default: "—", description: "Todas as props dos primitivos Radix HoverCard." },
 ]
 
-const PRESET_PROPS: Array<[string, string, string, string]> = [
-  ["children", "ReactNode", "—", "O trigger — um único elemento focável (renderizado via asChild)."],
-  ["name", "string", "—", "Nome exibido no cabeçalho (obrigatório)."],
-  ["avatarSrc", "string", "—", "URL do avatar; usa iniciais como fallback."],
-  ["fallback", "string", "iniciais", "Iniciais do avatar; derivadas de name se omitido."],
-  ["status / stage", "{ label; variant }", "—", "Badge ao lado do nome (papel, tier, estágio)."],
-  ["meta", "HoverMeta[]", "—", "Linhas com ícone + texto (e-mail, telefone, local…)."],
-  ["stats", "HoverStat[]", "—", "Grade de métricas (Company). Até 3 por linha."],
-  ["actions", "HoverAction[]", "—", "Botões de rodapé (href vira âncora)."],
-  ["side / align", "posicionamento", `align "start"`, "Lado e alinhamento do conteúdo."],
+const PRESET_PROPS: ApiRow[] = [
+  { prop: "children", type: "ReactNode", default: "—", description: "O trigger — um único elemento focável (renderizado via asChild)." },
+  { prop: "name", type: "string", default: "—", description: "Nome exibido no cabeçalho (obrigatório)." },
+  { prop: "avatarSrc", type: "string", default: "—", description: "URL do avatar; usa iniciais como fallback." },
+  { prop: "fallback", type: "string", default: "iniciais", description: "Iniciais do avatar; derivadas de name se omitido." },
+  { prop: "status / stage", type: "{ label; variant }", default: "—", description: "Badge ao lado do nome (papel, tier, estágio)." },
+  { prop: "meta", type: "HoverMeta[]", default: "—", description: "Linhas com ícone + texto (e-mail, telefone, local…)." },
+  { prop: "stats", type: "HoverStat[]", default: "—", description: "Grade de métricas (Company). Até 3 por linha." },
+  { prop: "actions", type: "HoverAction[]", default: "—", description: "Botões de rodapé (href vira âncora)." },
+  { prop: "side / align", type: "posicionamento", default: `align "start"`, description: "Lado e alinhamento do conteúdo." },
 ]
 
 /* -------------------------------------------------------------------------------------------------
@@ -272,19 +157,19 @@ const PRESET_PROPS: Array<[string, string, string, string]> = [
 
 export default function HoverCardPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      {/* Header */}
-      <header className="space-y-3">
-        <Badge variant="secondary">Core · Overlay</Badge>
-        <h1 className="text-4xl font-bold tracking-tight">Hover Card</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Prévia rica que aparece ao passar o mouse (ou focar pelo teclado) sobre um
-          gatilho — um nome, um avatar, uma célula de tabela. Sobre o primitivo Radix{" "}
-          <code className="font-mono text-sm">HoverCard</code>, com presets de CRM para{" "}
-          <strong>pessoa</strong>, <strong>empresa</strong> e <strong>lead</strong>,
-          todos derivados dos tokens do design system.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Hover Card"
+        description={
+          <>
+            Prévia rica que aparece ao passar o mouse (ou focar pelo teclado) sobre um
+            gatilho — um nome, um avatar, uma célula de tabela. Sobre o primitivo Radix{" "}
+            <code className="font-mono text-sm">HoverCard</code>, com presets de CRM para{" "}
+            <strong>pessoa</strong>, <strong>empresa</strong> e <strong>lead</strong>,
+            todos derivados dos tokens do design system.
+          </>
+        }
+      />
 
       {/* Presets */}
       <Section
@@ -496,22 +381,9 @@ export default function HoverCardPage() {
       </Section>
 
       {/* Light / Dark */}
-      <Section
-        title="Light / Dark"
-        description="A superfície usa os tokens popover + ring, com pares -foreground, garantindo contraste nos dois temas. Painel direito forçado em dark."
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="flex justify-center rounded-xl border bg-card p-8">
-            <StaticPersonCard />
-          </div>
-          <div className="dark flex justify-center rounded-xl border border-border bg-card p-8 text-card-foreground">
-            <StaticPersonCard />
-          </div>
-        </div>
-        <p className="text-xs text-muted-foreground">
-          Renderização estática do conteúdo para comparar os temas lado a lado.
-        </p>
-      </Section>
+      <DarkModeSection description="A superfície usa os tokens popover + ring, com pares -foreground, garantindo contraste nos dois temas.">
+        <StaticPersonCard />
+      </DarkModeSection>
 
       {/* Code */}
       <Section title="Código" description="Do primitivo ao preset completo.">
@@ -568,67 +440,55 @@ import { Mail, Phone, Eye } from "lucide-react"
             <h3 className="text-sm font-semibold">
               PersonHoverCard · CompanyHoverCard · LeadHoverCard
             </h3>
-            <ApiTable
-              rows={PRESET_PROPS}
-              caption="Os três presets compartilham trigger, posicionamento e o formato de meta/actions; cada um adiciona seus campos (Company: stats/labels; Lead: value/owner/stage)."
-            />
+            <ApiTable rows={PRESET_PROPS} />
+            <p className="text-xs text-muted-foreground">
+              Os três presets compartilham trigger, posicionamento e o formato de meta/actions; cada um adiciona seus campos (Company: stats/labels; Lead: value/owner/stage).
+            </p>
           </div>
         </div>
       </Section>
 
       {/* Guidelines */}
-      <Section title="Boas práticas" description="Diretrizes de uso.">
-        <div className="grid gap-4 md:grid-cols-2">
-          <GuidelineCard
-            tone="do"
-            title="Faça"
-            items={[
-              "Use para prévias complementares — informação útil, mas não essencial.",
-              "Prefira gatilhos que já convidam interação (nomes-link, avatares).",
-              "Mantenha o conteúdo enxuto: cabeçalho, poucos metadados e 1–2 ações.",
-              "Use delays curtos em tabelas densas e mais longos em textos corridos.",
-            ]}
-          />
-          <GuidelineCard
-            tone="dont"
-            title="Evite"
-            items={[
-              "Colocar conteúdo essencial só no hover — não existe em touch/mobile.",
-              "Usar como menu de ações de clique; para isso use Dropdown Menu ou Popover.",
-              "Gatilhos não focáveis (texto puro): quebram o acesso por teclado.",
-              "Excesso de informação — vira um segundo modal e perde a leveza.",
-            ]}
-          />
-        </div>
-      </Section>
+      <GuidelinesSection
+        dos={[
+          "Use para prévias complementares — informação útil, mas não essencial.",
+          "Prefira gatilhos que já convidam interação (nomes-link, avatares).",
+          "Mantenha o conteúdo enxuto: cabeçalho, poucos metadados e 1–2 ações.",
+          "Use delays curtos em tabelas densas e mais longos em textos corridos.",
+        ]}
+        donts={[
+          "Colocar conteúdo essencial só no hover — não existe em touch/mobile.",
+          "Usar como menu de ações de clique; para isso use Dropdown Menu ou Popover.",
+          "Gatilhos não focáveis (texto puro): quebram o acesso por teclado.",
+          "Excesso de informação — vira um segundo modal e perde a leveza.",
+        ]}
+      />
 
       {/* Accessibility */}
-      <Section title="Acessibilidade" description="Garantias do primitivo Radix.">
-        <div className="rounded-lg border bg-card p-5">
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              <span className="font-medium text-foreground">Mouse e teclado:</span>{" "}
-              abre no hover e também no <code className="font-mono text-xs">focus</code> do
-              gatilho (Tab), fechando no blur ou <code className="font-mono text-xs">Esc</code>.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Somente complementar:</span>{" "}
-              o conteúdo é ignorado por leitores de tela por padrão — nunca coloque
-              informação crítica apenas aqui.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Gatilho focável:</span>{" "}
-              use um <code className="font-mono text-xs">button</code>/<code className="font-mono text-xs">a</code>{" "}
-              (via <code className="font-mono text-xs">asChild</code>) para preservar a navegação por teclado.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Sem foco preso:</span>{" "}
-              diferente de um dialog, o hover card não captura o foco — é uma prévia, não um fluxo.
-            </li>
-          </ul>
-        </div>
-      </Section>
-    </div>
+      <AccessibilitySection
+        items={[
+          <>
+            <span className="font-medium text-foreground">Mouse e teclado:</span>{" "}
+            abre no hover e também no <code className="font-mono text-xs">focus</code> do
+            gatilho (Tab), fechando no blur ou <code className="font-mono text-xs">Esc</code>.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Somente complementar:</span>{" "}
+            o conteúdo é ignorado por leitores de tela por padrão — nunca coloque
+            informação crítica apenas aqui.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Gatilho focável:</span>{" "}
+            use um <code className="font-mono text-xs">button</code>/<code className="font-mono text-xs">a</code>{" "}
+            (via <code className="font-mono text-xs">asChild</code>) para preservar a navegação por teclado.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Sem foco preso:</span>{" "}
+            diferente de um dialog, o hover card não captura o foco — é uma prévia, não um fluxo.
+          </>,
+        ]}
+      />
+    </StyleguidePage>
   )
 }
 

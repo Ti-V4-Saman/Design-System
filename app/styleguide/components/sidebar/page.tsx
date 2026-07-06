@@ -33,40 +33,15 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/components/sidebar"
-
-function Section({ title, description, children }: { title: string; description?: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <section className="space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-lg font-semibold text-foreground">{title}</h2>
-        {description ? <p className="max-w-2xl text-sm text-muted-foreground">{description}</p> : null}
-      </div>
-      {children}
-    </section>
-  )
-}
-function CodeBlock({ children }: { children: string }) {
-  return <pre className="overflow-x-auto rounded-lg bg-muted p-4 font-mono text-xs leading-relaxed text-foreground">{children}</pre>
-}
-function ApiTable({ rows }: { rows: Array<{ prop: string; type: string; def?: string; desc: string }> }) {
-  return (
-    <div className="overflow-x-auto rounded-lg border border-border">
-      <table className="w-full text-left text-sm">
-        <thead className="bg-muted/50 text-muted-foreground"><tr><th className="px-4 py-2 font-medium">Prop</th><th className="px-4 py-2 font-medium">Tipo</th><th className="px-4 py-2 font-medium">Default</th><th className="px-4 py-2 font-medium">Descrição</th></tr></thead>
-        <tbody className="divide-y divide-border">{rows.map((r) => (<tr key={r.prop}><td className="px-4 py-2 font-mono text-xs text-foreground">{r.prop}</td><td className="px-4 py-2 font-mono text-xs text-muted-foreground">{r.type}</td><td className="px-4 py-2 font-mono text-xs text-muted-foreground">{r.def ?? "—"}</td><td className="px-4 py-2 text-muted-foreground">{r.desc}</td></tr>))}</tbody>
-      </table>
-    </div>
-  )
-}
-function GuidelineCard({ tone, title, items }: { tone: "do" | "dont"; title: string; items: string[] }) {
-  const isDo = tone === "do"
-  return (
-    <div className={cn("rounded-lg border p-4", isDo ? "border-success/30 bg-success/5" : "border-destructive/30 bg-destructive/5")}>
-      <p className={cn("mb-2 text-sm font-semibold", isDo ? "text-success" : "text-destructive")}>{title}</p>
-      <ul className="space-y-1.5 text-sm text-muted-foreground">{items.map((i) => <li key={i}>• {i}</li>)}</ul>
-    </div>
-  )
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 const NAV = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -172,14 +147,16 @@ function SidebarDemo({ defaultOpen = true, collapsible = "icon" as const }: { de
 
 export default function SidebarPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">Sidebar</h1>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Navegação lateral do app CRM — colapsável para rail de ícones, com grupos, submenus,
-          badges e overlay no mobile. Usa os tokens <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">--sidebar</code>.
-        </p>
-      </div>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Sidebar"
+        description={
+          <>
+            Navegação lateral do app CRM — colapsável para rail de ícones, com grupos, submenus,
+            badges e overlay no mobile. Usa os tokens <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">--sidebar</code>.
+          </>
+        }
+      />
 
       <Section title="App shell interativo" description="Clique no gatilho (ou ⌘B) para colapsar/expandir. Itens ativos, badges e submenu.">
         <SidebarDemo />
@@ -207,14 +184,15 @@ export default function SidebarPage() {
         </div>
       </Section>
 
-      <Section title="Acessibilidade & teclado">
-        <ul className="space-y-1.5 text-sm text-muted-foreground">
-          <li>• <kbd className="rounded border border-border bg-muted px-1 text-xs">⌘B</kbd> / <kbd className="rounded border border-border bg-muted px-1 text-xs">Ctrl B</kbd> alterna o sidebar.</li>
-          <li>• Itens são focáveis por teclado com anel de foco (<code className="font-mono text-xs">ring-sidebar-ring</code>).</li>
-          <li>• Quando colapsado, os rótulos viram tooltip — o texto acessível é preservado.</li>
-          <li>• O item ativo usa <code className="font-mono text-xs">data-active</code> (cor + peso), não só cor.</li>
-        </ul>
-      </Section>
+      <AccessibilitySection
+        title="Acessibilidade & teclado"
+        items={[
+          <><kbd className="rounded border border-border bg-muted px-1 text-xs">⌘B</kbd> / <kbd className="rounded border border-border bg-muted px-1 text-xs">Ctrl B</kbd> alterna o sidebar.</>,
+          <>Itens são focáveis por teclado com anel de foco (<code className="font-mono text-xs">ring-sidebar-ring</code>).</>,
+          <>Quando colapsado, os rótulos viram tooltip — o texto acessível é preservado.</>,
+          <>O item ativo usa <code className="font-mono text-xs">data-active</code> (cor + peso), não só cor.</>,
+        ]}
+      />
 
       <Section title="Código">
         <CodeBlock>{`import { SidebarProvider, Sidebar, SidebarInset, SidebarContent, SidebarMenu,
@@ -239,39 +217,37 @@ export default function SidebarPage() {
 </SidebarProvider>`}</CodeBlock>
       </Section>
 
-      <Section title="API / Props">
-        <div className="space-y-4">
-          <ApiTable rows={[
-            { prop: "SidebarProvider", type: "defaultOpen, open, onOpenChange", def: "defaultOpen=true", desc: "Estado + atalho ⌘B + detecção mobile." },
-            { prop: "Sidebar.collapsible", type: '"icon" | "offcanvas" | "none"', def: '"icon"', desc: "Modo de colapso." },
-            { prop: "SidebarInset", type: "container", desc: "Área de conteúdo ao lado do rail." },
-            { prop: "SidebarTrigger / SidebarRail", type: "—", desc: "Alternam o estado (botão / trilho na borda)." },
-          ]} />
-          <ApiTable rows={[
-            { prop: "SidebarMenuButton", type: "isActive, tooltip, asChild", desc: "Item de navegação; tooltip aparece quando colapsado." },
-            { prop: "SidebarMenuBadge", type: "ReactNode", desc: "Contador/rótulo à direita (some no icon rail)." },
-            { prop: "SidebarMenuSub / SubButton", type: "isActive", desc: "Submenu aninhado." },
-            { prop: "SidebarGroup / GroupLabel", type: "container", desc: "Seções rotuladas." },
-          ]} />
-        </div>
-      </Section>
+      <ApiSection
+        groups={[
+          [
+            { prop: "SidebarProvider", type: "defaultOpen, open, onOpenChange", default: "defaultOpen=true", description: "Estado + atalho ⌘B + detecção mobile." },
+            { prop: "Sidebar.collapsible", type: '"icon" | "offcanvas" | "none"', default: '"icon"', description: "Modo de colapso." },
+            { prop: "SidebarInset", type: "container", description: "Área de conteúdo ao lado do rail." },
+            { prop: "SidebarTrigger / SidebarRail", type: "—", description: "Alternam o estado (botão / trilho na borda)." },
+          ],
+          [
+            { prop: "SidebarMenuButton", type: "isActive, tooltip, asChild", description: "Item de navegação; tooltip aparece quando colapsado." },
+            { prop: "SidebarMenuBadge", type: "ReactNode", description: "Contador/rótulo à direita (some no icon rail)." },
+            { prop: "SidebarMenuSub / SubButton", type: "isActive", description: "Submenu aninhado." },
+            { prop: "SidebarGroup / GroupLabel", type: "container", description: "Seções rotuladas." },
+          ],
+        ]}
+      />
 
-      <Section title="Boas práticas">
-        <div className="grid gap-4 md:grid-cols-2">
-          <GuidelineCard tone="do" title="Do" items={[
-            "Agrupe itens por contexto com GroupLabel.",
-            "Use ícones consistentes + rótulo em cada item.",
-            "Forneça tooltip para o modo colapsado.",
-            "Destaque o item ativo com data-active.",
-          ]} />
-          <GuidelineCard tone="dont" title="Don't" items={[
-            "Não aninhe mais de 2 níveis de submenu.",
-            "Não use ícones sem rótulo/tooltip.",
-            "Não coloque ações destrutivas soltas no topo.",
-            "Não transmita o item ativo só pela cor.",
-          ]} />
-        </div>
-      </Section>
-    </div>
+      <GuidelinesSection
+        dos={[
+          "Agrupe itens por contexto com GroupLabel.",
+          "Use ícones consistentes + rótulo em cada item.",
+          "Forneça tooltip para o modo colapsado.",
+          "Destaque o item ativo com data-active.",
+        ]}
+        donts={[
+          "Não aninhe mais de 2 níveis de submenu.",
+          "Não use ícones sem rótulo/tooltip.",
+          "Não coloque ações destrutivas soltas no topo.",
+          "Não transmita o item ativo só pela cor.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

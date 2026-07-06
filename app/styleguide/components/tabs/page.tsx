@@ -12,101 +12,24 @@ import {
   User,
 } from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  DemoGrid,
+  GuidelinesSection,
+  Kbd,
+  ResponsiveSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
-// ─── Page helpers (padrão do styleguide CRM V4) ──────────────────────────────
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-lg font-semibold text-foreground">{title}</h2>
-        {description ? (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        ) : null}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div className={cn("rounded-lg border border-border bg-card p-6", className)}>
-      {children}
-    </div>
-  )
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 font-mono text-xs leading-relaxed text-foreground">
-      {children}
-    </pre>
-  )
-}
-
-function ApiTable({
-  rows,
-}: {
-  rows: Array<{ prop: string; type: string; def?: string; desc: string }>
-}) {
-  return (
-    <div className="overflow-x-auto rounded-lg border border-border">
-      <table className="w-full text-left text-sm">
-        <thead className="bg-muted/50 text-muted-foreground">
-          <tr>
-            <th className="px-4 py-2 font-medium">Prop</th>
-            <th className="px-4 py-2 font-medium">Tipo</th>
-            <th className="px-4 py-2 font-medium">Default</th>
-            <th className="px-4 py-2 font-medium">Descrição</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border">
-          {rows.map((r) => (
-            <tr key={r.prop}>
-              <td className="px-4 py-2 font-mono text-xs text-foreground">{r.prop}</td>
-              <td className="px-4 py-2 font-mono text-xs text-muted-foreground">{r.type}</td>
-              <td className="px-4 py-2 font-mono text-xs text-muted-foreground">{r.def ?? "—"}</td>
-              <td className="px-4 py-2 text-muted-foreground">{r.desc}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-function GuidelineCard({ tone, title, items }: { tone: "do" | "dont"; title: string; items: string[] }) {
-  const isDo = tone === "do"
-  return (
-    <div
-      className={cn(
-        "rounded-lg border p-4",
-        isDo ? "border-success/30 bg-success/5" : "border-destructive/30 bg-destructive/5"
-      )}
-    >
-      <p className={cn("mb-2 text-sm font-semibold", isDo ? "text-success" : "text-destructive")}>
-        {title}
-      </p>
-      <ul className="space-y-1.5 text-sm text-muted-foreground">
-        {items.map((i) => (
-          <li key={i}>• {i}</li>
-        ))}
-      </ul>
-    </div>
-  )
-}
+// ─── Demo-specific helper ────────────────────────────────────────────────────
 
 function CountBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -120,24 +43,25 @@ function CountBadge({ children }: { children: React.ReactNode }) {
 
 export default function TabsPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      {/* Overview */}
-      <div className="space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">Tabs</h1>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Organizam conteúdo relacionado em seções alternáveis dentro do mesmo contexto — detalhe de
-          cliente, configurações, relatórios. Base Radix (acessível por teclado); visual 100% CRM V4
-          com variante <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">line</code>{" "}
-          em <span className="font-medium text-primary">emerald</span>.
-        </p>
-      </div>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Tabs"
+        description={
+          <>
+            Organizam conteúdo relacionado em seções alternáveis dentro do mesmo contexto — detalhe de
+            cliente, configurações, relatórios. Base Radix (acessível por teclado); visual 100% CRM V4
+            com variante <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">line</code>{" "}
+            em <span className="font-medium text-primary">emerald</span>.
+          </>
+        }
+      />
 
       {/* Variants */}
       <Section
         title="Variantes"
         description="default (segmentado, para troca de visão) e line (sublinhado, para navegação de página)."
       >
-        <div className="grid gap-4 md:grid-cols-2">
+        <DemoGrid cols={2}>
           <Demo>
             <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">default</p>
             <Tabs defaultValue="geral">
@@ -164,7 +88,7 @@ export default function TabsPage() {
               <TabsContent value="arq" className="pt-4 text-muted-foreground">Arquivos anexados.</TabsContent>
             </Tabs>
           </Demo>
-        </div>
+        </DemoGrid>
       </Section>
 
       {/* Sizes */}
@@ -275,34 +199,17 @@ export default function TabsPage() {
       </Section>
 
       {/* Dark mode */}
-      <Section title="Dark Mode" description="As mesmas abas nos dois temas — cores vêm dos tokens.">
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-lg border border-border bg-background p-6">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Light</p>
-            <Tabs defaultValue="a">
-              <TabsList variant="line">
-                <TabsTrigger value="a">Visão geral</TabsTrigger>
-                <TabsTrigger value="b">Atividades</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-          <div className="dark rounded-lg border border-border bg-background p-6">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Dark</p>
-            <Tabs defaultValue="a">
-              <TabsList variant="line">
-                <TabsTrigger value="a">Visão geral</TabsTrigger>
-                <TabsTrigger value="b">Atividades</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-        </div>
-      </Section>
+      <DarkModeSection description="As mesmas abas nos dois temas — cores vêm dos tokens.">
+        <Tabs defaultValue="a">
+          <TabsList variant="line">
+            <TabsTrigger value="a">Visão geral</TabsTrigger>
+            <TabsTrigger value="b">Atividades</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </DarkModeSection>
 
       {/* Responsive */}
-      <Section
-        title="Responsivo"
-        description="Em telas estreitas a lista de abas rola horizontalmente sem quebrar o layout."
-      >
+      <ResponsiveSection description="Em telas estreitas a lista de abas rola horizontalmente sem quebrar o layout.">
         <Demo>
           <div className="max-w-xs overflow-x-auto">
             <Tabs defaultValue="a">
@@ -315,17 +222,17 @@ export default function TabsPage() {
             </Tabs>
           </div>
         </Demo>
-      </Section>
+      </ResponsiveSection>
 
       {/* Accessibility */}
-      <Section title="Acessibilidade">
-        <ul className="space-y-1.5 text-sm text-muted-foreground">
-          <li>• Papéis ARIA <code className="font-mono text-xs">tablist</code> / <code className="font-mono text-xs">tab</code> / <code className="font-mono text-xs">tabpanel</code> via Radix.</li>
-          <li>• Navegação por teclado: <kbd className="rounded border border-border bg-muted px-1 text-xs">←</kbd> <kbd className="rounded border border-border bg-muted px-1 text-xs">→</kbd> entre abas, <kbd className="rounded border border-border bg-muted px-1 text-xs">Home</kbd>/<kbd className="rounded border border-border bg-muted px-1 text-xs">End</kbd> para extremos.</li>
-          <li>• Foco visível com ring; abas <code className="font-mono text-xs">disabled</code> são puladas.</li>
-          <li>• Cada aba é associada ao seu painel por <code className="font-mono text-xs">value</code>.</li>
-        </ul>
-      </Section>
+      <AccessibilitySection
+        items={[
+          <>Papéis ARIA <code className="font-mono text-xs">tablist</code> / <code className="font-mono text-xs">tab</code> / <code className="font-mono text-xs">tabpanel</code> via Radix.</>,
+          <>Navegação por teclado: <Kbd>←</Kbd> <Kbd>→</Kbd> entre abas, <Kbd>Home</Kbd>/<Kbd>End</Kbd> para extremos.</>,
+          <>Foco visível com ring; abas <code className="font-mono text-xs">disabled</code> são puladas.</>,
+          <>Cada aba é associada ao seu painel por <code className="font-mono text-xs">value</code>.</>,
+        ]}
+      />
 
       {/* Code */}
       <Section title="Código">
@@ -347,51 +254,37 @@ export default function TabsPage() {
       </Section>
 
       {/* API */}
-      <Section title="API / Props">
-        <div className="space-y-4">
-          <ApiTable
-            rows={[
-              { prop: "Tabs", type: "value, defaultValue, onValueChange", desc: "Raiz (Radix). Controlado ou não." },
-              { prop: "orientation", type: '"horizontal" | "vertical"', def: '"horizontal"', desc: "Direção das abas." },
-            ]}
-          />
-          <ApiTable
-            rows={[
-              { prop: "TabsList.variant", type: '"default" | "line"', def: '"default"', desc: "Segmentado ou sublinhado (emerald)." },
-              { prop: "TabsList.size", type: '"sm" | "md"', def: '"md"', desc: "Densidade das abas." },
-              { prop: "TabsTrigger.value", type: "string", desc: "Liga a aba ao seu TabsContent." },
-              { prop: "TabsTrigger.disabled", type: "boolean", def: "false", desc: "Desabilita e pula no teclado." },
-              { prop: "TabsContent.value", type: "string", desc: "Painel exibido quando a aba está ativa." },
-            ]}
-          />
-        </div>
-      </Section>
+      <ApiSection
+        groups={[
+          [
+            { prop: "Tabs", type: "value, defaultValue, onValueChange", description: "Raiz (Radix). Controlado ou não." },
+            { prop: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Direção das abas." },
+          ],
+          [
+            { prop: "TabsList.variant", type: '"default" | "line"', default: '"default"', description: "Segmentado ou sublinhado (emerald)." },
+            { prop: "TabsList.size", type: '"sm" | "md"', default: '"md"', description: "Densidade das abas." },
+            { prop: "TabsTrigger.value", type: "string", description: "Liga a aba ao seu TabsContent." },
+            { prop: "TabsTrigger.disabled", type: "boolean", default: "false", description: "Desabilita e pula no teclado." },
+            { prop: "TabsContent.value", type: "string", description: "Painel exibido quando a aba está ativa." },
+          ],
+        ]}
+      />
 
       {/* Best practices */}
-      <Section title="Boas práticas">
-        <div className="grid gap-4 md:grid-cols-2">
-          <GuidelineCard
-            tone="do"
-            title="Do"
-            items={[
-              "Use line para navegação de página; default para trocar visões.",
-              "Mantenha rótulos curtos e paralelos.",
-              "Mostre contagens com badge quando ajudar a priorizar.",
-              "Preserve o estado da aba ao voltar para a tela.",
-            ]}
-          />
-          <GuidelineCard
-            tone="dont"
-            title="Don't"
-            items={[
-              "Não use tabs para etapas sequenciais — use um stepper.",
-              "Não coloque muitas abas; considere um select acima de ~6.",
-              "Não esconda ações críticas atrás de abas.",
-              "Não misture variantes diferentes na mesma tela.",
-            ]}
-          />
-        </div>
-      </Section>
-    </div>
+      <GuidelinesSection
+        dos={[
+          "Use line para navegação de página; default para trocar visões.",
+          "Mantenha rótulos curtos e paralelos.",
+          "Mostre contagens com badge quando ajudar a priorizar.",
+          "Preserve o estado da aba ao voltar para a tela.",
+        ]}
+        donts={[
+          "Não use tabs para etapas sequenciais — use um stepper.",
+          "Não coloque muitas abas; considere um select acima de ~6.",
+          "Não esconda ações críticas atrás de abas.",
+          "Não misture variantes diferentes na mesma tela.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

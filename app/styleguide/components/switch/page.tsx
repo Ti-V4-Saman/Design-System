@@ -1,142 +1,32 @@
 "use client"
 
 import * as React from "react"
-import { AlertCircle, Bell, Check, Globe, Moon, ShieldCheck, Zap } from "lucide-react"
+import { Bell, Globe, Moon, ShieldCheck, Zap } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { SettingSwitch } from "@/components/switch"
+import {
+  ApiTable,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelineCard,
+  ResponsiveSection,
+  Section,
+  StyleguidePage,
+  type ApiRow,
+} from "@/app/styleguide/_components"
 
 /* ---------- page-local presentation helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className={"rounded-xl border bg-card p-6 " + (className ?? "")}>{children}</div>
-  )
-}
 
 function Row({ label, children }: { label?: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2">
       {label && <p className="text-xs font-medium text-muted-foreground">{label}</p>}
       <div className="flex flex-wrap items-center gap-6">{children}</div>
-    </div>
-  )
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      <code className="font-mono text-foreground">{children}</code>
-    </pre>
-  )
-}
-
-function ApiTable({
-  rows,
-  caption,
-}: {
-  rows: Array<[string, string, string, string]>
-  caption?: string
-}) {
-  return (
-    <div className="overflow-x-auto rounded-lg border">
-      <table className="w-full text-left text-sm">
-        <thead className="border-b bg-muted/50 text-xs text-muted-foreground">
-          <tr>
-            <th className="px-4 py-2 font-medium">Prop</th>
-            <th className="px-4 py-2 font-medium">Tipo</th>
-            <th className="px-4 py-2 font-medium">Padrão</th>
-            <th className="px-4 py-2 font-medium">Descrição</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {rows.map(([a, b, c, d]) => (
-            <tr key={a} className="align-top">
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-foreground">{a}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{b}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{c}</code>
-              </td>
-              <td className="px-4 py-2 text-muted-foreground">{d}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {caption && <p className="px-4 py-2 text-xs text-muted-foreground">{caption}</p>}
-    </div>
-  )
-}
-
-function GuidelineCard({
-  tone,
-  title,
-  items,
-}: {
-  tone: "do" | "dont"
-  title: string
-  items: string[]
-}) {
-  const isDo = tone === "do"
-  return (
-    <div className="rounded-xl border bg-card p-5">
-      <div className="mb-3 flex items-center gap-2">
-        <span
-          className={
-            "flex size-6 items-center justify-center rounded-full " +
-            (isDo ? "bg-success/15 text-success" : "bg-destructive/10 text-destructive")
-          }
-        >
-          {isDo ? <Check className="size-3.5" /> : <AlertCircle className="size-3.5" />}
-        </span>
-        <h3 className="text-sm font-semibold">{title}</h3>
-      </div>
-      <ul className="space-y-2 text-sm text-muted-foreground">
-        {items.map((item, i) => (
-          <li key={i} className="flex gap-2">
-            <span
-              className={
-                "mt-1.5 size-1 shrink-0 rounded-full " +
-                (isDo ? "bg-success" : "bg-destructive")
-              }
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
     </div>
   )
 }
@@ -157,42 +47,44 @@ function ControlledDemo() {
 
 /* ---------- docs data ---------- */
 
-const SWITCH_PROPS: Array<[string, string, string, string]> = [
-  ["checked", "boolean", "—", "Estado controlado (use com onCheckedChange)."],
-  ["defaultChecked", "boolean", "false", "Estado inicial não-controlado."],
-  ["onCheckedChange", "(checked: boolean) => void", "—", "Disparado ao alternar."],
-  ["size", `"sm" | "default" | "lg"`, `"default"`, "Tamanho do trilho e do botão."],
-  ["tone", `"primary" | "success"`, `"primary"`, "Cor do estado ligado (semântica)."],
-  ["disabled", "boolean", "false", "Desabilita o controle."],
-  ["...props", "Radix Switch.Root", "—", "id, name, value, required, aria-*, etc."],
+const SWITCH_PROPS: ApiRow[] = [
+  { prop: "checked", type: "boolean", default: "—", description: "Estado controlado (use com onCheckedChange)." },
+  { prop: "defaultChecked", type: "boolean", default: "false", description: "Estado inicial não-controlado." },
+  { prop: "onCheckedChange", type: "(checked: boolean) => void", default: "—", description: "Disparado ao alternar." },
+  { prop: "size", type: `"sm" | "default" | "lg"`, default: `"default"`, description: "Tamanho do trilho e do botão." },
+  { prop: "tone", type: `"primary" | "success"`, default: `"primary"`, description: "Cor do estado ligado (semântica)." },
+  { prop: "disabled", type: "boolean", default: "false", description: "Desabilita o controle." },
+  { prop: "...props", type: "Radix Switch.Root", default: "—", description: "id, name, value, required, aria-*, etc." },
 ]
 
-const SETTING_PROPS: Array<[string, string, string, string]> = [
-  ["label", "ReactNode", "—", "Nome do ajuste (rótulo clicável)."],
-  ["description", "ReactNode", "—", "Texto de apoio abaixo do rótulo."],
-  ["icon", "ReactNode", "—", "Ícone à esquerda (num quadro muted)."],
-  ["align", `"start" | "end"`, `"end"`, "Lado do switch (fim = direita)."],
-  ["...props", "SwitchProps", "—", "checked, onCheckedChange, size, tone, disabled…"],
+const SETTING_PROPS: ApiRow[] = [
+  { prop: "label", type: "ReactNode", default: "—", description: "Nome do ajuste (rótulo clicável)." },
+  { prop: "description", type: "ReactNode", default: "—", description: "Texto de apoio abaixo do rótulo." },
+  { prop: "icon", type: "ReactNode", default: "—", description: "Ícone à esquerda (num quadro muted)." },
+  { prop: "align", type: `"start" | "end"`, default: `"end"`, description: "Lado do switch (fim = direita)." },
+  { prop: "...props", type: "SwitchProps", default: "—", description: "checked, onCheckedChange, size, tone, disabled…" },
 ]
 
 /* ---------- page ---------- */
 
 export default function SwitchPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      {/* Header */}
-      <header className="space-y-3">
+    <StyleguidePage>
+      <ComponentHeader
+        title="Switch"
+        description={
+          <>
+            Alterna um estado binário que tem efeito imediato — ativar/desativar
+            notificações, integrações, feature flags. Sobre o primitivo Radix Switch,
+            com os mesmos tokens do Checkbox. Acompanha o{" "}
+            <code className="font-mono text-sm">SettingSwitch</code> para o padrão de
+            linha de ajuste. Para seleção que só vale ao enviar um formulário, use{" "}
+            <code className="font-mono text-sm">Checkbox</code>.
+          </>
+        }
+      >
         <Badge variant="secondary">Core · Formulários</Badge>
-        <h1 className="text-4xl font-bold tracking-tight">Switch</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Alterna um estado binário que tem efeito imediato — ativar/desativar
-          notificações, integrações, feature flags. Sobre o primitivo Radix Switch,
-          com os mesmos tokens do Checkbox. Acompanha o{" "}
-          <code className="font-mono text-sm">SettingSwitch</code> para o padrão de
-          linha de ajuste. Para seleção que só vale ao enviar um formulário, use{" "}
-          <code className="font-mono text-sm">Checkbox</code>.
-        </p>
-      </header>
+      </ComponentHeader>
 
       {/* Basic / states */}
       <Section
@@ -339,24 +231,15 @@ import { Bell } from "lucide-react"
       </Section>
 
       {/* Light / Dark */}
-      <Section
+      <DarkModeSection
         title="Light / Dark"
         description="Trilho (bg-input), estado ligado (primary/success) e botão (bg-background) usam tokens; contraste garantido nos dois temas."
       >
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border bg-card p-6">
-            <p className="mb-4 text-xs font-medium text-muted-foreground">Light</p>
-            <ThemePreview />
-          </div>
-          <div className="dark rounded-xl border border-border bg-card p-6 text-card-foreground">
-            <p className="mb-4 text-xs font-medium text-muted-foreground">Dark</p>
-            <ThemePreview />
-          </div>
-        </div>
-      </Section>
+        <ThemePreview />
+      </DarkModeSection>
 
       {/* Responsive */}
-      <Section
+      <ResponsiveSection
         title="Responsivo"
         description="O SettingSwitch usa flex com o texto flexível e o switch fixo à direita — em contêineres estreitos o texto quebra e o switch permanece alinhado."
       >
@@ -368,7 +251,7 @@ import { Bell } from "lucide-react"
             defaultChecked
           />
         </Demo>
-      </Section>
+      </ResponsiveSection>
 
       {/* Code */}
       <Section title="Código" description="Do básico ao controlado.">
@@ -463,7 +346,7 @@ import { Bell } from "lucide-react"
           </ul>
         </div>
       </Section>
-    </div>
+    </StyleguidePage>
   )
 }
 

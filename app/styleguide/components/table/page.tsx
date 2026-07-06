@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Plus, Download, Check, X } from "lucide-react"
+import { Plus, Download } from "lucide-react"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
@@ -16,122 +16,16 @@ import { CellDate } from "@/components/data-table/cells/cell-date"
 import { CellFinancial } from "@/components/data-table/cells/cell-financial"
 import { CellMulti } from "@/components/data-table/cells/cell-multi"
 import type { CRMColumnDef } from "@/components/data-table/types"
-
-/* -------------------------------------------------------------------------------------------------
- * Page-local presentation helpers (same conventions as the Button showcase)
- * -----------------------------------------------------------------------------------------------*/
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      <code className="font-mono text-foreground">{children}</code>
-    </pre>
-  )
-}
-
-function ApiTable({
-  caption,
-  rows,
-}: {
-  caption?: string
-  rows: Array<[string, string, string, string]>
-}) {
-  return (
-    <div className="overflow-x-auto rounded-lg border">
-      <table className="w-full text-left text-sm">
-        <thead className="border-b bg-muted/50 text-xs text-muted-foreground">
-          <tr>
-            <th className="px-4 py-2 font-medium">Prop</th>
-            <th className="px-4 py-2 font-medium">Tipo</th>
-            <th className="px-4 py-2 font-medium">Padrão</th>
-            <th className="px-4 py-2 font-medium">Descrição</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {rows.map(([prop, type, def, desc]) => (
-            <tr key={prop} className="align-top">
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-foreground">{prop}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{type}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{def}</code>
-              </td>
-              <td className="px-4 py-2 text-muted-foreground">{desc}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {caption && <p className="px-4 py-2 text-xs text-muted-foreground">{caption}</p>}
-    </div>
-  )
-}
-
-function GuidelineCard({
-  tone,
-  title,
-  items,
-}: {
-  tone: "do" | "dont"
-  title: string
-  items: string[]
-}) {
-  const isDo = tone === "do"
-  return (
-    <div className="rounded-xl border bg-card p-5">
-      <div className="mb-3 flex items-center gap-2">
-        <span
-          className={
-            "flex size-6 items-center justify-center rounded-full " +
-            (isDo
-              ? "bg-success/15 text-success"
-              : "bg-destructive/10 text-destructive")
-          }
-        >
-          {isDo ? <Check className="size-3.5" /> : <X className="size-3.5" />}
-        </span>
-        <h3 className="text-sm font-semibold">{title}</h3>
-      </div>
-      <ul className="space-y-2 text-sm text-muted-foreground">
-        {items.map((item, i) => (
-          <li key={i} className="flex gap-2">
-            <span
-              className={
-                "mt-1.5 size-1 shrink-0 rounded-full " +
-                (isDo ? "bg-success" : "bg-destructive")
-              }
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
+import {
+  AccessibilitySection,
+  ApiTable,
+  CodeBlock,
+  ComponentHeader,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+  type ApiRow,
+} from "@/app/styleguide/_components"
 
 type StatusVariant =
   | "primary"
@@ -365,34 +259,34 @@ function LoadingDemo() {
  * Props documentation
  * -----------------------------------------------------------------------------------------------*/
 
-const TABLE_PROPS: Array<[string, string, string, string]> = [
-  ["data", "TData[]", "—", "Linhas a renderizar."],
-  ["columns", "CRMColumnDef<TData>[]", "—", "Definição das colunas (ver tabela abaixo)."],
-  ["density", `"comfortable" | "compact"`, `"comfortable"`, "Altura das linhas. compact para listas densas."],
-  ["pagination", "boolean", "true", "Exibe o rodapé de paginação."],
-  ["pageSize", "number", "10", "Linhas por página inicial."],
-  ["selectable", "boolean", "false", "Coluna de checkbox para seleção por linha."],
-  ["searchable", "boolean", "false", "Campo de busca global na toolbar."],
-  ["searchPlaceholder", "string", `"Buscar..."`, "Placeholder do campo de busca."],
-  ["filterable", "boolean", "false", "Ativa filtros por coluna (colunas com filterable)."],
-  ["columnVisibility", "boolean", "false", "Botão de visibilidade de colunas na toolbar."],
-  ["loading", "boolean", "false", "Renderiza linhas de esqueleto."],
-  ["emptyMessage", "string", `"Nenhum resultado…"`, "Mensagem do estado vazio."],
-  ["rowBorderColor", "(row) => string | undefined", "—", "Borda esquerda colorida por linha (ex.: status)."],
-  ["onRowClick", "(row) => void", "—", "Torna a linha clicável (cursor + hover)."],
-  ["toolbarActions", "React.ReactNode", "—", "Controles extras à direita da toolbar (ex.: botão Adicionar)."],
+const TABLE_PROPS: ApiRow[] = [
+  { prop: "data", type: "TData[]", description: "Linhas a renderizar." },
+  { prop: "columns", type: "CRMColumnDef<TData>[]", description: "Definição das colunas (ver tabela abaixo)." },
+  { prop: "density", type: `"comfortable" | "compact"`, default: `"comfortable"`, description: "Altura das linhas. compact para listas densas." },
+  { prop: "pagination", type: "boolean", default: "true", description: "Exibe o rodapé de paginação." },
+  { prop: "pageSize", type: "number", default: "10", description: "Linhas por página inicial." },
+  { prop: "selectable", type: "boolean", default: "false", description: "Coluna de checkbox para seleção por linha." },
+  { prop: "searchable", type: "boolean", default: "false", description: "Campo de busca global na toolbar." },
+  { prop: "searchPlaceholder", type: "string", default: `"Buscar..."`, description: "Placeholder do campo de busca." },
+  { prop: "filterable", type: "boolean", default: "false", description: "Ativa filtros por coluna (colunas com filterable)." },
+  { prop: "columnVisibility", type: "boolean", default: "false", description: "Botão de visibilidade de colunas na toolbar." },
+  { prop: "loading", type: "boolean", default: "false", description: "Renderiza linhas de esqueleto." },
+  { prop: "emptyMessage", type: "string", default: `"Nenhum resultado…"`, description: "Mensagem do estado vazio." },
+  { prop: "rowBorderColor", type: "(row) => string | undefined", description: "Borda esquerda colorida por linha (ex.: status)." },
+  { prop: "onRowClick", type: "(row) => void", description: "Torna a linha clicável (cursor + hover)." },
+  { prop: "toolbarActions", type: "React.ReactNode", description: "Controles extras à direita da toolbar (ex.: botão Adicionar)." },
 ]
 
-const COLUMN_PROPS: Array<[string, string, string, string]> = [
-  ["header", "string", "—", "Rótulo de texto. Também usado no menu de colunas."],
-  ["accessorKey", "string", "—", "Chave do dado. Necessária para ordenar/filtrar."],
-  ["sortable", "boolean", "false", "Habilita ordenação clicando no cabeçalho."],
-  ["align", `"left" | "center" | "right"`, `"left"`, "Alinhamento horizontal da coluna."],
-  ["width", "string", "—", "Utilitário Tailwind de largura, ex.: w-16."],
-  ["filterable", "boolean", "false", "Expõe um filtro multi-seleção na toolbar."],
-  ["filterOptions", "{ label; value }[]", "inferido", "Opções do filtro; inferidas do dado se omitido."],
-  ["enableHiding", "boolean", "true", "Permite ocultar a coluna pelo menu de colunas."],
-  ["cell", "(ctx) => ReactNode", "valor bruto", "Renderer customizado (use os componentes Cell*)."],
+const COLUMN_PROPS: ApiRow[] = [
+  { prop: "header", type: "string", description: "Rótulo de texto. Também usado no menu de colunas." },
+  { prop: "accessorKey", type: "string", description: "Chave do dado. Necessária para ordenar/filtrar." },
+  { prop: "sortable", type: "boolean", default: "false", description: "Habilita ordenação clicando no cabeçalho." },
+  { prop: "align", type: `"left" | "center" | "right"`, default: `"left"`, description: "Alinhamento horizontal da coluna." },
+  { prop: "width", type: "string", description: "Utilitário Tailwind de largura, ex.: w-16." },
+  { prop: "filterable", type: "boolean", default: "false", description: "Expõe um filtro multi-seleção na toolbar." },
+  { prop: "filterOptions", type: "{ label; value }[]", default: "inferido", description: "Opções do filtro; inferidas do dado se omitido." },
+  { prop: "enableHiding", type: "boolean", default: "true", description: "Permite ocultar a coluna pelo menu de colunas." },
+  { prop: "cell", type: "(ctx) => ReactNode", default: "valor bruto", description: "Renderer customizado (use os componentes Cell*)." },
 ]
 
 /* -------------------------------------------------------------------------------------------------
@@ -401,19 +295,21 @@ const COLUMN_PROPS: Array<[string, string, string, string]> = [
 
 export default function TablePage() {
   return (
-    <div className="mx-auto max-w-6xl space-y-14 p-8 md:p-12">
-      {/* Header */}
-      <header className="space-y-3">
+    <StyleguidePage>
+      <ComponentHeader
+        title="DataTable"
+        description={
+          <>
+            Tabela de dados do CRM V4, construída sobre{" "}
+            <code className="font-mono text-sm">@tanstack/react-table</code>. Um único{" "}
+            <code className="font-mono text-sm">CRMDataTable</code> cobre ordenação, busca,
+            filtros por coluna, seleção, paginação, densidade, visibilidade de colunas e os
+            estados de carregamento e vazio — sempre a partir dos tokens do design system.
+          </>
+        }
+      >
         <Badge variant="secondary">Core · Dados</Badge>
-        <h1 className="text-4xl font-bold tracking-tight">DataTable</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Tabela de dados do CRM V4, construída sobre{" "}
-          <code className="font-mono text-sm">@tanstack/react-table</code>. Um único{" "}
-          <code className="font-mono text-sm">CRMDataTable</code> cobre ordenação, busca,
-          filtros por coluna, seleção, paginação, densidade, visibilidade de colunas e os
-          estados de carregamento e vazio — sempre a partir dos tokens do design system.
-        </p>
-      </header>
+      </ComponentHeader>
 
       {/* Real examples */}
       <Section
@@ -700,70 +596,48 @@ const columns: CRMColumnDef<Lead>[] = [
           </div>
           <div className="space-y-2">
             <h3 className="text-sm font-semibold">CRMColumnDef</h3>
-            <ApiTable
-              caption="Estende ColumnDef do @tanstack/react-table — todas as opções nativas (id, size, meta, etc.) continuam disponíveis."
-              rows={COLUMN_PROPS}
-            />
+            <ApiTable rows={COLUMN_PROPS} />
+            <p className="text-xs text-muted-foreground">
+              Estende ColumnDef do @tanstack/react-table — todas as opções nativas (id, size, meta, etc.) continuam disponíveis.
+            </p>
           </div>
         </div>
       </Section>
 
       {/* Guidelines */}
-      <Section title="Boas práticas" description="Diretrizes para tabelas consistentes no CRM.">
-        <div className="grid gap-4 md:grid-cols-2">
-          <GuidelineCard
-            tone="do"
-            title="Faça"
-            items={[
-              "Use os componentes Cell* para manter tipografia e cores consistentes entre tabelas.",
-              "Marque como filterable colunas categóricas de baixa cardinalidade (status, tipo, estágio).",
-              "Reserve enableHiding: false para colunas de identidade (ID, nome).",
-              "Use density=\"compact\" em listas longas e em painéis laterais estreitos.",
-              "Forneça um emptyMessage acionável que diga o próximo passo.",
-            ]}
-          />
-          <GuidelineCard
-            tone="dont"
-            title="Evite"
-            items={[
-              "Cores hardcoded nas células — use sempre tokens (text-foreground, text-muted-foreground).",
-              "Filtro faceted em colunas de alta cardinalidade (nomes, e-mails); prefira a busca global.",
-              "Habilitar onRowClick e ações na linha que disparem a mesma navegação sem stopPropagation.",
-              "Mais de ~7 colunas visíveis sem oferecer columnVisibility.",
-              "Colocar textos longos em células sem permitir a rolagem horizontal do contêiner.",
-            ]}
-          />
-        </div>
-      </Section>
+      <GuidelinesSection
+        dos={[
+          "Use os componentes Cell* para manter tipografia e cores consistentes entre tabelas.",
+          "Marque como filterable colunas categóricas de baixa cardinalidade (status, tipo, estágio).",
+          "Reserve enableHiding: false para colunas de identidade (ID, nome).",
+          "Use density=\"compact\" em listas longas e em painéis laterais estreitos.",
+          "Forneça um emptyMessage acionável que diga o próximo passo.",
+        ]}
+        donts={[
+          "Cores hardcoded nas células — use sempre tokens (text-foreground, text-muted-foreground).",
+          "Filtro faceted em colunas de alta cardinalidade (nomes, e-mails); prefira a busca global.",
+          "Habilitar onRowClick e ações na linha que disparem a mesma navegação sem stopPropagation.",
+          "Mais de ~7 colunas visíveis sem oferecer columnVisibility.",
+          "Colocar textos longos em células sem permitir a rolagem horizontal do contêiner.",
+        ]}
+      />
 
       {/* Accessibility */}
-      <Section title="Acessibilidade" description="Garantias embutidas no componente.">
-        <div className="rounded-lg border bg-card p-5">
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              <span className="font-medium text-foreground">Tabela semântica:</span>{" "}
-              renderiza <code className="font-mono text-xs">&lt;table&gt;</code>/<code className="font-mono text-xs">&lt;th&gt;</code>/<code className="font-mono text-xs">&lt;td&gt;</code> reais, navegáveis por leitores de tela.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Ordenação:</span>{" "}
-              cabeçalhos ordenáveis expõem <code className="font-mono text-xs">aria-sort</code> (ascending/descending/none).
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Seleção:</span>{" "}
-              checkboxes Radix com estado <code className="font-mono text-xs">indeterminate</code> no cabeçalho e{" "}
-              <code className="font-mono text-xs">aria-label</code> em cada linha.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Filtros e colunas:</span>{" "}
-              acionados por botões reais dentro de <code className="font-mono text-xs">Popover</code> (foco preso, fecha no Esc).
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Foco por teclado:</span>{" "}
-              todos os controles (busca, filtros, paginação, ações) são focáveis via Tab, com anel de foco visível.
-            </li>
-          </ul>
-        </div>
-      </Section>
-    </div>
+      <AccessibilitySection
+        items={[
+          <><span className="font-medium text-foreground">Tabela semântica:</span>{" "}
+            renderiza <code className="font-mono text-xs">&lt;table&gt;</code>/<code className="font-mono text-xs">&lt;th&gt;</code>/<code className="font-mono text-xs">&lt;td&gt;</code> reais, navegáveis por leitores de tela.</>,
+          <><span className="font-medium text-foreground">Ordenação:</span>{" "}
+            cabeçalhos ordenáveis expõem <code className="font-mono text-xs">aria-sort</code> (ascending/descending/none).</>,
+          <><span className="font-medium text-foreground">Seleção:</span>{" "}
+            checkboxes Radix com estado <code className="font-mono text-xs">indeterminate</code> no cabeçalho e{" "}
+            <code className="font-mono text-xs">aria-label</code> em cada linha.</>,
+          <><span className="font-medium text-foreground">Filtros e colunas:</span>{" "}
+            acionados por botões reais dentro de <code className="font-mono text-xs">Popover</code> (foco preso, fecha no Esc).</>,
+          <><span className="font-medium text-foreground">Foco por teclado:</span>{" "}
+            todos os controles (busca, filtros, paginação, ações) são focáveis via Tab, com anel de foco visível.</>,
+        ]}
+      />
+    </StyleguidePage>
   )
 }

@@ -21,58 +21,15 @@ import {
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Download, Paperclip, Plus } from "lucide-react"
-
-/* -------------------------------------------------------------------------------------------------
- * Page-local presentation helpers
- * -----------------------------------------------------------------------------------------------*/
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  return (
-    <div
-      className={
-        "rounded-xl border bg-card p-5 " + (className ?? "")
-      }
-    >
-      {children}
-    </div>
-  )
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      <code className="font-mono text-foreground">{children}</code>
-    </pre>
-  )
-}
+import {
+  ApiTable,
+  CodeBlock,
+  ComponentHeader,
+  Demo,
+  Section,
+  StyleguidePage,
+  type ApiRow,
+} from "@/app/styleguide/_components"
 
 /* -------------------------------------------------------------------------------------------------
  * Shared demo data
@@ -441,61 +398,30 @@ function EmptyDemo() {
  * Props documentation
  * -----------------------------------------------------------------------------------------------*/
 
-const ITEM_PROPS: Array<[string, string, string]> = [
-  ["name", "string", "Nome do arquivo (com extensão). Obrigatório."],
-  ["size", "number", "Tamanho em bytes — formatado automaticamente."],
-  ["type", "string", "Mime type; refina o ícone quando o nome não tem extensão."],
-  ["status", `"idle" | "uploading" | "done" | "error"`, "Estado do anexo."],
-  ["progress", "number", "Progresso 0–100 (usado em uploading)."],
-  ["errorMessage", "string", "Mensagem exibida em status error."],
-  ["previewUrl", "string", "Miniatura para imagens; substitui o glyph."],
-  ["description", "ReactNode", "Metadado secundário (autor, data…)."],
-  ["variant", `"outline" | "muted" | "ghost"`, "Superfície do item."],
-  ["disabled", "boolean", "Desabilita o item inteiro."],
-  ["readOnly", "boolean", "Oculta remover/cancelar/reenviar; mantém download."],
-  ["onDownload / onRemove / onRetry / onCancel / onPreview", "() => void", "Callbacks de ação."],
+const ITEM_PROPS: ApiRow[] = [
+  { prop: "name", type: "string", description: "Nome do arquivo (com extensão). Obrigatório." },
+  { prop: "size", type: "number", description: "Tamanho em bytes — formatado automaticamente." },
+  { prop: "type", type: "string", description: "Mime type; refina o ícone quando o nome não tem extensão." },
+  { prop: "status", type: `"idle" | "uploading" | "done" | "error"`, description: "Estado do anexo." },
+  { prop: "progress", type: "number", description: "Progresso 0–100 (usado em uploading)." },
+  { prop: "errorMessage", type: "string", description: "Mensagem exibida em status error." },
+  { prop: "previewUrl", type: "string", description: "Miniatura para imagens; substitui o glyph." },
+  { prop: "description", type: "ReactNode", description: "Metadado secundário (autor, data…)." },
+  { prop: "variant", type: `"outline" | "muted" | "ghost"`, description: "Superfície do item." },
+  { prop: "disabled", type: "boolean", description: "Desabilita o item inteiro." },
+  { prop: "readOnly", type: "boolean", description: "Oculta remover/cancelar/reenviar; mantém download." },
+  { prop: "onDownload / onRemove / onRetry / onCancel / onPreview", type: "() => void", description: "Callbacks de ação." },
 ]
 
-const DROPZONE_PROPS: Array<[string, string, string]> = [
-  ["onFiles", "(files: File[]) => void", "Recebe os arquivos selecionados ou soltos."],
-  ["multiple", "boolean", "Permite selecionar vários arquivos."],
-  ["accept", "string", 'Filtro do input, ex.: ".pdf,image/*".'],
-  ["maxSize", "number", "Tamanho máx. em bytes (exibido na dica)."],
-  ["disabled", "boolean", "Bloqueia toda a interação."],
-  ["readOnly", "boolean", "Impede o envio, sem aparência de erro."],
-  ["title / hint / icon", "ReactNode / ElementType", "Personalização do conteúdo."],
+const DROPZONE_PROPS: ApiRow[] = [
+  { prop: "onFiles", type: "(files: File[]) => void", description: "Recebe os arquivos selecionados ou soltos." },
+  { prop: "multiple", type: "boolean", description: "Permite selecionar vários arquivos." },
+  { prop: "accept", type: "string", description: 'Filtro do input, ex.: ".pdf,image/*".' },
+  { prop: "maxSize", type: "number", description: "Tamanho máx. em bytes (exibido na dica)." },
+  { prop: "disabled", type: "boolean", description: "Bloqueia toda a interação." },
+  { prop: "readOnly", type: "boolean", description: "Impede o envio, sem aparência de erro." },
+  { prop: "title / hint / icon", type: "ReactNode / ElementType", description: "Personalização do conteúdo." },
 ]
-
-function PropsTable({ rows }: { rows: Array<[string, string, string]> }) {
-  return (
-    <div className="overflow-x-auto rounded-lg border">
-      <table className="w-full text-left text-sm">
-        <thead className="border-b bg-muted/50 text-xs text-muted-foreground">
-          <tr>
-            <th className="px-4 py-2 font-medium">Prop</th>
-            <th className="px-4 py-2 font-medium">Tipo</th>
-            <th className="px-4 py-2 font-medium">Descrição</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {rows.map(([prop, type, desc]) => (
-            <tr key={prop} className="align-top">
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-foreground">{prop}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">
-                  {type}
-                </code>
-              </td>
-              <td className="px-4 py-2 text-muted-foreground">{desc}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
 
 /* -------------------------------------------------------------------------------------------------
  * Page
@@ -503,23 +429,18 @@ function PropsTable({ rows }: { rows: Array<[string, string, string]> }) {
 
 export default function AttachmentPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      {/* Header */}
-      <header className="space-y-3">
+    <StyleguidePage>
+      <ComponentHeader
+        title="Attachment"
+        description="O padrão oficial de anexos do CRM V4. Envio único ou múltiplo, lista de arquivos, estados de upload, preview de imagens, download e remoção — tudo construído sobre os tokens do design system e pronto para compor com Cards, Forms, Tables e Dialogs."
+      >
         <div className="flex items-center gap-2">
           <Badge variant="secondary">
             <Paperclip data-icon="inline-start" />
             Data display · Input
           </Badge>
         </div>
-        <h1 className="text-4xl font-bold tracking-tight">Attachment</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          O padrão oficial de anexos do CRM V4. Envio único ou múltiplo, lista de
-          arquivos, estados de upload, preview de imagens, download e remoção —
-          tudo construído sobre os tokens do design system e pronto para compor
-          com Cards, Forms, Tables e Dialogs.
-        </p>
-      </header>
+      </ComponentHeader>
 
       {/* Overview / anatomy */}
       <Section
@@ -780,14 +701,14 @@ export default function AttachmentPage() {
         title="Props — AttachmentItem"
         description="A composição de alto nível usada na maioria dos módulos."
       >
-        <PropsTable rows={ITEM_PROPS} />
+        <ApiTable rows={ITEM_PROPS} />
       </Section>
 
       <Section
         title="Props — AttachmentDropzone"
         description="A área de envio com drag & drop e seleção por clique."
       >
-        <PropsTable rows={DROPZONE_PROPS} />
+        <ApiTable rows={DROPZONE_PROPS} />
       </Section>
 
       {/* Accessibility */}
@@ -825,6 +746,6 @@ export default function AttachmentPage() {
           </ul>
         </div>
       </Section>
-    </div>
+    </StyleguidePage>
   )
 }

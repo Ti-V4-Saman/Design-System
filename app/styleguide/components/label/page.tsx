@@ -1,9 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { AlertCircle, Check } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -15,44 +13,20 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field"
+import {
+  AccessibilitySection,
+  ApiTable,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+  type ApiRow,
+} from "@/app/styleguide/_components"
 
 /* ---------- page-local presentation helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className={"rounded-xl border bg-card p-6 " + (className ?? "")}>
-      {children}
-    </div>
-  )
-}
 
 function Row({ label, children }: { label?: string; children: React.ReactNode }) {
   return (
@@ -63,124 +37,36 @@ function Row({ label, children }: { label?: string; children: React.ReactNode })
   )
 }
 
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      <code className="font-mono text-foreground">{children}</code>
-    </pre>
-  )
-}
-
-function ApiTable({
-  rows,
-  caption,
-}: {
-  rows: Array<[string, string, string, string]>
-  caption?: string
-}) {
-  return (
-    <div className="overflow-x-auto rounded-lg border">
-      <table className="w-full text-left text-sm">
-        <thead className="border-b bg-muted/50 text-xs text-muted-foreground">
-          <tr>
-            <th className="px-4 py-2 font-medium">Prop</th>
-            <th className="px-4 py-2 font-medium">Tipo</th>
-            <th className="px-4 py-2 font-medium">Padrão</th>
-            <th className="px-4 py-2 font-medium">Descrição</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {rows.map(([a, b, c, d]) => (
-            <tr key={a} className="align-top">
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-foreground">{a}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{b}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{c}</code>
-              </td>
-              <td className="px-4 py-2 text-muted-foreground">{d}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {caption && <p className="px-4 py-2 text-xs text-muted-foreground">{caption}</p>}
-    </div>
-  )
-}
-
-function GuidelineCard({
-  tone,
-  title,
-  items,
-}: {
-  tone: "do" | "dont"
-  title: string
-  items: string[]
-}) {
-  const isDo = tone === "do"
-  return (
-    <div className="rounded-xl border bg-card p-5">
-      <div className="mb-3 flex items-center gap-2">
-        <span
-          className={
-            "flex size-6 items-center justify-center rounded-full " +
-            (isDo ? "bg-success/15 text-success" : "bg-destructive/10 text-destructive")
-          }
-        >
-          {isDo ? <Check className="size-3.5" /> : <AlertCircle className="size-3.5" />}
-        </span>
-        <h3 className="text-sm font-semibold">{title}</h3>
-      </div>
-      <ul className="space-y-2 text-sm text-muted-foreground">
-        {items.map((item, i) => (
-          <li key={i} className="flex gap-2">
-            <span
-              className={
-                "mt-1.5 size-1 shrink-0 rounded-full " +
-                (isDo ? "bg-success" : "bg-destructive")
-              }
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
-
 /* ---------- docs data ---------- */
 
-const PROPS: Array<[string, string, string, string]> = [
-  ["required", "boolean", "false", "Exibe um asterisco (token destructive) indicando campo obrigatório."],
-  ["optional", "boolean", "false", "Exibe a etiqueta discreta “(opcional)”. Ignorado se required."],
-  ["hint", "ReactNode", "—", "Dica em Tooltip acionada por um ícone de informação focável."],
-  ["size", `"sm" | "default"`, `"default"`, "Densidade do texto (text-xs vs text-sm)."],
-  ["htmlFor", "string", "—", "Associa ao id do controle (nativo). Clicar foca/ativa o controle."],
-  ["...props", "Radix Label.Root", "—", "Todas as props do primitivo Radix Label."],
+const PROPS: ApiRow[] = [
+  { prop: "required", type: "boolean", default: "false", description: "Exibe um asterisco (token destructive) indicando campo obrigatório." },
+  { prop: "optional", type: "boolean", default: "false", description: "Exibe a etiqueta discreta “(opcional)”. Ignorado se required." },
+  { prop: "hint", type: "ReactNode", default: "—", description: "Dica em Tooltip acionada por um ícone de informação focável." },
+  { prop: "size", type: `"sm" | "default"`, default: `"default"`, description: "Densidade do texto (text-xs vs text-sm)." },
+  { prop: "htmlFor", type: "string", default: "—", description: "Associa ao id do controle (nativo). Clicar foca/ativa o controle." },
+  { prop: "...props", type: "Radix Label.Root", default: "—", description: "Todas as props do primitivo Radix Label." },
 ]
 
 /* ---------- page ---------- */
 
 export default function LabelPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      {/* Header */}
-      <header className="space-y-3">
-        <Badge variant="secondary">Core · Formulários</Badge>
-        <h1 className="text-4xl font-bold tracking-tight">Label</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Rótulo acessível para qualquer controle de formulário. Sobre o primitivo
-          Radix <code className="font-mono text-sm">Label</code>, com marcadores de{" "}
-          <strong>obrigatório</strong> e <strong>opcional</strong>, dica em{" "}
-          <strong>tooltip</strong> e duas densidades — sempre a partir dos tokens do
-          design system. Associa-se ao controle via{" "}
-          <code className="font-mono text-sm">htmlFor</code> e integra com o{" "}
-          <code className="font-mono text-sm">Field</code>.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Label"
+        description={
+          <>
+            Rótulo acessível para qualquer controle de formulário. Sobre o primitivo
+            Radix <code className="font-mono text-sm">Label</code>, com marcadores de{" "}
+            <strong>obrigatório</strong> e <strong>opcional</strong>, dica em{" "}
+            <strong>tooltip</strong> e duas densidades — sempre a partir dos tokens do
+            design system. Associa-se ao controle via{" "}
+            <code className="font-mono text-sm">htmlFor</code> e integra com o{" "}
+            <code className="font-mono text-sm">Field</code>.
+          </>
+        }
+      />
 
       {/* Variants */}
       <Section
@@ -331,21 +217,12 @@ export default function LabelPage() {
       </Section>
 
       {/* Light / Dark */}
-      <Section
+      <DarkModeSection
         title="Light / Dark"
         description="Peso, asterisco (destructive), etiqueta opcional (muted) e ícone de dica usam tokens com pares -foreground. Painel direito forçado em dark."
       >
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border bg-card p-6">
-            <p className="mb-3 text-xs font-medium text-muted-foreground">Light</p>
-            <ThemePreview />
-          </div>
-          <div className="dark rounded-xl border border-border bg-card p-6 text-card-foreground">
-            <p className="mb-3 text-xs font-medium text-muted-foreground">Dark</p>
-            <ThemePreview />
-          </div>
-        </div>
-      </Section>
+        <ThemePreview />
+      </DarkModeSection>
 
       {/* Real examples */}
       <Section title="Exemplos reais" description="Padrões recorrentes nos formulários do CRM.">
@@ -419,72 +296,60 @@ export default function LabelPage() {
 
       {/* Props */}
       <Section title="Props" description="API do Label.">
-        <ApiTable
-          rows={PROPS}
-          caption="required tem precedência sobre optional. hint envolve o próprio TooltipProvider — não precisa de provider na página."
-        />
+        <ApiTable rows={PROPS} />
+        <p className="text-xs text-muted-foreground">
+          required tem precedência sobre optional. hint envolve o próprio TooltipProvider — não precisa de provider na página.
+        </p>
       </Section>
 
       {/* Guidelines */}
-      <Section title="Boas práticas" description="Diretrizes de uso.">
-        <div className="grid gap-4 md:grid-cols-2">
-          <GuidelineCard
-            tone="do"
-            title="Faça"
-            items={[
-              "Sempre associe com htmlFor (ou envolva o controle) — alvo de clique + leitor de tela.",
-              "Use required para campos obrigatórios e optional quando a maioria for obrigatória.",
-              "Coloque no hint só informação de apoio; a essencial vai em FieldDescription.",
-              "Use size=\"sm\" em filtros/tabelas para manter a densidade.",
-              "Mantenha o texto curto e em caixa natural (evite CAPS, exceto rótulos de seção).",
-            ]}
-          />
-          <GuidelineCard
-            tone="dont"
-            title="Evite"
-            items={[
-              "Rótulo sem associação (texto solto) — quebra clique e acessibilidade.",
-              "Marcar tudo como required e optional ao mesmo tempo — escolha uma convenção.",
-              "Frases longas no rótulo; mova detalhes para descrição ou dica.",
-              "Cor hardcoded para o asterisco — use o token destructive (padrão do componente).",
-              "Depender só do asterisco para obrigatoriedade sem validação/erro no envio.",
-            ]}
-          />
-        </div>
-      </Section>
+      <GuidelinesSection
+        dos={[
+          "Sempre associe com htmlFor (ou envolva o controle) — alvo de clique + leitor de tela.",
+          "Use required para campos obrigatórios e optional quando a maioria for obrigatória.",
+          "Coloque no hint só informação de apoio; a essencial vai em FieldDescription.",
+          "Use size=\"sm\" em filtros/tabelas para manter a densidade.",
+          "Mantenha o texto curto e em caixa natural (evite CAPS, exceto rótulos de seção).",
+        ]}
+        donts={[
+          "Rótulo sem associação (texto solto) — quebra clique e acessibilidade.",
+          "Marcar tudo como required e optional ao mesmo tempo — escolha uma convenção.",
+          "Frases longas no rótulo; mova detalhes para descrição ou dica.",
+          "Cor hardcoded para o asterisco — use o token destructive (padrão do componente).",
+          "Depender só do asterisco para obrigatoriedade sem validação/erro no envio.",
+        ]}
+      />
 
       {/* Accessibility */}
-      <Section title="Acessibilidade" description="Garantias do componente.">
-        <div className="rounded-lg border bg-card p-5">
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              <span className="font-medium text-foreground">Elemento nativo:</span>{" "}
-              renderiza <code className="font-mono text-xs">&lt;label&gt;</code> real; com{" "}
-              <code className="font-mono text-xs">htmlFor</code> o clique foca/ativa o controle.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Obrigatório:</span>{" "}
-              o asterisco é <code className="font-mono text-xs">aria-hidden</code>; comunique a
-              obrigatoriedade também via <code className="font-mono text-xs">required</code>/<code className="font-mono text-xs">aria-required</code> no controle.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Dica:</span>{" "}
-              o ícone é um <code className="font-mono text-xs">&lt;button&gt;</code> focável com{" "}
-              <code className="font-mono text-xs">aria-label</code>; o Tooltip abre no hover e no foco por teclado.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Desabilitado:</span>{" "}
-              esmaece via <code className="font-mono text-xs">peer-disabled</code>/<code className="font-mono text-xs">group-data-[disabled]</code> junto ao controle.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Erro:</span>{" "}
-              dentro de um <code className="font-mono text-xs">Field</code> com{" "}
-              <code className="font-mono text-xs">data-invalid</code>, o rótulo assume a cor destructive.
-            </li>
-          </ul>
-        </div>
-      </Section>
-    </div>
+      <AccessibilitySection
+        items={[
+          <>
+            <span className="font-medium text-foreground">Elemento nativo:</span>{" "}
+            renderiza <code className="font-mono text-xs">&lt;label&gt;</code> real; com{" "}
+            <code className="font-mono text-xs">htmlFor</code> o clique foca/ativa o controle.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Obrigatório:</span>{" "}
+            o asterisco é <code className="font-mono text-xs">aria-hidden</code>; comunique a
+            obrigatoriedade também via <code className="font-mono text-xs">required</code>/<code className="font-mono text-xs">aria-required</code> no controle.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Dica:</span>{" "}
+            o ícone é um <code className="font-mono text-xs">&lt;button&gt;</code> focável com{" "}
+            <code className="font-mono text-xs">aria-label</code>; o Tooltip abre no hover e no foco por teclado.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Desabilitado:</span>{" "}
+            esmaece via <code className="font-mono text-xs">peer-disabled</code>/<code className="font-mono text-xs">group-data-[disabled]</code> junto ao controle.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Erro:</span>{" "}
+            dentro de um <code className="font-mono text-xs">Field</code> com{" "}
+            <code className="font-mono text-xs">data-invalid</code>, o rótulo assume a cor destructive.
+          </>,
+        ]}
+      />
+    </StyleguidePage>
   )
 }
 

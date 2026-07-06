@@ -17,46 +17,20 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import {
+  AccessibilitySection,
+  ApiTable,
+  CodeBlock,
+  ComponentHeader,
+  Demo,
+  Section,
+  StyleguidePage,
+  type ApiRow,
+} from "@/app/styleguide/_components"
 
 /* -------------------------------------------------------------------------------------------------
- * Page-local presentation helpers
+ * Page-local presentation helper (no shared equivalent)
  * -----------------------------------------------------------------------------------------------*/
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className={"rounded-xl border bg-card p-5 " + (className ?? "")}>
-      {children}
-    </div>
-  )
-}
 
 function Row({
   label,
@@ -72,14 +46,6 @@ function Row({
       )}
       <div className="flex flex-wrap items-center gap-3">{children}</div>
     </div>
-  )
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      <code className="font-mono text-foreground">{children}</code>
-    </pre>
   )
 }
 
@@ -129,62 +95,29 @@ function LoadingToggleDemo() {
  * Props documentation
  * -----------------------------------------------------------------------------------------------*/
 
-const PROPS: Array<[string, string, string, string]> = [
-  [
-    "variant",
-    `"default" | "secondary" | "outline" | "ghost" | "destructive" | "success" | "warning" | "info" | "link"`,
-    `"default"`,
-    "Hierarquia visual e significado semântico da ação.",
-  ],
-  [
-    "size",
-    `"default" | "xs" | "sm" | "lg" | "icon" | "icon-xs" | "icon-sm" | "icon-lg"`,
-    `"default"`,
-    "Altura/densidade. As variantes icon-* são quadradas para botões apenas-ícone.",
-  ],
-  ["loading", "boolean", "false", "Mostra spinner, desabilita e marca aria-busy."],
-  ["disabled", "boolean", "false", "Desabilita o botão."],
-  [
-    "asChild",
-    "boolean",
-    "false",
-    "Renderiza o filho como elemento raiz (ex.: <a>, <Link>) preservando os estilos.",
-  ],
-  ["...props", "React.ComponentProps<\"button\">", "—", "Todos os atributos nativos de button."],
+const PROPS: ApiRow[] = [
+  {
+    prop: "variant",
+    type: `"default" | "secondary" | "outline" | "ghost" | "destructive" | "success" | "warning" | "info" | "link"`,
+    default: `"default"`,
+    description: "Hierarquia visual e significado semântico da ação.",
+  },
+  {
+    prop: "size",
+    type: `"default" | "xs" | "sm" | "lg" | "icon" | "icon-xs" | "icon-sm" | "icon-lg"`,
+    default: `"default"`,
+    description: "Altura/densidade. As variantes icon-* são quadradas para botões apenas-ícone.",
+  },
+  { prop: "loading", type: "boolean", default: "false", description: "Mostra spinner, desabilita e marca aria-busy." },
+  { prop: "disabled", type: "boolean", default: "false", description: "Desabilita o botão." },
+  {
+    prop: "asChild",
+    type: "boolean",
+    default: "false",
+    description: "Renderiza o filho como elemento raiz (ex.: <a>, <Link>) preservando os estilos.",
+  },
+  { prop: "...props", type: "React.ComponentProps<\"button\">", default: "—", description: "Todos os atributos nativos de button." },
 ]
-
-function PropsTable() {
-  return (
-    <div className="overflow-x-auto rounded-lg border">
-      <table className="w-full text-left text-sm">
-        <thead className="border-b bg-muted/50 text-xs text-muted-foreground">
-          <tr>
-            <th className="px-4 py-2 font-medium">Prop</th>
-            <th className="px-4 py-2 font-medium">Tipo</th>
-            <th className="px-4 py-2 font-medium">Padrão</th>
-            <th className="px-4 py-2 font-medium">Descrição</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {PROPS.map(([prop, type, def, desc]) => (
-            <tr key={prop} className="align-top">
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-foreground">{prop}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{type}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{def}</code>
-              </td>
-              <td className="px-4 py-2 text-muted-foreground">{desc}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
 
 /* -------------------------------------------------------------------------------------------------
  * Page
@@ -192,18 +125,20 @@ function PropsTable() {
 
 export default function ButtonPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      {/* Header */}
-      <header className="space-y-3">
+    <StyleguidePage>
+      <ComponentHeader
+        title="Button"
+        description={
+          <>
+            O gatilho de ação do CRM V4. Seis variantes de hierarquia, uma escala de
+            tamanhos densa, suporte a ícones, estado de carregamento e composição via{" "}
+            <code className="font-mono text-sm">asChild</code> — tudo derivado dos
+            tokens do design system e consistente nos dois temas.
+          </>
+        }
+      >
         <Badge variant="secondary">Core · Ações</Badge>
-        <h1 className="text-4xl font-bold tracking-tight">Button</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          O gatilho de ação do CRM V4. Seis variantes de hierarquia, uma escala de
-          tamanhos densa, suporte a ícones, estado de carregamento e composição via{" "}
-          <code className="font-mono text-sm">asChild</code> — tudo derivado dos
-          tokens do design system e consistente nos dois temas.
-        </p>
-      </header>
+      </ComponentHeader>
 
       {/* Variants */}
       <Section
@@ -505,46 +440,41 @@ export default function ButtonPage() {
 
       {/* Props */}
       <Section title="Props" description="API do componente Button.">
-        <PropsTable />
+        <ApiTable rows={PROPS} />
       </Section>
 
       {/* Accessibility */}
-      <Section
-        title="Acessibilidade"
-        description="Garantias embutidas no componente."
-      >
-        <div className="rounded-lg border bg-card p-5">
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              <span className="font-medium text-foreground">Elemento nativo:</span>{" "}
-              renderiza um <code className="font-mono text-xs">&lt;button&gt;</code>{" "}
-              real — foco, Enter/Espaço e semântica vêm do navegador.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Foco visível:</span>{" "}
-              anel de foco via <code className="font-mono text-xs">focus-visible</code>,
-              exclusivo da navegação por teclado.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Apenas-ícone:</span>{" "}
-              sempre forneça <code className="font-mono text-xs">aria-label</code>,
-              pois não há texto visível.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Carregando:</span>{" "}
-              <code className="font-mono text-xs">aria-busy</code> e{" "}
-              <code className="font-mono text-xs">disabled</code> são aplicados
-              automaticamente com <code className="font-mono text-xs">loading</code>.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">asChild:</span> ao usar
-              como link, o estado desabilitado vira{" "}
-              <code className="font-mono text-xs">aria-disabled</code> (âncoras não
-              aceitam <code className="font-mono text-xs">disabled</code>).
-            </li>
-          </ul>
-        </div>
-      </Section>
-    </div>
+      <AccessibilitySection
+        items={[
+          <>
+            <span className="font-medium text-foreground">Elemento nativo:</span>{" "}
+            renderiza um <code className="font-mono text-xs">&lt;button&gt;</code>{" "}
+            real — foco, Enter/Espaço e semântica vêm do navegador.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Foco visível:</span>{" "}
+            anel de foco via <code className="font-mono text-xs">focus-visible</code>,
+            exclusivo da navegação por teclado.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Apenas-ícone:</span>{" "}
+            sempre forneça <code className="font-mono text-xs">aria-label</code>,
+            pois não há texto visível.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Carregando:</span>{" "}
+            <code className="font-mono text-xs">aria-busy</code> e{" "}
+            <code className="font-mono text-xs">disabled</code> são aplicados
+            automaticamente com <code className="font-mono text-xs">loading</code>.
+          </>,
+          <>
+            <span className="font-medium text-foreground">asChild:</span> ao usar
+            como link, o estado desabilitado vira{" "}
+            <code className="font-mono text-xs">aria-disabled</code> (âncoras não
+            aceitam <code className="font-mono text-xs">disabled</code>).
+          </>,
+        ]}
+      />
+    </StyleguidePage>
   )
 }

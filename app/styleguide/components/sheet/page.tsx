@@ -1,9 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { AlertCircle, Check, Mail, Phone, Plus } from "lucide-react"
+import { AlertCircle, Mail, Phone, Plus } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -31,132 +30,17 @@ import {
   FormSheet,
   FilterSheet,
 } from "@/components/sheet"
-
-/* ---------- page-local presentation helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className={"rounded-xl border bg-card p-6 " + (className ?? "")}>
-      <div className="flex flex-wrap items-center gap-3">{children}</div>
-    </div>
-  )
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      <code className="font-mono text-foreground">{children}</code>
-    </pre>
-  )
-}
-
-function ApiTable({
-  rows,
-  caption,
-}: {
-  rows: Array<[string, string, string, string]>
-  caption?: string
-}) {
-  return (
-    <div className="overflow-x-auto rounded-lg border">
-      <table className="w-full text-left text-sm">
-        <thead className="border-b bg-muted/50 text-xs text-muted-foreground">
-          <tr>
-            <th className="px-4 py-2 font-medium">Nome</th>
-            <th className="px-4 py-2 font-medium">Tipo</th>
-            <th className="px-4 py-2 font-medium">Padrão</th>
-            <th className="px-4 py-2 font-medium">Descrição</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {rows.map(([a, b, c, d]) => (
-            <tr key={a} className="align-top">
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-foreground">{a}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{b}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{c}</code>
-              </td>
-              <td className="px-4 py-2 text-muted-foreground">{d}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {caption && <p className="px-4 py-2 text-xs text-muted-foreground">{caption}</p>}
-    </div>
-  )
-}
-
-function GuidelineCard({
-  tone,
-  title,
-  items,
-}: {
-  tone: "do" | "dont"
-  title: string
-  items: string[]
-}) {
-  const isDo = tone === "do"
-  return (
-    <div className="rounded-xl border bg-card p-5">
-      <div className="mb-3 flex items-center gap-2">
-        <span
-          className={
-            "flex size-6 items-center justify-center rounded-full " +
-            (isDo ? "bg-success/15 text-success" : "bg-destructive/10 text-destructive")
-          }
-        >
-          {isDo ? <Check className="size-3.5" /> : <AlertCircle className="size-3.5" />}
-        </span>
-        <h3 className="text-sm font-semibold">{title}</h3>
-      </div>
-      <ul className="space-y-2 text-sm text-muted-foreground">
-        {items.map((item, i) => (
-          <li key={i} className="flex gap-2">
-            <span
-              className={
-                "mt-1.5 size-1 shrink-0 rounded-full " +
-                (isDo ? "bg-success" : "bg-destructive")
-              }
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
+import {
+  AccessibilitySection,
+  ApiTable,
+  CodeBlock,
+  ComponentHeader,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+  type ApiRow,
+} from "@/app/styleguide/_components"
 
 /* ---------- interactive demos ---------- */
 
@@ -259,39 +143,39 @@ function FilterDemo() {
 
 /* ---------- docs data ---------- */
 
-const PRIMITIVE_PARTS: Array<[string, string, string, string]> = [
-  ["Sheet", "Dialog.Root", "—", "Raiz controlada/não-controlada (open, onOpenChange, defaultOpen)."],
-  ["SheetTrigger", "Dialog.Trigger", "—", "Abre o painel (use asChild com um Button)."],
-  ["SheetContent", "Dialog.Content", `side "right" · size "default"`, "Superfície ancorada. side: top/right/bottom/left; size: sm→full."],
-  ["SheetHeader / Body / Footer", "div", "—", "Cabeçalho (borda inferior), corpo rolável, rodapé de ações."],
-  ["SheetTitle / SheetDescription", "Dialog.Title/Description", "—", "Título e descrição acessíveis (rotulam o diálogo)."],
-  ["SheetClose", "Dialog.Close", "—", "Fecha o painel (use asChild)."],
+const PRIMITIVE_PARTS: ApiRow[] = [
+  { prop: "Sheet", type: "Dialog.Root", default: "—", description: "Raiz controlada/não-controlada (open, onOpenChange, defaultOpen)." },
+  { prop: "SheetTrigger", type: "Dialog.Trigger", default: "—", description: "Abre o painel (use asChild com um Button)." },
+  { prop: "SheetContent", type: "Dialog.Content", default: `side "right" · size "default"`, description: "Superfície ancorada. side: top/right/bottom/left; size: sm→full." },
+  { prop: "SheetHeader / Body / Footer", type: "div", default: "—", description: "Cabeçalho (borda inferior), corpo rolável, rodapé de ações." },
+  { prop: "SheetTitle / SheetDescription", type: "Dialog.Title/Description", default: "—", description: "Título e descrição acessíveis (rotulam o diálogo)." },
+  { prop: "SheetClose", type: "Dialog.Close", default: "—", description: "Fecha o painel (use asChild)." },
 ]
 
-const FAMILY_PROPS: Array<[string, string, string, string]> = [
-  ["RecordSheet", "name · subtitle · avatarSrc · loading · footer", `side "right"`, "Painel de detalhe com cabeçalho de avatar + SheetSection/SheetField."],
-  ["FormSheet", "title · onSubmit · submitting · submitLabel", `submit "Salvar"`, "Painel de formulário com rodapé Cancelar/Salvar (form nativo)."],
-  ["FilterSheet", "activeCount · onApply · onClear", `size "sm"`, "Painel de filtros com gatilho + contagem e rodapé Limpar/Aplicar."],
+const FAMILY_PROPS: ApiRow[] = [
+  { prop: "RecordSheet", type: "name · subtitle · avatarSrc · loading · footer", default: `side "right"`, description: "Painel de detalhe com cabeçalho de avatar + SheetSection/SheetField." },
+  { prop: "FormSheet", type: "title · onSubmit · submitting · submitLabel", default: `submit "Salvar"`, description: "Painel de formulário com rodapé Cancelar/Salvar (form nativo)." },
+  { prop: "FilterSheet", type: "activeCount · onApply · onClear", default: `size "sm"`, description: "Painel de filtros com gatilho + contagem e rodapé Limpar/Aplicar." },
 ]
 
 /* ---------- page ---------- */
 
 export default function SheetPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      {/* Header */}
-      <header className="space-y-3">
-        <Badge variant="secondary">Core · Overlay</Badge>
-        <h1 className="text-4xl font-bold tracking-tight">Sheet</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Painel deslizante ancorado a qualquer borda para detalhes, formulários e
-          filtros — sobre o primitivo Radix Dialog (foco preso, scroll lock, Esc). É o
-          mesmo primitivo do{" "}
-          <code className="font-mono text-sm">Drawer</code>: o Sheet expõe os nomes{" "}
-          <code className="font-mono text-sm">Sheet*</code> (mental model shadcn) e inclui
-          presets de CRM (registro, formulário, filtros).
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Sheet"
+        description={
+          <>
+            Painel deslizante ancorado a qualquer borda para detalhes, formulários e
+            filtros — sobre o primitivo Radix Dialog (foco preso, scroll lock, Esc). É o
+            mesmo primitivo do{" "}
+            <code className="font-mono text-sm">Drawer</code>: o Sheet expõe os nomes{" "}
+            <code className="font-mono text-sm">Sheet*</code> (mental model shadcn) e inclui
+            presets de CRM (registro, formulário, filtros).
+          </>
+        }
+      />
 
       {/* Relation note */}
       <div className="rounded-lg border border-info-foreground/20 bg-info/40 p-4 text-sm text-info-foreground">
@@ -307,7 +191,7 @@ export default function SheetPage() {
         title="Lados (side)"
         description="O painel ancora em qualquer borda. Direita é o padrão para detalhe/formulário; bottom/top para bandejas."
       >
-        <Demo>
+        <Demo center>
           {(["right", "left", "top", "bottom"] as const).map((side) => (
             <Sheet key={side}>
               <SheetTrigger asChild>
@@ -334,7 +218,7 @@ export default function SheetPage() {
         title="Tamanhos (size)"
         description="size mapeia para largura (left/right) ou altura (top/bottom): sm, default, lg, xl, full."
       >
-        <Demo>
+        <Demo center>
           {(["sm", "default", "lg", "xl", "full"] as const).map((size) => (
             <Sheet key={size}>
               <SheetTrigger asChild>
@@ -362,7 +246,7 @@ export default function SheetPage() {
         description="Presets prontos para os padrões mais comuns. Clique para abrir cada um."
       >
         <div className="space-y-4">
-          <Demo>
+          <Demo center>
             <RecordSheet
               trigger={<Button variant="outline">RecordSheet — detalhe</Button>}
               name="Halvorson Inc"
@@ -404,7 +288,7 @@ export default function SheetPage() {
         title="Estados"
         description="Loading exibe um esqueleto no corpo (RecordSheet loading); o rodapé pode refletir submitting (spinner no botão). Empty é apenas conteúdo alternativo no corpo."
       >
-        <Demo>
+        <Demo center>
           <LoadingRecordDemo />
           <Sheet>
             <SheetTrigger asChild>
@@ -428,7 +312,7 @@ export default function SheetPage() {
         title="Composição"
         description="O corpo aceita qualquer conteúdo do design system — formulários (Field/Input), listas, tabelas. Padrão comum: abrir o detalhe a partir de uma linha de tabela."
       >
-        <Demo className="!block">
+        <Demo>
           <div className="overflow-hidden rounded-lg border border-border">
             <table className="w-full text-sm">
               <thead className="border-b border-border bg-muted/30 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -476,7 +360,7 @@ export default function SheetPage() {
         title="Responsivo"
         description={`Painéis laterais usam w-full max-w-* — no mobile ocupam a largura toda; no desktop, a largura do size. Para telas pequenas prefira side="bottom" (bandeja) ou size="full".`}
       >
-        <Demo>
+        <Demo center>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline">Bottom (mobile-friendly)</Button>
@@ -545,70 +429,58 @@ export default function SheetPage() {
           </div>
           <div className="space-y-2">
             <h3 className="text-sm font-semibold">Presets (@/components/sheet)</h3>
-            <ApiTable
-              rows={FAMILY_PROPS}
-              caption="Todos os presets aceitam trigger, side, size e o par controlado open/onOpenChange (além de defaultOpen)."
-            />
+            <ApiTable rows={FAMILY_PROPS} />
+            <p className="text-xs text-muted-foreground">
+              Todos os presets aceitam trigger, side, size e o par controlado open/onOpenChange (além de defaultOpen).
+            </p>
           </div>
         </div>
       </Section>
 
       {/* Guidelines */}
-      <Section title="Boas práticas" description="Diretrizes de uso.">
-        <div className="grid gap-4 md:grid-cols-2">
-          <GuidelineCard
-            tone="do"
-            title="Faça"
-            items={[
-              "Use para fluxos secundários (detalhe, criação rápida, filtros) sem sair da lista.",
-              "Prefira os presets (RecordSheet/FormSheet/FilterSheet) para consistência.",
-              "Sempre inclua SheetTitle — rotula o diálogo para leitores de tela.",
-              "Controle open para fechar após salvar (onSubmit → setOpen(false)).",
-              "No mobile, use side=\"bottom\" ou size=\"full\" para melhor toque.",
-            ]}
-          />
-          <GuidelineCard
-            tone="dont"
-            title="Evite"
-            items={[
-              "Usar para confirmação simples — prefira Dialog/AlertDialog.",
-              "Empilhar muitos sheets; um fluxo por vez mantém o contexto.",
-              "Conteúdo essencial só no sheet sem alternativa — é modal e bloqueia a página.",
-              "Criar um sheet.tsx duplicado do Drawer — é o mesmo primitivo, use os aliases.",
-              "Omitir o título/descrição acessível do Radix Dialog.",
-            ]}
-          />
-        </div>
-      </Section>
+      <GuidelinesSection
+        dos={[
+          "Use para fluxos secundários (detalhe, criação rápida, filtros) sem sair da lista.",
+          "Prefira os presets (RecordSheet/FormSheet/FilterSheet) para consistência.",
+          "Sempre inclua SheetTitle — rotula o diálogo para leitores de tela.",
+          "Controle open para fechar após salvar (onSubmit → setOpen(false)).",
+          "No mobile, use side=\"bottom\" ou size=\"full\" para melhor toque.",
+        ]}
+        donts={[
+          "Usar para confirmação simples — prefira Dialog/AlertDialog.",
+          "Empilhar muitos sheets; um fluxo por vez mantém o contexto.",
+          "Conteúdo essencial só no sheet sem alternativa — é modal e bloqueia a página.",
+          "Criar um sheet.tsx duplicado do Drawer — é o mesmo primitivo, use os aliases.",
+          "Omitir o título/descrição acessível do Radix Dialog.",
+        ]}
+      />
 
       {/* Accessibility */}
-      <Section title="Acessibilidade" description="Herdado do Radix Dialog.">
-        <div className="rounded-lg border bg-card p-5">
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              <span className="font-medium text-foreground">Foco preso:</span>{" "}
-              o foco fica dentro do painel enquanto aberto e retorna ao gatilho ao fechar.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Teclado:</span>{" "}
-              <code className="font-mono text-xs">Esc</code> fecha; Tab percorre só o conteúdo do painel.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Rótulo:</span>{" "}
-              <code className="font-mono text-xs">SheetTitle</code>/<code className="font-mono text-xs">SheetDescription</code>{" "}
-              conectam <code className="font-mono text-xs">aria-labelledby</code>/<code className="font-mono text-xs">aria-describedby</code>.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Scroll lock:</span>{" "}
-              o fundo não rola enquanto o painel está aberto; overlay escurece a página.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Fechar:</span>{" "}
-              botão X com <code className="font-mono text-xs">sr-only</code> “Fechar” e clique no overlay.
-            </li>
-          </ul>
-        </div>
-      </Section>
-    </div>
+      <AccessibilitySection
+        items={[
+          <>
+            <span className="font-medium text-foreground">Foco preso:</span>{" "}
+            o foco fica dentro do painel enquanto aberto e retorna ao gatilho ao fechar.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Teclado:</span>{" "}
+            <code className="font-mono text-xs">Esc</code> fecha; Tab percorre só o conteúdo do painel.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Rótulo:</span>{" "}
+            <code className="font-mono text-xs">SheetTitle</code>/<code className="font-mono text-xs">SheetDescription</code>{" "}
+            conectam <code className="font-mono text-xs">aria-labelledby</code>/<code className="font-mono text-xs">aria-describedby</code>.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Scroll lock:</span>{" "}
+            o fundo não rola enquanto o painel está aberto; overlay escurece a página.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Fechar:</span>{" "}
+            botão X com <code className="font-mono text-xs">sr-only</code> “Fechar” e clique no overlay.
+          </>,
+        ]}
+      />
+    </StyleguidePage>
   )
 }

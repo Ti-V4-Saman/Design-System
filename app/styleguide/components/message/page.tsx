@@ -1,9 +1,7 @@
 "use client"
 
-import * as React from "react"
 import { ImageIcon, MessagesSquare } from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import {
   DateSeparator,
   Message,
@@ -13,56 +11,32 @@ import {
   SystemMessage,
   TypingIndicator,
 } from "@/components/message"
-
-function Section({ title, description, children }: { title: string; description?: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <section className="space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-lg font-semibold text-foreground">{title}</h2>
-        {description ? <p className="max-w-2xl text-sm text-muted-foreground">{description}</p> : null}
-      </div>
-      {children}
-    </section>
-  )
-}
-function Demo({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn("rounded-lg border border-border bg-card p-6", className)}>{children}</div>
-}
-function CodeBlock({ children }: { children: string }) {
-  return <pre className="overflow-x-auto rounded-lg bg-muted p-4 font-mono text-xs leading-relaxed text-foreground">{children}</pre>
-}
-function ApiTable({ rows }: { rows: Array<{ prop: string; type: string; def?: string; desc: string }> }) {
-  return (
-    <div className="overflow-x-auto rounded-lg border border-border">
-      <table className="w-full text-left text-sm">
-        <thead className="bg-muted/50 text-muted-foreground"><tr><th className="px-4 py-2 font-medium">Prop</th><th className="px-4 py-2 font-medium">Tipo</th><th className="px-4 py-2 font-medium">Default</th><th className="px-4 py-2 font-medium">Descrição</th></tr></thead>
-        <tbody className="divide-y divide-border">{rows.map((r) => (<tr key={r.prop}><td className="px-4 py-2 font-mono text-xs text-foreground">{r.prop}</td><td className="px-4 py-2 font-mono text-xs text-muted-foreground">{r.type}</td><td className="px-4 py-2 font-mono text-xs text-muted-foreground">{r.def ?? "—"}</td><td className="px-4 py-2 text-muted-foreground">{r.desc}</td></tr>))}</tbody>
-      </table>
-    </div>
-  )
-}
-function GuidelineCard({ tone, title, items }: { tone: "do" | "dont"; title: string; items: string[] }) {
-  const isDo = tone === "do"
-  return (
-    <div className={cn("rounded-lg border p-4", isDo ? "border-success/30 bg-success/5" : "border-destructive/30 bg-destructive/5")}>
-      <p className={cn("mb-2 text-sm font-semibold", isDo ? "text-success" : "text-destructive")}>{title}</p>
-      <ul className="space-y-1.5 text-sm text-muted-foreground">{items.map((i) => <li key={i}>• {i}</li>)}</ul>
-    </div>
-  )
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 export default function MessagePage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">Message</h1>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Bolhas de conversa para a caixa de entrada do CRM — trocas com leads e clientes.
-          Incoming em <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-muted</code>,
-          outgoing em <span className="font-medium text-primary">emerald</span>, com status de entrega,
-          anexos e eventos de sistema.
-        </p>
-      </div>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Message"
+        description={
+          <>
+            Bolhas de conversa para a caixa de entrada do CRM — trocas com leads e clientes.
+            Incoming em <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-muted</code>,
+            outgoing em <span className="font-medium text-primary">emerald</span>, com status de entrega,
+            anexos e eventos de sistema.
+          </>
+        }
+      />
 
       <Section title="Variantes" description="incoming (recebida, à esquerda), outgoing (enviada, à direita) e system (evento centralizado).">
         <Demo className="space-y-3">
@@ -151,29 +125,21 @@ export default function MessagePage() {
         </Demo>
       </Section>
 
-      <Section title="Dark Mode">
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-3 rounded-lg border border-border bg-background p-6">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Light</p>
-            <Message variant="incoming" avatar="SW" timestamp="09:41">Recebido, obrigada!</Message>
-            <Message variant="outgoing" timestamp="09:42" status="read">Disponível 😊</Message>
-          </div>
-          <div className="dark space-y-3 rounded-lg border border-border bg-background p-6">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Dark</p>
-            <Message variant="incoming" avatar="SW" timestamp="09:41">Recebido, obrigada!</Message>
-            <Message variant="outgoing" timestamp="09:42" status="read">Disponível 😊</Message>
-          </div>
+      <DarkModeSection>
+        <div className="space-y-3">
+          <Message variant="incoming" avatar="SW" timestamp="09:41">Recebido, obrigada!</Message>
+          <Message variant="outgoing" timestamp="09:42" status="read">Disponível 😊</Message>
         </div>
-      </Section>
+      </DarkModeSection>
 
-      <Section title="Acessibilidade">
-        <ul className="space-y-1.5 text-sm text-muted-foreground">
-          <li>• O status de entrega tem <code className="font-mono text-xs">aria-label</code> (Enviado/Entregue/Lido/Falhou).</li>
-          <li>• SystemMessage e TypingIndicator usam <code className="font-mono text-xs">role=&quot;status&quot;</code>.</li>
-          <li>• Não transmita autoria só pela posição/cor — inclua nome e horário.</li>
-          <li>• A thread deve ser navegável por teclado (container rolável focável).</li>
-        </ul>
-      </Section>
+      <AccessibilitySection
+        items={[
+          <>O status de entrega tem <code className="font-mono text-xs">aria-label</code> (Enviado/Entregue/Lido/Falhou).</>,
+          <>SystemMessage e TypingIndicator usam <code className="font-mono text-xs">role=&quot;status&quot;</code>.</>,
+          <>Não transmita autoria só pela posição/cor — inclua nome e horário.</>,
+          <>A thread deve ser navegável por teclado (container rolável focável).</>,
+        ]}
+      />
 
       <Section title="Código">
         <CodeBlock>{`import { MessageThread, MessageGroup, Message, SystemMessage, MessageAttachment } from "@/components/message"
@@ -190,40 +156,38 @@ export default function MessagePage() {
 </MessageThread>`}</CodeBlock>
       </Section>
 
-      <Section title="API / Props">
-        <div className="space-y-4">
-          <ApiTable rows={[
-            { prop: "Message.variant", type: '"incoming" | "outgoing"', desc: "Lado e cor da bolha." },
-            { prop: "avatar / author", type: "ReactNode / string", desc: "Avatar (iniciais) e nome do remetente." },
-            { prop: "showAvatar / showAuthor", type: "boolean", desc: "Controlam repetição no agrupamento." },
-            { prop: "timestamp", type: "string", desc: "Horário formatado." },
-            { prop: "status", type: '"sending"|"sent"|"delivered"|"read"|"failed"', desc: "Status de entrega (outgoing)." },
-          ]} />
-          <ApiTable rows={[
-            { prop: "MessageThread / MessageGroup", type: "container", desc: "Lista rolável e agrupamento." },
-            { prop: "SystemMessage / DateSeparator", type: "container", desc: "Eventos e divisores centrais." },
-            { prop: "TypingIndicator", type: "avatar?", desc: "Indicador de digitação." },
-            { prop: "MessageAttachment", type: "name, size, icon, downloadable", desc: "Anexo dentro da bolha." },
-          ]} />
-        </div>
-      </Section>
+      <ApiSection
+        groups={[
+          [
+            { prop: "Message.variant", type: '"incoming" | "outgoing"', description: "Lado e cor da bolha." },
+            { prop: "avatar / author", type: "ReactNode / string", description: "Avatar (iniciais) e nome do remetente." },
+            { prop: "showAvatar / showAuthor", type: "boolean", description: "Controlam repetição no agrupamento." },
+            { prop: "timestamp", type: "string", description: "Horário formatado." },
+            { prop: "status", type: '"sending"|"sent"|"delivered"|"read"|"failed"', description: "Status de entrega (outgoing)." },
+          ],
+          [
+            { prop: "MessageThread / MessageGroup", type: "container", description: "Lista rolável e agrupamento." },
+            { prop: "SystemMessage / DateSeparator", type: "container", description: "Eventos e divisores centrais." },
+            { prop: "TypingIndicator", type: "avatar?", description: "Indicador de digitação." },
+            { prop: "MessageAttachment", type: "name, size, icon, downloadable", description: "Anexo dentro da bolha." },
+          ],
+        ]}
+      />
 
-      <Section title="Boas práticas">
-        <div className="grid gap-4 md:grid-cols-2">
-          <GuidelineCard tone="do" title="Do" items={[
-            "Agrupe mensagens consecutivas do mesmo remetente.",
-            "Mostre status de entrega em mensagens enviadas.",
-            "Use SystemMessage para eventos (atribuição, tags).",
-            "Inclua horário e nome para contexto.",
-          ]} />
-          <GuidelineCard tone="dont" title="Don't" items={[
-            "Não repita avatar/nome em cada mensagem do grupo.",
-            "Não use azul no status de lido — use emerald.",
-            "Não coloque ações críticas dentro da bolha.",
-            "Não transmita autoria só pela cor.",
-          ]} />
-        </div>
-      </Section>
-    </div>
+      <GuidelinesSection
+        dos={[
+          "Agrupe mensagens consecutivas do mesmo remetente.",
+          "Mostre status de entrega em mensagens enviadas.",
+          "Use SystemMessage para eventos (atribuição, tags).",
+          "Inclua horário e nome para contexto.",
+        ]}
+        donts={[
+          "Não repita avatar/nome em cada mensagem do grupo.",
+          "Não use azul no status de lido — use emerald.",
+          "Não coloque ações críticas dentro da bolha.",
+          "Não transmita autoria só pela cor.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

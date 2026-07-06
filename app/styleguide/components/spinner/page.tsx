@@ -1,141 +1,29 @@
 "use client"
 
 import * as React from "react"
-import { AlertCircle, Check, RefreshCw } from "lucide-react"
+import { RefreshCw } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Spinner, SpinnerOverlay } from "@/components/ui/spinner"
+import {
+  ApiTable,
+  CodeBlock,
+  ComponentHeader,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+  type ApiRow,
+} from "@/app/styleguide/_components"
 
 /* ---------- page-local presentation helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className={"rounded-xl border bg-card p-6 " + (className ?? "")}>{children}</div>
-  )
-}
 
 function Row({ label, children }: { label?: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2">
       {label && <p className="text-xs font-medium text-muted-foreground">{label}</p>}
       <div className="flex flex-wrap items-center gap-6">{children}</div>
-    </div>
-  )
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      <code className="font-mono text-foreground">{children}</code>
-    </pre>
-  )
-}
-
-function ApiTable({
-  rows,
-  caption,
-}: {
-  rows: Array<[string, string, string, string]>
-  caption?: string
-}) {
-  return (
-    <div className="overflow-x-auto rounded-lg border">
-      <table className="w-full text-left text-sm">
-        <thead className="border-b bg-muted/50 text-xs text-muted-foreground">
-          <tr>
-            <th className="px-4 py-2 font-medium">Prop</th>
-            <th className="px-4 py-2 font-medium">Tipo</th>
-            <th className="px-4 py-2 font-medium">Padrão</th>
-            <th className="px-4 py-2 font-medium">Descrição</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {rows.map(([a, b, c, d]) => (
-            <tr key={a} className="align-top">
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-foreground">{a}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{b}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{c}</code>
-              </td>
-              <td className="px-4 py-2 text-muted-foreground">{d}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {caption && <p className="px-4 py-2 text-xs text-muted-foreground">{caption}</p>}
-    </div>
-  )
-}
-
-function GuidelineCard({
-  tone,
-  title,
-  items,
-}: {
-  tone: "do" | "dont"
-  title: string
-  items: string[]
-}) {
-  const isDo = tone === "do"
-  return (
-    <div className="rounded-xl border bg-card p-5">
-      <div className="mb-3 flex items-center gap-2">
-        <span
-          className={
-            "flex size-6 items-center justify-center rounded-full " +
-            (isDo ? "bg-success/15 text-success" : "bg-destructive/10 text-destructive")
-          }
-        >
-          {isDo ? <Check className="size-3.5" /> : <AlertCircle className="size-3.5" />}
-        </span>
-        <h3 className="text-sm font-semibold">{title}</h3>
-      </div>
-      <ul className="space-y-2 text-sm text-muted-foreground">
-        {items.map((item, i) => (
-          <li key={i} className="flex gap-2">
-            <span
-              className={
-                "mt-1.5 size-1 shrink-0 rounded-full " +
-                (isDo ? "bg-success" : "bg-destructive")
-              }
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
     </div>
   )
 }
@@ -214,40 +102,42 @@ function ButtonLoadingDemo() {
 
 /* ---------- docs data ---------- */
 
-const SPINNER_PROPS: Array<[string, string, string, string]> = [
-  ["variant", `"ring" | "icon" | "dots"`, `"ring"`, "Aparência: anel CSS (padrão), ícone Loader2 (igual ao Button) ou pontos."],
-  ["size", `"xs" | "sm" | "default" | "lg" | "xl"`, `"default"`, "Tamanho do indicador."],
-  ["tone", `"current" | "muted" | "primary" | "destructive" | "success"`, `"current"`, "Cor semântica. current herda a cor do texto do contexto."],
-  ["label", "string", `"Carregando"`, "Rótulo para leitores de tela (sr-only por padrão)."],
-  ["showLabel", "boolean", "false", "Exibe o label como texto visível ao lado."],
+const SPINNER_PROPS: ApiRow[] = [
+  { prop: "variant", type: `"ring" | "icon" | "dots"`, default: `"ring"`, description: "Aparência: anel CSS (padrão), ícone Loader2 (igual ao Button) ou pontos." },
+  { prop: "size", type: `"xs" | "sm" | "default" | "lg" | "xl"`, default: `"default"`, description: "Tamanho do indicador." },
+  { prop: "tone", type: `"current" | "muted" | "primary" | "destructive" | "success"`, default: `"current"`, description: "Cor semântica. current herda a cor do texto do contexto." },
+  { prop: "label", type: "string", default: `"Carregando"`, description: "Rótulo para leitores de tela (sr-only por padrão)." },
+  { prop: "showLabel", type: "boolean", default: "false", description: "Exibe o label como texto visível ao lado." },
 ]
 
-const OVERLAY_PROPS: Array<[string, string, string, string]> = [
-  ["show", "boolean", "true", "Liga/desliga o overlay (não renderiza quando false)."],
-  ["label", "ReactNode", "—", "Legenda abaixo do spinner."],
-  ["size / variant", "SpinnerProps", `"lg" · "ring"`, "Tamanho e estilo do spinner central."],
-  ["scrim", `"soft" | "solid" | "none"`, `"soft"`, "Opacidade do véu (bg-card/60 ou /80)."],
-  ["blur", "boolean", "false", "Aplica um leve backdrop-blur no conteúdo coberto."],
-  ["tone", "SpinnerProps['tone']", `"primary"`, "Cor do spinner central."],
+const OVERLAY_PROPS: ApiRow[] = [
+  { prop: "show", type: "boolean", default: "true", description: "Liga/desliga o overlay (não renderiza quando false)." },
+  { prop: "label", type: "ReactNode", default: "—", description: "Legenda abaixo do spinner." },
+  { prop: "size / variant", type: "SpinnerProps", default: `"lg" · "ring"`, description: "Tamanho e estilo do spinner central." },
+  { prop: "scrim", type: `"soft" | "solid" | "none"`, default: `"soft"`, description: "Opacidade do véu (bg-card/60 ou /80)." },
+  { prop: "blur", type: "boolean", default: "false", description: "Aplica um leve backdrop-blur no conteúdo coberto." },
+  { prop: "tone", type: "SpinnerProps['tone']", default: `"primary"`, description: "Cor do spinner central." },
 ]
 
 /* ---------- page ---------- */
 
 export default function SpinnerPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      {/* Header */}
-      <header className="space-y-3">
+    <StyleguidePage>
+      <ComponentHeader
+        title="Spinner"
+        description={
+          <>
+            Indicador de carregamento para ações e áreas do CRM. Três aparências (anel,
+            ícone, pontos), cinco tamanhos e cores semânticas — sempre a partir dos tokens.
+            Acompanha o <code className="font-mono text-sm">SpinnerOverlay</code> para cobrir
+            uma área enquanto ela carrega. Para blocos de conteúdo, prefira o{" "}
+            <code className="font-mono text-sm">Skeleton</code>.
+          </>
+        }
+      >
         <Badge variant="secondary">Core · Feedback</Badge>
-        <h1 className="text-4xl font-bold tracking-tight">Spinner</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Indicador de carregamento para ações e áreas do CRM. Três aparências (anel,
-          ícone, pontos), cinco tamanhos e cores semânticas — sempre a partir dos tokens.
-          Acompanha o <code className="font-mono text-sm">SpinnerOverlay</code> para cobrir
-          uma área enquanto ela carrega. Para blocos de conteúdo, prefira o{" "}
-          <code className="font-mono text-sm">Skeleton</code>.
-        </p>
-      </header>
+      </ComponentHeader>
 
       {/* Variants */}
       <Section
@@ -448,42 +338,34 @@ export default function SpinnerPage() {
         <div className="space-y-6">
           <div className="space-y-2">
             <h3 className="text-sm font-semibold">Spinner</h3>
-            <ApiTable rows={SPINNER_PROPS} caption="Estende span; role='status' e um label sr-only são sempre aplicados." />
+            <ApiTable rows={SPINNER_PROPS} />
+            <p className="text-xs text-muted-foreground">Estende span; role=&apos;status&apos; e um label sr-only são sempre aplicados.</p>
           </div>
           <div className="space-y-2">
             <h3 className="text-sm font-semibold">SpinnerOverlay</h3>
-            <ApiTable rows={OVERLAY_PROPS} caption="Requer um ancestral com position: relative." />
+            <ApiTable rows={OVERLAY_PROPS} />
+            <p className="text-xs text-muted-foreground">Requer um ancestral com position: relative.</p>
           </div>
         </div>
       </Section>
 
       {/* Guidelines */}
-      <Section title="Boas práticas" description="Quando usar spinner vs skeleton.">
-        <div className="grid gap-4 md:grid-cols-2">
-          <GuidelineCard
-            tone="do"
-            title="Faça"
-            items={[
-              "Use spinner para ações rápidas e indeterminadas (salvar, sincronizar, recarregar).",
-              "Prefira o loading embutido do Button; use Spinner solto só em composição manual.",
-              "Use SpinnerOverlay para recarregar uma área que já tem conteúdo.",
-              "Deixe tone=current quando o spinner acompanha um texto colorido.",
-              "Mantenha um label (mesmo sr-only) para leitores de tela.",
-            ]}
-          />
-          <GuidelineCard
-            tone="dont"
-            title="Evite"
-            items={[
-              "Spinner para o primeiro carregamento de listas/cards — prefira Skeleton.",
-              "Vários spinners na mesma tela ao mesmo tempo; centralize em um overlay.",
-              "Spinner sem bloquear a ação que o disparou (evite duplo clique).",
-              "Cor hardcoded — use tone (tokens semânticos).",
-              "Overlay sem ancestral relative (vai cobrir a página toda).",
-            ]}
-          />
-        </div>
-      </Section>
+      <GuidelinesSection
+        dos={[
+          "Use spinner para ações rápidas e indeterminadas (salvar, sincronizar, recarregar).",
+          "Prefira o loading embutido do Button; use Spinner solto só em composição manual.",
+          "Use SpinnerOverlay para recarregar uma área que já tem conteúdo.",
+          "Deixe tone=current quando o spinner acompanha um texto colorido.",
+          "Mantenha um label (mesmo sr-only) para leitores de tela.",
+        ]}
+        donts={[
+          "Spinner para o primeiro carregamento de listas/cards — prefira Skeleton.",
+          "Vários spinners na mesma tela ao mesmo tempo; centralize em um overlay.",
+          "Spinner sem bloquear a ação que o disparou (evite duplo clique).",
+          "Cor hardcoded — use tone (tokens semânticos).",
+          "Overlay sem ancestral relative (vai cobrir a página toda).",
+        ]}
+      />
 
       {/* Accessibility */}
       <Section title="Acessibilidade" description="Garantias do componente.">
@@ -511,7 +393,7 @@ export default function SpinnerPage() {
           </ul>
         </div>
       </Section>
-    </div>
+    </StyleguidePage>
   )
 }
 

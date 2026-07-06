@@ -5,7 +5,6 @@ import {
   AlertCircle,
   AtSign,
   Building2,
-  Check,
   CheckCircle2,
   DollarSign,
   Globe,
@@ -17,7 +16,6 @@ import {
   User,
 } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   InputGroup,
@@ -40,138 +38,26 @@ import {
   PasswordInput,
   CopyInput,
 } from "@/components/input-group"
+import {
+  AccessibilitySection,
+  ApiTable,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+  type ApiRow,
+} from "@/app/styleguide/_components"
 
 /* ---------- page-local presentation helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className={"rounded-xl border bg-card p-6 " + (className ?? "")}>
-      {children}
-    </div>
-  )
-}
 
 function Row({ label, children }: { label?: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
       {label && <p className="text-xs font-medium text-muted-foreground">{label}</p>}
       {children}
-    </div>
-  )
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      <code className="font-mono text-foreground">{children}</code>
-    </pre>
-  )
-}
-
-function ApiTable({
-  rows,
-  caption,
-}: {
-  rows: Array<[string, string, string, string]>
-  caption?: string
-}) {
-  return (
-    <div className="overflow-x-auto rounded-lg border">
-      <table className="w-full text-left text-sm">
-        <thead className="border-b bg-muted/50 text-xs text-muted-foreground">
-          <tr>
-            <th className="px-4 py-2 font-medium">Nome</th>
-            <th className="px-4 py-2 font-medium">Tipo</th>
-            <th className="px-4 py-2 font-medium">Padrão</th>
-            <th className="px-4 py-2 font-medium">Descrição</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {rows.map(([a, b, c, d]) => (
-            <tr key={a} className="align-top">
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-foreground">{a}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{b}</code>
-              </td>
-              <td className="px-4 py-2">
-                <code className="font-mono text-xs text-muted-foreground">{c}</code>
-              </td>
-              <td className="px-4 py-2 text-muted-foreground">{d}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {caption && <p className="px-4 py-2 text-xs text-muted-foreground">{caption}</p>}
-    </div>
-  )
-}
-
-function GuidelineCard({
-  tone,
-  title,
-  items,
-}: {
-  tone: "do" | "dont"
-  title: string
-  items: string[]
-}) {
-  const isDo = tone === "do"
-  return (
-    <div className="rounded-xl border bg-card p-5">
-      <div className="mb-3 flex items-center gap-2">
-        <span
-          className={
-            "flex size-6 items-center justify-center rounded-full " +
-            (isDo ? "bg-success/15 text-success" : "bg-destructive/10 text-destructive")
-          }
-        >
-          {isDo ? <Check className="size-3.5" /> : <AlertCircle className="size-3.5" />}
-        </span>
-        <h3 className="text-sm font-semibold">{title}</h3>
-      </div>
-      <ul className="space-y-2 text-sm text-muted-foreground">
-        {items.map((item, i) => (
-          <li key={i} className="flex gap-2">
-            <span
-              className={
-                "mt-1.5 size-1 shrink-0 rounded-full " +
-                (isDo ? "bg-success" : "bg-destructive")
-              }
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
     </div>
   )
 }
@@ -236,39 +122,39 @@ function EmailFieldDemo() {
 
 /* ---------- docs data ---------- */
 
-const PRIMITIVE_PARTS: Array<[string, string, string, string]> = [
-  ["InputGroup", "div[role=group]", "—", "Contêiner; gerencia foco, hover e estado inválido do conjunto."],
-  ["InputGroupInput", "input", "—", "Controle de texto sem borda (herda foco do grupo)."],
-  ["InputGroupTextarea", "textarea", "—", "Variante multilinha (usa addons block-start/-end)."],
-  ["InputGroupAddon", "div", `align "inline-start"`, "Slot de ícone/texto/botão. align: inline-start/-end, block-start/-end."],
-  ["InputGroupButton", "button", `size "xs" · variant "ghost"`, "Botão compacto para ações inline (limpar, mostrar, copiar)."],
-  ["InputGroupText", "span", "—", "Rótulo textual (prefixo/sufixo, ex.: $, %, USD)."],
+const PRIMITIVE_PARTS: ApiRow[] = [
+  { prop: "InputGroup", type: "div[role=group]", default: "—", description: "Contêiner; gerencia foco, hover e estado inválido do conjunto." },
+  { prop: "InputGroupInput", type: "input", default: "—", description: "Controle de texto sem borda (herda foco do grupo)." },
+  { prop: "InputGroupTextarea", type: "textarea", default: "—", description: "Variante multilinha (usa addons block-start/-end)." },
+  { prop: "InputGroupAddon", type: "div", default: `align "inline-start"`, description: "Slot de ícone/texto/botão. align: inline-start/-end, block-start/-end." },
+  { prop: "InputGroupButton", type: "button", default: `size "xs" · variant "ghost"`, description: "Botão compacto para ações inline (limpar, mostrar, copiar)." },
+  { prop: "InputGroupText", type: "span", default: "—", description: "Rótulo textual (prefixo/sufixo, ex.: $, %, USD)." },
 ]
 
-const FAMILY_PROPS: Array<[string, string, string, string]> = [
-  ["SearchInput", "value/onValueChange · loading · clearable · onClear", "clearable=true", "Busca com ícone, spinner e botão limpar."],
-  ["CurrencyInput", "currency · code · ...input", `currency="$"`, "Símbolo de moeda + numérico alinhado à direita."],
-  ["PasswordInput", "...input", "—", "Senha com alternância mostrar/ocultar."],
-  ["CopyInput", "value · mono · onCopy", "mono=true", "Valor somente-leitura + botão copiar com feedback."],
+const FAMILY_PROPS: ApiRow[] = [
+  { prop: "SearchInput", type: "value/onValueChange · loading · clearable · onClear", default: "clearable=true", description: "Busca com ícone, spinner e botão limpar." },
+  { prop: "CurrencyInput", type: "currency · code · ...input", default: `currency="$"`, description: "Símbolo de moeda + numérico alinhado à direita." },
+  { prop: "PasswordInput", type: "...input", default: "—", description: "Senha com alternância mostrar/ocultar." },
+  { prop: "CopyInput", type: "value · mono · onCopy", default: "mono=true", description: "Valor somente-leitura + botão copiar com feedback." },
 ]
 
 /* ---------- page ---------- */
 
 export default function InputGroupPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-14 p-8 md:p-12">
-      {/* Header */}
-      <header className="space-y-3">
-        <Badge variant="secondary">Core · Formulários</Badge>
-        <h1 className="text-4xl font-bold tracking-tight">Input Group</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Agrupa um controle com ícones, prefixos, sufixos e botões inline dentro de
-          uma única superfície — mesma altura, raio e tokens do{" "}
-          <code className="font-mono text-sm">Input</code>. Inclui presets de CRM
-          (busca, moeda, senha, copiar) e compõe com o{" "}
-          <code className="font-mono text-sm">Field</code> para rótulo e validação.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Input Group"
+        description={
+          <>
+            Agrupa um controle com ícones, prefixos, sufixos e botões inline dentro de
+            uma única superfície — mesma altura, raio e tokens do{" "}
+            <code className="font-mono text-sm">Input</code>. Inclui presets de CRM
+            (busca, moeda, senha, copiar) e compõe com o{" "}
+            <code className="font-mono text-sm">Field</code> para rótulo e validação.
+          </>
+        }
+      />
 
       {/* Primitive composition */}
       <Section
@@ -472,21 +358,12 @@ export default function InputGroupPage() {
       </Section>
 
       {/* Light / Dark */}
-      <Section
+      <DarkModeSection
         title="Light / Dark"
         description="Bordas, foco e addons usam tokens com pares -foreground; contraste garantido nos dois temas. Painel direito forçado em dark."
       >
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-3 rounded-xl border bg-card p-6">
-            <p className="text-xs font-medium text-muted-foreground">Light</p>
-            <ThemePreview />
-          </div>
-          <div className="dark space-y-3 rounded-xl border border-border bg-card p-6 text-card-foreground">
-            <p className="text-xs font-medium text-muted-foreground">Dark</p>
-            <ThemePreview />
-          </div>
-        </div>
-      </Section>
+        <ThemePreview />
+      </DarkModeSection>
 
       {/* Real examples */}
       <Section
@@ -593,73 +470,61 @@ export default function InputGroupPage() {
           </div>
           <div className="space-y-2">
             <h3 className="text-sm font-semibold">Presets (@/components/input-group)</h3>
-            <ApiTable
-              rows={FAMILY_PROPS}
-              caption="Todos os presets repassam as props nativas de <input> (placeholder, disabled, name, etc.) e aceitam containerClassName para o grupo."
-            />
+            <ApiTable rows={FAMILY_PROPS} />
+            <p className="text-xs text-muted-foreground">
+              {"Todos os presets repassam as props nativas de <input> (placeholder, disabled, name, etc.) e aceitam containerClassName para o grupo."}
+            </p>
           </div>
         </div>
       </Section>
 
       {/* Guidelines */}
-      <Section title="Boas práticas" description="Diretrizes de uso.">
-        <div className="grid gap-4 md:grid-cols-2">
-          <GuidelineCard
-            tone="do"
-            title="Faça"
-            items={[
-              "Use addon de texto para unidades e símbolos fixos ($, %, https://).",
-              "Prefira os presets (SearchInput, CurrencyInput…) para consistência.",
-              "Envolva em Field quando precisar de rótulo, descrição ou erro acessível.",
-              "Sempre forneça aria-label em InputGroupButton apenas-ícone.",
-              "Reflita erro com aria-invalid no controle — o grupo estiliza sozinho.",
-            ]}
-          />
-          <GuidelineCard
-            tone="dont"
-            title="Evite"
-            items={[
-              "Empilhar bordas: o controle interno é sem borda de propósito — não readicione.",
-              "Colocar mais de 1–2 ações inline; muitos botões poluem o campo.",
-              "Usar como barra de ferramentas completa — para isso use Button Group.",
-              "Depender só de cor para erro/sucesso; combine ícone + mensagem (Field).",
-              "Cores hardcoded — use tokens (text-destructive, text-success, border-input).",
-            ]}
-          />
-        </div>
-      </Section>
+      <GuidelinesSection
+        dos={[
+          "Use addon de texto para unidades e símbolos fixos ($, %, https://).",
+          "Prefira os presets (SearchInput, CurrencyInput…) para consistência.",
+          "Envolva em Field quando precisar de rótulo, descrição ou erro acessível.",
+          "Sempre forneça aria-label em InputGroupButton apenas-ícone.",
+          "Reflita erro com aria-invalid no controle — o grupo estiliza sozinho.",
+        ]}
+        donts={[
+          "Empilhar bordas: o controle interno é sem borda de propósito — não readicione.",
+          "Colocar mais de 1–2 ações inline; muitos botões poluem o campo.",
+          "Usar como barra de ferramentas completa — para isso use Button Group.",
+          "Depender só de cor para erro/sucesso; combine ícone + mensagem (Field).",
+          "Cores hardcoded — use tokens (text-destructive, text-success, border-input).",
+        ]}
+      />
 
       {/* Accessibility */}
-      <Section title="Acessibilidade" description="Garantias embutidas.">
-        <div className="rounded-lg border bg-card p-5">
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              <span className="font-medium text-foreground">Foco no conjunto:</span>{" "}
-              o grupo é <code className="font-mono text-xs">role=&quot;group&quot;</code> e mostra um único anel
-              de foco quando o controle interno recebe <code className="font-mono text-xs">focus-visible</code>.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Clique no addon:</span>{" "}
-              clicar num addon (não-botão) foca o input — alvo de clique maior.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Erro:</span>{" "}
-              <code className="font-mono text-xs">aria-invalid</code> pinta borda/anel e, via Field,
-              conecta a <code className="font-mono text-xs">FieldError</code> (<code className="font-mono text-xs">role=&quot;alert&quot;</code>).
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Botões inline:</span>{" "}
-              são <code className="font-mono text-xs">&lt;button type=&quot;button&quot;&gt;</code> (não submetem) e
-              exigem <code className="font-mono text-xs">aria-label</code> quando só têm ícone.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Senha:</span>{" "}
-              o toggle expõe <code className="font-mono text-xs">aria-pressed</code> refletindo a visibilidade.
-            </li>
-          </ul>
-        </div>
-      </Section>
-    </div>
+      <AccessibilitySection
+        items={[
+          <>
+            <span className="font-medium text-foreground">Foco no conjunto:</span>{" "}
+            o grupo é <code className="font-mono text-xs">role=&quot;group&quot;</code> e mostra um único anel
+            de foco quando o controle interno recebe <code className="font-mono text-xs">focus-visible</code>.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Clique no addon:</span>{" "}
+            clicar num addon (não-botão) foca o input — alvo de clique maior.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Erro:</span>{" "}
+            <code className="font-mono text-xs">aria-invalid</code> pinta borda/anel e, via Field,
+            conecta a <code className="font-mono text-xs">FieldError</code> (<code className="font-mono text-xs">role=&quot;alert&quot;</code>).
+          </>,
+          <>
+            <span className="font-medium text-foreground">Botões inline:</span>{" "}
+            são <code className="font-mono text-xs">&lt;button type=&quot;button&quot;&gt;</code> (não submetem) e
+            exigem <code className="font-mono text-xs">aria-label</code> quando só têm ícone.
+          </>,
+          <>
+            <span className="font-medium text-foreground">Senha:</span>{" "}
+            o toggle expõe <code className="font-mono text-xs">aria-pressed</code> refletindo a visibilidade.
+          </>,
+        ]}
+      />
+    </StyleguidePage>
   )
 }
 

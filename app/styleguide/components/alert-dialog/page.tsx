@@ -214,7 +214,7 @@ export default function AlertDialogPage() {
           <>Unlike a regular dialog, an AlertDialog does <strong>not</strong> close on overlay click or <code className="font-mono text-xs">Esc</code> by default — a confirmation demands an explicit choice.</>,
           <><code className="font-mono text-xs">AlertDialogTitle</code> and <code className="font-mono text-xs">AlertDialogDescription</code> are wired as the accessible name/description for screen readers — always provide both.</>,
           <>The variant icon is decorative; meaning comes from the title, description and the destructive/default confirm button color.</>,
-          <>While <code className="font-mono text-xs">loading</code>, both actions are disabled so an async confirm can't be triggered twice.</>,
+          <>While <code className="font-mono text-xs">loading</code>, both actions are disabled so an async confirm cannot be triggered twice.</>,
         ]}
       />
 
