@@ -39,6 +39,7 @@ export const navigation: NavSection[] = [
       { name: "Label", href: "/styleguide/components/label" },
       { name: "Message", href: "/styleguide/components/message" },
       { name: "Sidebar", href: "/styleguide/components/sidebar" },
+      { name: "Sonner (Toast)", href: "/styleguide/components/sonner" },
       { name: "Survey", href: "/styleguide/components/survey" },
       { name: "Table", href: "/styleguide/components/table" },
       { name: "Tabs", href: "/styleguide/components/tabs" },
