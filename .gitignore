@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# sync-conflict duplicates (iCloud/Dropbox create "component 2.tsx" copies)
+* 2.ts
+* 2.tsx
+* 2.md
+* 3.ts
+* 3.tsx
+* 3.md
