@@ -38,6 +38,7 @@ export const navigation: NavSection[] = [
       { name: "Input Group", href: "/styleguide/components/input-group" },
       { name: "Label", href: "/styleguide/components/label" },
       { name: "Message", href: "/styleguide/components/message" },
+      { name: "Sonner (Toast)", href: "/styleguide/components/sonner" },
       { name: "Survey", href: "/styleguide/components/survey" },
       { name: "Table", href: "/styleguide/components/table" },
       { name: "Tabs", href: "/styleguide/components/tabs" },
