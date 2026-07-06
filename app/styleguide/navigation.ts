@@ -36,6 +36,7 @@ export const navigation: NavSection[] = [
       { name: "Hover Card", href: "/styleguide/components/hover-card" },
       { name: "Input Group", href: "/styleguide/components/input-group" },
       { name: "Label", href: "/styleguide/components/label" },
+      { name: "Sheet", href: "/styleguide/components/sheet" },
       { name: "Survey", href: "/styleguide/components/survey" },
       { name: "Table", href: "/styleguide/components/table" },
       { name: "Tabs", href: "/styleguide/components/tabs" },
