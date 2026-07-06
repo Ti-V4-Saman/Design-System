@@ -30,6 +30,7 @@ export const navigation: NavSection[] = [
       { name: "Context Menu", href: "/styleguide/components/context-menu" },
       { name: "Dropdown Menu", href: "/styleguide/components/dropdown-menu" },
       { name: "Menubar", href: "/styleguide/components/menubar" },
+      { name: "Navigation Menu", href: "/styleguide/components/navigation-menu" },
       { name: "Sidebar", href: "/styleguide/components/sidebar" },
     ],
   },
