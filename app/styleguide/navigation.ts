@@ -27,6 +27,7 @@ export const navigation: NavSection[] = [
       { name: "Calendar", href: "/styleguide/components/calendar" },
       { name: "Cards", href: "/styleguide/components/cards" },
       { name: "Chart", href: "/styleguide/components/chart" },
+      { name: "Collapsible", href: "/styleguide/components/collapsible" },
       { name: "Command", href: "/styleguide/components/command" },
       { name: "Dialog", href: "/styleguide/components/dialog" },
       { name: "Drawer", href: "/styleguide/components/drawer" },
