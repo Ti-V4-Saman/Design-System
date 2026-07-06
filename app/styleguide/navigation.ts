@@ -41,7 +41,6 @@ export const navigation: NavSection[] = [
       { name: "Drawer", href: "/styleguide/components/drawer" },
       { name: "Hover Card", href: "/styleguide/components/hover-card" },
       { name: "Tooltip", href: "/styleguide/components/tooltip" },
-      { name: "Typography", href: "/styleguide/components/typography" },
     ],
   },
   {
@@ -62,6 +61,7 @@ export const navigation: NavSection[] = [
       { name: "Badge", href: "/styleguide/components/badge" },
       { name: "Chart", href: "/styleguide/components/chart" },
       { name: "Table", href: "/styleguide/components/table" },
+      { name: "Typography", href: "/styleguide/components/typography" },
     ],
   },
   {
