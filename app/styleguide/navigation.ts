@@ -40,6 +40,7 @@ export const navigation: NavSection[] = [
       { name: "Message", href: "/styleguide/components/message" },
       { name: "Sonner (Toast)", href: "/styleguide/components/sonner" },
       { name: "Survey", href: "/styleguide/components/survey" },
+      { name: "Switch", href: "/styleguide/components/switch" },
       { name: "Table", href: "/styleguide/components/table" },
       { name: "Tabs", href: "/styleguide/components/tabs" },
       { name: "Tooltip", href: "/styleguide/components/tooltip" },
