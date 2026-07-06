@@ -24,6 +24,8 @@ import {
   GuidelinesSection,
   Section,
   StyleguidePage,
+  DesignNotes,
+  RelatedComponents,
 } from "@/app/styleguide/_components"
 
 // ─── Formatters ────────────────────────────────────────────────────────────
@@ -493,6 +495,20 @@ export default function ChartPage() {
           "Não empilhe séries demais a ponto de poluir a leitura.",
           "Não hardcode cores — use os tokens/roles semânticos.",
           "Não esconda o eixo Y quando a escala importa para a decisão.",
+        ]}
+      />
+      <DesignNotes
+        items={[
+          "Paleta emerald-led sem azul (--chart-1…5) com papéis semânticos (primary/secondary/warning/danger/neutral) resolvidos por resolveColor.",
+          "Família tipada sobre Recharts — Line/Area/Bar/Pie/Radar/Funnel/Heatmap — mais KpiTrend e Sparkline para métricas isoladas.",
+          "resolveColor aceita token explícito, papel semântico ou índice da paleta, evitando qualquer cor hardcode nas séries.",
+        ]}
+      />
+      <RelatedComponents
+        items={[
+          { name: "Table", href: "/styleguide/components/table", description: "Complementa o gráfico com os números exatos por linha." },
+          { name: "Cards", href: "/styleguide/components/cards", description: "Contêiner padrão para envolver um gráfico com título e descrição." },
+          { name: "Progress", href: "/styleguide/components/progress", description: "Visualização de proporção única quando um gráfico é demais." },
         ]}
       />
     </StyleguidePage>

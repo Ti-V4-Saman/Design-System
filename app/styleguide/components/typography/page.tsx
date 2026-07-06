@@ -13,6 +13,8 @@ import {
   GuidelinesSection,
   Section,
   StyleguidePage,
+  DesignNotes,
+  RelatedComponents,
 } from "@/app/styleguide/_components"
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
@@ -213,6 +215,21 @@ export default function TypographyPage() {
           "Não pule níveis de heading por estética.",
           "Não use muitos pesos/tamanhos na mesma tela.",
           "Não transmita significado só por cor.",
+        ]}
+      />
+      <DesignNotes
+        items={[
+          "Heading via cva: level define ao mesmo tempo a tag semântica e o tamanho (1=4xl bold … 6=base semibold); a prop as separa a tag do tamanho para preservar a ordem do documento.",
+          "Text expõe variantes (lead/body/small/caption/overline), tom e peso por tokens — nada de tamanho ou cor hardcode.",
+          "Prose estiliza HTML rico (notas, e-mails, base de conhecimento) aplicando a escala aos elementos filhos.",
+          "font-heading isola a fonte de títulos da fonte de corpo, mantendo a hierarquia consistente.",
+        ]}
+      />
+      <RelatedComponents
+        items={[
+          { name: "Button", href: "/styleguide/components/button", description: "Compartilha peso e tokens de texto para rótulos consistentes." },
+          { name: "Cards", href: "/styleguide/components/cards", description: "Usa Heading e Text no título e na descrição." },
+          { name: "Badge", href: "/styleguide/components/badge", description: "Texto curto em pílula, com a mesma escala tipográfica." },
         ]}
       />
     </StyleguidePage>

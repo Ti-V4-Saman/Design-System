@@ -31,7 +31,9 @@ import {
   ComponentHeader,
   DarkModeSection,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -271,6 +273,24 @@ import { FormDialog } from "@/components/dialog"
           "Não empilhe múltiplos dialogs; prefira um fluxo por vez.",
           "Não coloque formulários longos sem corpo rolável.",
           "Não remova o título/descrição (acessibilidade).",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>Superfície <code className="font-mono text-xs">bg-card</code> centralizada com <code className="font-mono text-xs">rounded-xl</code>, <code className="font-mono text-xs">border-border</code> e <code className="font-mono text-xs">shadow-modal</code> — mesma elevação do AlertDialog.</>,
+          <>A prop <code className="font-mono text-xs">size</code> mapeia para <code className="font-mono text-xs">max-w</code> (sm→sm, md→lg, lg→2xl, xl→4xl); todos os tamanhos limitam a <code className="font-mono text-xs">max-w-[calc(100%-2rem)]</code> no mobile e <code className="font-mono text-xs">full</code> quase ocupa o viewport.</>,
+          <>O <code className="font-mono text-xs">DialogFooter</code> usa <code className="font-mono text-xs">-mx-4 -mb-4 border-t bg-muted/50</code> para virar uma barra de ações rente às bordas; o tamanho <code className="font-mono text-xs">full</code> usa <code className="font-mono text-xs">grid-rows-[auto_minmax(0,1fr)_auto]</code> para que só o corpo role entre header e footer fixos.</>,
+          <>Fecha no <code className="font-mono text-xs">Esc</code> e no clique do overlay (diferente do AlertDialog); o <code className="font-mono text-xs">FormDialog</code> bloqueia o fechamento enquanto <code className="font-mono text-xs">loading</code> para não interromper um submit.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Alert Dialog", href: "/styleguide/components/alert-dialog", description: "Confirmações destrutivas/irreversíveis que exigem escolha explícita." },
+          { name: "Drawer", href: "/styleguide/components/drawer", description: "Painel deslizante para o mesmo conteúdo, mas ancorado a uma borda." },
+          { name: "Sheet", href: "/styleguide/components/sheet", description: "Alias do Drawer para detalhe/formulário lateral (mental model shadcn)." },
+          { name: "Command", href: "/styleguide/components/command", description: "Paleta de comandos, normalmente exibida dentro de um Dialog." },
         ]}
       />
     </StyleguidePage>

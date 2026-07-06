@@ -24,6 +24,8 @@ import {
   Section,
   StyleguidePage,
   type ApiRow,
+  DesignNotes,
+  RelatedComponents,
 } from "@/app/styleguide/_components"
 
 /* ---------- page-local presentation helpers ---------- */
@@ -347,6 +349,21 @@ export default function LabelPage() {
             dentro de um <code className="font-mono text-xs">Field</code> com{" "}
             <code className="font-mono text-xs">data-invalid</code>, o rótulo assume a cor destructive.
           </>,
+        ]}
+      />
+      <DesignNotes
+        items={[
+          "Estende o Label do Radix: as props required (asterisco em text-destructive), optional (etiqueta discreta) e hint (ícone Info em Tooltip) evitam poluir o rótulo com texto solto.",
+          "Reflete o estado do controle associado — peer-disabled e group-data-[disabled] reduzem a opacidade junto com o campo desabilitado.",
+          "size sm/default alinha a densidade tipográfica (text-xs/text-sm) ao restante do formulário.",
+        ]}
+      />
+      <RelatedComponents
+        items={[
+          { name: "Field", href: "/styleguide/components/field", description: "Compõe rótulo, controle, descrição e erro num campo completo." },
+          { name: "Input Group", href: "/styleguide/components/input-group", description: "Agrupa rótulo e entradas com addons e affixes." },
+          { name: "Switch", href: "/styleguide/components/switch", description: "Recebe o htmlFor do Label em preferências booleanas." },
+          { name: "Slider", href: "/styleguide/components/slider", description: "Também precisa de rótulo e unidade para leitura acessível." },
         ]}
       />
     </StyleguidePage>

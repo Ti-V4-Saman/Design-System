@@ -39,6 +39,8 @@ import {
   GuidelinesSection,
   Kbd,
   Section,
+  DesignNotes,
+  RelatedComponents,
   StyleguidePage,
 } from "@/app/styleguide/_components"
 
@@ -265,6 +267,34 @@ export default function ContextMenuPage() {
         donts={[
           "Não coloque ações críticas apenas no clique-direito.",
           "Não use para navegação principal.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "Menu de clique-direito no primitivo Radix ContextMenu: posiciona no ponteiro, com navegação por teclado, submenus e aria prontos.",
+          "Compartilha exatamente a mesma linguagem visual do Dropdown Menu (surface bg-popover · shadow-dropdown · rounded-lg; itens com foco accent).",
+          "A variante destrutiva usa o token semântico destructive — cor mantida mesmo com a linha destacada, via ! (important do Tailwind v4).",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Dropdown Menu",
+            href: "/styleguide/components/dropdown-menu",
+            description: "Mesmo sistema de itens e surface, mas acionado por clique num gatilho.",
+          },
+          {
+            name: "Menubar",
+            href: "/styleguide/components/menubar",
+            description: "Menus persistentes de app que reusam a mesma linguagem de itens.",
+          },
+          {
+            name: "Command",
+            href: "/styleguide/components/command",
+            description: "Alternativa por busca para descobrir e executar ações contextuais.",
+          },
         ]}
       />
     </StyleguidePage>

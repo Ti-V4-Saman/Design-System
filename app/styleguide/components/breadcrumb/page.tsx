@@ -31,6 +31,8 @@ import {
   Kbd,
   ResponsiveSection,
   Section,
+  DesignNotes,
+  RelatedComponents,
   StyleguidePage,
 } from "@/app/styleguide/_components"
 
@@ -294,6 +296,40 @@ import { Home, Users, Building2, User } from "lucide-react"
           "Não use como menu de navegação principal.",
           "Não torne o item atual um link.",
           "Não exceda ~4–5 níveis sem colapsar.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "Não é primitivo Radix: markup semântico <nav>/<ol>/<li>. O item atual é um BreadcrumbPage não-link com aria-current=\"page\"; os ancestrais são links.",
+          "Separadores e a elipse são aria-hidden (apresentação) — leitores de tela pulam direto entre os níveis navegáveis.",
+          "CRMBreadcrumb é data-driven: ao exceder maxItems, colapsa o meio (mantém o 1º crumb e os 2 últimos) num dropdown de elipse acessível.",
+          "Cores vêm dos tokens: trilha em text-muted-foreground, hover e item atual em text-foreground, com ring de foco discreto e arredondado.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Dropdown Menu",
+            href: "/styleguide/components/dropdown-menu",
+            description: "Usado pela elipse do CRMBreadcrumb para revelar os níveis colapsados.",
+          },
+          {
+            name: "Navigation Menu",
+            href: "/styleguide/components/navigation-menu",
+            description: "Navegação de topo entre seções, complementar à trilha hierárquica.",
+          },
+          {
+            name: "Sidebar",
+            href: "/styleguide/components/sidebar",
+            description: "Navegação lateral principal; o breadcrumb indica onde você está nela.",
+          },
+          {
+            name: "Pagination",
+            href: "/styleguide/components/pagination",
+            description: "Outro padrão de navegação semântico (nav/ol) para percorrer conjuntos.",
+          },
         ]}
       />
     </StyleguidePage>

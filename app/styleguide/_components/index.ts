@@ -15,5 +15,8 @@ export {
   DarkModeSection,
   GuidelineCard,
   GuidelinesSection,
+  DesignNotes,
+  RelatedComponents,
   EmptyStatePreview,
+  type RelatedComponentLink,
 } from "./sections"

@@ -44,6 +44,8 @@ import {
   GuidelinesSection,
   Kbd,
   Section,
+  DesignNotes,
+  RelatedComponents,
   StyleguidePage,
 } from "@/app/styleguide/_components"
 
@@ -378,6 +380,40 @@ const menu = useCommandMenu()               // { open, setOpen, toggle } + atalh
           "Não use a paleta para fluxos longos com formulários.",
           "Não esconda o estado vazio — sempre oriente o usuário.",
           "Não sobrescreva o atalho ⌘K de outros contextos de input.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "Construído sobre cmdk: filtragem, navegação por teclado e seleção são nativas; o CommandItem destaca com o token data-selected:bg-accent.",
+          "CommandDialog reaproveita o Dialog (surface, portal, foco preso) e reposiciona a paleta no topo (top-1/3), com título e descrição em sr-only.",
+          "O CommandMenu (⌘K) combina grupos estáticos (Navegação, Ações) com busca async debounced de entidades, exibindo skeleton de loading e estado vazio.",
+          "O input reusa o InputGroup com addon de lupa; o match padrão busca em label, descrição e keywords.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Dialog",
+            href: "/styleguide/components/dialog",
+            description: "Base do CommandDialog: overlay, portal e foco preso.",
+          },
+          {
+            name: "Dropdown Menu",
+            href: "/styleguide/components/dropdown-menu",
+            description: "Mesmo vocabulário de itens e atalhos para ações pontuais ancoradas.",
+          },
+          {
+            name: "Input Group",
+            href: "/styleguide/components/input-group",
+            description: "Compõe o campo de busca da paleta com o addon de ícone.",
+          },
+          {
+            name: "Sidebar",
+            href: "/styleguide/components/sidebar",
+            description: "A paleta é o atalho de navegação global que complementa o rail lateral.",
+          },
         ]}
       />
     </StyleguidePage>

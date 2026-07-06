@@ -13,6 +13,8 @@ import {
   GuidelinesSection,
   Section,
   StyleguidePage,
+  DesignNotes,
+  RelatedComponents,
 } from "@/app/styleguide/_components"
 
 export default function BadgePage() {
@@ -163,6 +165,21 @@ import { StatusBadge } from "@/components/badge"
           "Não dependa só da cor para transmitir o estado.",
           "Não empilhe muitos badges na mesma linha.",
           "Não use o variant sólido (default) para status tonais.",
+        ]}
+      />
+      <DesignNotes
+        items={[
+          "cva com variantes tonais (success/warning/destructive) em tint claro sobre tokens semânticos, além de default sólido, outline, ghost e link.",
+          "Altura fixa h-5 em pílula rounded-full; aceita ícone inline-start/inline-end com padding ajustado via has-data.",
+          "asChild (Slot do Radix) permite renderizar como link ou botão preservando o estilo do badge.",
+          "StatusBadge (components/badge) acrescenta um dot de tom, com pulse opcional, para estados de registro.",
+        ]}
+      />
+      <RelatedComponents
+        items={[
+          { name: "Avatar", href: "/styleguide/components/avatar", description: "Combina com badge de status/contagem em perfis." },
+          { name: "Table", href: "/styleguide/components/table", description: "CellBadge usa o StatusBadge para o estado de cada linha." },
+          { name: "Button", href: "/styleguide/components/button", description: "Use quando o elemento precisa ser acionável — badge é rótulo." },
         ]}
       />
     </StyleguidePage>

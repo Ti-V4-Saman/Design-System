@@ -12,7 +12,9 @@ import {
   CodeBlock,
   ComponentHeader,
   DarkModeSection,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -226,6 +228,51 @@ const events: CalendarEvent[] = [
           "Don't rely on event color alone to convey status; keep a descriptive title.",
           "Don't reimplement a raw <input type=\"date\"> — use the CRM pickers for token-consistent surfaces.",
           "Don't hardcode event colors outside the EventColorVariant set.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "As quatro views (month, week, day, list) compartilham um único cabeçalho; o passo de navegação se adapta à view ativa — mês/lista avançam meses, semana avança semanas, dia avança dias.",
+          <>
+            <code className="font-mono text-xs">defaultView</code> e{" "}
+            <code className="font-mono text-xs">defaultDate</code> apenas semeiam
+            o estado interno — a navegação depois é controlada pelo próprio
+            componente.
+          </>,
+          <>
+            A cor de cada evento vem do conjunto fixo{" "}
+            <code className="font-mono text-xs">EventColorVariant</code>{" "}
+            (primary, success, warning, destructive, info, muted, purple),
+            sempre atrelado a tokens; <code className="font-mono text-xs">locked</code>{" "}
+            sinaliza eventos não editáveis.
+          </>,
+          "O container precisa de altura explícita (h-full): sem ela o layout flex colapsa e o calendário some.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Field",
+            href: "/styleguide/components/field",
+            description: "Envolve os date pickers com label, descrição e erro.",
+          },
+          {
+            name: "Tabs",
+            href: "/styleguide/components/tabs",
+            description: "Mesmo padrão de alternância usado entre as views.",
+          },
+          {
+            name: "Badge",
+            href: "/styleguide/components/badge",
+            description: "Rótulos de status na mesma paleta dos event pills.",
+          },
+          {
+            name: "Button",
+            href: "/styleguide/components/button",
+            description: "Base dos controles de navegação e do gatilho dos pickers.",
+          },
         ]}
       />
     </StyleguidePage>

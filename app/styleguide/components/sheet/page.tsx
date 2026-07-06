@@ -36,7 +36,9 @@ import {
   CodeBlock,
   ComponentHeader,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
   type ApiRow,
@@ -479,6 +481,24 @@ export default function SheetPage() {
             <span className="font-medium text-foreground">Fechar:</span>{" "}
             botão X com <code className="font-mono text-xs">sr-only</code> “Fechar” e clique no overlay.
           </>,
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>É literalmente o mesmo arquivo/primitivo do <strong>Drawer</strong> (aliased) — <code className="font-mono text-xs">bg-card</code>, <code className="font-mono text-xs">shadow-modal</code>, <code className="font-mono text-xs">border-border</code> sobre o Radix Dialog. Os nomes <code className="font-mono text-xs">Sheet*</code> refletem o mental model shadcn para superfícies laterais de detalhe/formulário; nunca duplique um <code className="font-mono text-xs">sheet.tsx</code>.</>,
+          <>Painéis laterais usam <code className="font-mono text-xs">w-full max-w-*</code> (largura total no mobile, largura do <code className="font-mono text-xs">size</code> no desktop); prefira <code className="font-mono text-xs">side=&quot;bottom&quot;</code> como bandeja em telas pequenas.</>,
+          <>Os presets <code className="font-mono text-xs">RecordSheet</code>/<code className="font-mono text-xs">FormSheet</code>/<code className="font-mono text-xs">FilterSheet</code> padronizam header/footer; o <code className="font-mono text-xs">FormSheet</code> usa um <code className="font-mono text-xs">form</code> nativo e reflete <code className="font-mono text-xs">submitting</code> no botão de envio.</>,
+          <>Modal como o Dialog: foco preso, scroll lock e overlay que escurece o fundo — reserve para fluxos secundários, não para conteúdo essencial único.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Drawer", href: "/styleguide/components/drawer", description: "O mesmo primitivo com nomes Drawer*, ideal para bandejas top/bottom." },
+          { name: "Dialog", href: "/styleguide/components/dialog", description: "Modal centralizado para conteúdo curto e focado." },
+          { name: "Alert Dialog", href: "/styleguide/components/alert-dialog", description: "Confirmações destrutivas com escolha explícita." },
+          { name: "Field", href: "/styleguide/components/field", description: "Estrutura de formulário usada no corpo do FormSheet." },
         ]}
       />
     </StyleguidePage>

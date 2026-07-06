@@ -26,6 +26,8 @@ import {
   Demo,
   GuidelinesSection,
   Section,
+  DesignNotes,
+  RelatedComponents,
   StyleguidePage,
 } from "@/app/styleguide/_components"
 
@@ -223,6 +225,39 @@ export default function MenubarPage() {
           "Não use como navegação principal do app (use a sidebar).",
           "Não sobrecarregue com dezenas de itens por menu.",
           "Não aninhe muitos níveis de submenu.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "Barra de menus estilo app no primitivo Radix Menubar; a própria barra é uma faixa em superfície de card com os gatilhos.",
+          "Os painéis compartilham a linguagem de Dropdown/Context Menu (surface bg-popover · shadow-dropdown; foco accent; check on-brand; destrutivo semântico).",
+          "Painéis com min-w-[12rem] (mais largos que dropdown/context) — pensados para menus com atalhos alinhados à direita.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Dropdown Menu",
+            href: "/styleguide/components/dropdown-menu",
+            description: "Mesmo sistema de itens, para ações pontuais ancoradas num gatilho.",
+          },
+          {
+            name: "Context Menu",
+            href: "/styleguide/components/context-menu",
+            description: "Mesma linguagem de itens acionada por clique-direito.",
+          },
+          {
+            name: "Navigation Menu",
+            href: "/styleguide/components/navigation-menu",
+            description: "Navegação de topo com painéis; a menubar é para comandos, não navegação.",
+          },
+          {
+            name: "Command",
+            href: "/styleguide/components/command",
+            description: "Acesso rápido às mesmas ações por busca (⌘K).",
+          },
         ]}
       />
     </StyleguidePage>

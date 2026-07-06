@@ -25,7 +25,9 @@ import {
   CodeBlock,
   ComponentHeader,
   DarkModeSection,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -647,6 +649,25 @@ export default function CardsStyleguidePage() {
           "Don't nest cards inside cards; use CardContent sections instead.",
           "Don't mark a card clickable without wiring an action.",
           "Don't overload a single card with unrelated metrics — split into multiple tiles.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "As 17 variações compartilham o CRMBaseCard: uma única casca (bg-card, borda e radius por token) garante que qualquer card novo herde superfície, sombra e espaçamento consistentes.",
+          "A cor de status nunca é codificada no card — passa sempre pela CardVariant (default, primary, success, warning, destructive, info, muted), então o mesmo token pinta ícone, trend e badge de forma coerente.",
+          "Seleção usa um ring-primary de 2px em vez de mudar o fundo: é uma pista não-cromática que sobrevive ao dark mode e não compete com as cores de variante do conteúdo.",
+          "Escolha o card pela forma do dado: StatCard para KPIs, EntityCard para linhas de lista, ProjectCard para progresso, EmptyStateCard quando a coleção está vazia — evitando remontar layouts ad hoc.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Table", href: "/styleguide/components/table", description: "Alternativa densa a listas de EntityCard para muitos registros." },
+          { name: "Badge", href: "/styleguide/components/badge", description: "Rótulos de status usados dentro de Entity/Kanban cards." },
+          { name: "Avatar", href: "/styleguide/components/avatar", description: "Identidade em Profile, Comment e Activity cards." },
+          { name: "Progress", href: "/styleguide/components/progress", description: "Barra de avanço exibida pelo ProjectCard." },
+          { name: "Chart", href: "/styleguide/components/chart", description: "Preenche a área de visualização do ChartCard." },
         ]}
       />
     </StyleguidePage>

@@ -11,7 +11,9 @@ import {
   CodeBlock,
   ComponentHeader,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -136,6 +138,24 @@ export default function AlertPage() {
           "Não use destructive para avisos leves.",
           "Não coloque parágrafos longos — seja conciso.",
           "Não transmita o estado só pela cor.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>Alert é <strong>persistente e inline</strong>: fica na tela até o usuário resolver ou dispensar. Para feedback transitório que some sozinho, use Toast (Sonner).</>,
+          <>O container tem <code className="font-mono text-xs">role=&quot;alert&quot;</code> e é anunciado na hora — reserve os tons <code className="font-mono text-xs">destructive</code>/<code className="font-mono text-xs">warning</code> para severidade real e evite fadiga de alerta.</>,
+          <>Os tons semânticos (<code className="font-mono text-xs">info</code>, <code className="font-mono text-xs">success</code>, <code className="font-mono text-xs">warning</code>, <code className="font-mono text-xs">destructive</code>) vêm dos tokens do CRM V4; <code className="font-mono text-xs">default</code> é neutro.</>,
+          <><code className="font-mono text-xs">AlertAction</code> ancora a resolução (dispensar/resolver) no próprio alerta, mantendo mensagem e ação juntas.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Sonner (Toast)", href: "/styleguide/components/sonner", description: "Feedback transitório e não-bloqueante — a contraparte do Alert persistente." },
+          { name: "Dialog", href: "/styleguide/components/dialog", description: "Para erros e decisões que exigem confirmação bloqueante." },
+          { name: "Alert Dialog", href: "/styleguide/components/alert-dialog", description: "Confirmação modal de ações destrutivas." },
+          { name: "Badge", href: "/styleguide/components/badge", description: "Rótulo de estado inline, sem mensagem completa." },
         ]}
       />
     </StyleguidePage>

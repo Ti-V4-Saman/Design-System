@@ -128,6 +128,63 @@ export function GuidelinesSection({
   )
 }
 
+// ─── Design notes ────────────────────────────────────────────────────────────
+
+/** Design rationale / usage notes for a component. */
+export function DesignNotes({
+  items,
+  title = "Notas de design",
+}: {
+  items: React.ReactNode[]
+  title?: string
+}) {
+  return (
+    <Section title={title}>
+      <ul className="space-y-1.5 text-sm text-muted-foreground">
+        {items.map((item, i) => (
+          <li key={i}>• {item}</li>
+        ))}
+      </ul>
+    </Section>
+  )
+}
+
+// ─── Related components ──────────────────────────────────────────────────────
+
+export interface RelatedComponentLink {
+  name: string
+  href: string
+  description?: React.ReactNode
+}
+
+/** Cross-links to related components. */
+export function RelatedComponents({
+  items,
+  title = "Componentes relacionados",
+}: {
+  items: RelatedComponentLink[]
+  title?: string
+}) {
+  return (
+    <Section title={title}>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            className="group rounded-lg border border-border bg-card p-3 transition-colors hover:border-primary/40 hover:bg-accent"
+          >
+            <span className="text-sm font-medium text-foreground group-hover:text-primary">{item.name}</span>
+            {item.description ? (
+              <p className="mt-0.5 text-xs text-muted-foreground">{item.description}</p>
+            ) : null}
+          </a>
+        ))}
+      </div>
+    </Section>
+  )
+}
+
 // ─── Empty state helper (reused across pages) ────────────────────────────────
 
 export function EmptyStatePreview({

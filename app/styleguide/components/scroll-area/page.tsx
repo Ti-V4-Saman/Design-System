@@ -10,7 +10,9 @@ import {
   ComponentHeader,
   DarkModeSection,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -130,6 +132,24 @@ export default function ScrollAreaPage() {
           "Não use para a rolagem principal da página (deixe o body rolar).",
           "Não esqueça a ScrollBar horizontal ao rolar no eixo X.",
           "Não coloque conteúdo interativo fora do viewport rolável.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>O thumb usa <code className="font-mono text-xs">bg-border</code> para se fundir às superfícies do CRM V4 — a barra fica discreta e não rouba atenção do conteúdo denso que ela delimita.</>,
+          "As barras customizadas apenas complementam a rolagem nativa: roda, trackpad e teclado continuam funcionando, então nenhum caminho de acesso é substituído pela estilização.",
+          <>A altura/largura vive na <code className="font-mono text-xs">className</code> do ScrollArea; é o contêiner limitado que cria a rolagem — sem dimensão definida, não há overflow para rolar.</>,
+          <>Para faixas horizontais é preciso <code className="font-mono text-xs">whitespace-nowrap</code> no wrapper mais uma <code className="font-mono text-xs">ScrollBar orientation=&quot;horizontal&quot;</code> explícita; o eixo X não aparece sozinho.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Resizable", href: "/styleguide/components/resizable", description: "Delimita painéis cujo conteúdo a ScrollArea rola." },
+          { name: "Table", href: "/styleguide/components/table", description: "Tabelas largas que rolam no eixo horizontal." },
+          { name: "Sidebar", href: "/styleguide/components/sidebar", description: "Navegação longa que rola dentro de altura fixa." },
+          { name: "Command", href: "/styleguide/components/command", description: "Lista de resultados rolável em paletas de comando." },
         ]}
       />
     </StyleguidePage>

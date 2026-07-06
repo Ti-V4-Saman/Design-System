@@ -30,6 +30,8 @@ import {
   CodeBlock,
   ComponentHeader,
   Demo,
+  DesignNotes,
+  RelatedComponents,
   Section,
   StyleguidePage,
   type ApiRow,
@@ -545,6 +547,52 @@ export default function ButtonPage() {
             <code className="font-mono text-xs">aria-disabled</code> (âncoras não
             aceitam <code className="font-mono text-xs">disabled</code>).
           </>,
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "As variantes semânticas (success, warning, info, destructive) usam fundo tingido do token (bg/10–15) em vez de preenchimento sólido — sinalizam intenção sem competir com a ação primária.",
+          <>
+            <span className="font-medium text-foreground">loading</span> mostra
+            o spinner, desabilita e marca{" "}
+            <code className="font-mono text-xs">aria-busy</code>. Com{" "}
+            <code className="font-mono text-xs">asChild</code> vira{" "}
+            <code className="font-mono text-xs">aria-disabled</code>, pois
+            âncoras não aceitam <code className="font-mono text-xs">disabled</code>.
+          </>,
+          <>
+            Estilos por atributo ARIA: <code className="font-mono text-xs">aria-expanded</code>{" "}
+            reage a gatilhos de menu/dropdown e{" "}
+            <code className="font-mono text-xs">aria-invalid</code> a erros de
+            formulário — sem props extras.
+          </>,
+          "O nudge active:translate-y-px é suprimido quando o botão abre um popup (aria-haspopup), evitando deslocar gatilhos de menu.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Dropdown Menu",
+            href: "/styleguide/components/dropdown-menu",
+            description: "Usa o botão como gatilho; aria-expanded aplica o estilo aberto.",
+          },
+          {
+            name: "Toggle",
+            href: "/styleguide/components/toggle",
+            description: "Botão de estado on/off com a mesma linguagem visual.",
+          },
+          {
+            name: "Toggle Group",
+            href: "/styleguide/components/toggle-group",
+            description: "Conjunto segmentado de toggles para escolha exclusiva.",
+          },
+          {
+            name: "Input Group",
+            href: "/styleguide/components/input-group",
+            description: "Embute InputGroupButton para ações inline no campo.",
+          },
         ]}
       />
     </StyleguidePage>

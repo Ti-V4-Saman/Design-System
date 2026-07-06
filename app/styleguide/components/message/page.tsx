@@ -18,7 +18,9 @@ import {
   ComponentHeader,
   DarkModeSection,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -186,6 +188,24 @@ export default function MessagePage() {
           "Não use azul no status de lido — use emerald.",
           "Não coloque ações críticas dentro da bolha.",
           "Não transmita autoria só pela cor.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>Incoming em <code className="font-mono text-xs">bg-muted</code> (à esquerda) e outgoing em emerald/<code className="font-mono text-xs">primary</code> (à direita): lado + cor comunicam autoria sem depender só da posição.</>,
+          <>O status de <strong>lido usa emerald</strong> (não azul), alinhado à identidade do CRM V4; cada status tem <code className="font-mono text-xs">aria-label</code>.</>,
+          <><code className="font-mono text-xs">MessageGroup</code> omite avatar/autor repetidos em mensagens consecutivas do mesmo remetente, reduzindo ruído visual.</>,
+          <><code className="font-mono text-xs">SystemMessage</code> e <code className="font-mono text-xs">DateSeparator</code> centralizam eventos (atribuição, tags, data) fora do fluxo de bolhas, com <code className="font-mono text-xs">role=&quot;status&quot;</code>.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Avatar", href: "/styleguide/components/avatar", description: "Iniciais ou foto do remetente exibidas na bolha." },
+          { name: "Attachment", href: "/styleguide/components/attachment", description: "Anexos de arquivo — MessageAttachment é a versão dentro da bolha." },
+          { name: "Badge", href: "/styleguide/components/badge", description: "Status e tags do lead ao lado da conversa." },
+          { name: "Sonner (Toast)", href: "/styleguide/components/sonner", description: "Notificar chegada de nova mensagem sem interromper." },
         ]}
       />
     </StyleguidePage>

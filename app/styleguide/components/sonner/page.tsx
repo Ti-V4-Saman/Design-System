@@ -13,7 +13,9 @@ import {
   ComponentHeader,
   DarkModeSection,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -251,6 +253,24 @@ crmToast.promise(save(), { loading: "Salvando…", success: "Salvo", error: "Err
           "Não empilhe muitos toasts simultâneos.",
           "Não coloque conteúdo essencial só no toast (some sozinho).",
           "Não dependa apenas da cor para transmitir o tipo.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>Toast é <strong>transitório e não-bloqueante</strong>: some sozinho por timer e não rouba o foco — o oposto do Alert persistente inline.</>,
+          <>A superfície vem dos tokens: <code className="font-mono text-xs">bg-popover</code> + <code className="font-mono text-xs">shadow-dropdown</code>, com ícones lucide tingidos pelo token semântico (success/warning/error/info).</>,
+          <>O helper <code className="font-mono text-xs">crmToast</code> padroniza os tipos e o host <code className="font-mono text-xs">&lt;Toaster /&gt;</code> é montado uma vez no layout raiz; dispare de qualquer client component.</>,
+          <><code className="font-mono text-xs">crmToast.promise</code> encadeia loading → success/error automaticamente; não coloque conteúdo essencial só no toast, pois ele desaparece.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Alert", href: "/styleguide/components/alert", description: "Mensagem persistente inline — a contraparte do toast transitório." },
+          { name: "Dialog", href: "/styleguide/components/dialog", description: "Para erros e decisões que exigem ação bloqueante." },
+          { name: "Spinner", href: "/styleguide/components/spinner", description: "O estado loading do toast usa o mesmo indicador." },
+          { name: "Badge", href: "/styleguide/components/badge", description: "Status compacto e persistente, sem timer." },
         ]}
       />
     </StyleguidePage>

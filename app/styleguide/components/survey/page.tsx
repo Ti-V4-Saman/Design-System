@@ -18,8 +18,10 @@ import {
   CodeBlock,
   ComponentHeader,
   DarkModeSection,
+  DesignNotes,
   GuidelinesSection,
   Kbd,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -355,6 +357,24 @@ export default function SurveyPage() {
           "Don't write long option labels; keep choices scannable with the shortcut key.",
           "Don't disable the Next button without an obvious reason (e.g. required answer).",
           "Don't intercept Enter inside multiline text — let it insert newlines.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>Uma pergunta por tela mantém o respondente focado; <code className="font-mono text-xs">StepIndicator</code> + <code className="font-mono text-xs">questionNumber</code> comunicam o progresso.</>,
+          <>Sistema componível: <code className="font-mono text-xs">StepIndicator</code>, <code className="font-mono text-xs">QuestionHeader</code>, <code className="font-mono text-xs">ChoiceCard</code>, <code className="font-mono text-xs">OptionList</code>, <code className="font-mono text-xs">QuestionTextInput</code>, <code className="font-mono text-xs">QuestionDropdown</code> e <code className="font-mono text-xs">QuestionFooter</code> são exportados e usáveis isoladamente.</>,
+          <>Navegação por teclado é first-class: atalhos <Kbd>A</Kbd> <Kbd>B</Kbd> <Kbd>C</Kbd>… selecionam e <Kbd>Enter</Kbd> avança; dentro de um textarea multiline o <Kbd>Enter</Kbd> insere quebra de linha em vez de avançar.</>,
+          <>O estado selecionado usa preenchimento + badge de atalho (não só cor); <code className="font-mono text-xs">disabled</code> trava todos os controles.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Field", href: "/styleguide/components/field", description: "Estrutura label + input para formulários tradicionais de várias perguntas." },
+          { name: "Progress", href: "/styleguide/components/progress", description: "Barra de progresso — o StepIndicator é a versão por etapas." },
+          { name: "Button", href: "/styleguide/components/button", description: "O QuestionFooter compõe os botões OK/Back." },
+          { name: "Badge", href: "/styleguide/components/badge", description: "Os atalhos de teclado nos ChoiceCards seguem o mesmo padrão de rótulo." },
         ]}
       />
     </StyleguidePage>

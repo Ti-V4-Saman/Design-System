@@ -18,6 +18,8 @@ import {
   Section,
   StyleguidePage,
   type ApiRow,
+  DesignNotes,
+  RelatedComponents,
 } from "@/app/styleguide/_components"
 
 /* ---------- page-local presentation helpers ---------- */
@@ -346,6 +348,22 @@ import { Bell } from "lucide-react"
           </ul>
         </div>
       </Section>
+      <DesignNotes
+        items={[
+          "Switch do Radix alinhado ao Checkbox/Radio (mesmo foco, disabled e Field-disabled): trilho off em bg-input, on no token de tom.",
+          "tone primary (padrão) ou success para configurações \"ativas\"; o thumb em bg-background desliza via translate proporcional ao tamanho.",
+          "Três tamanhos (sm/default/lg) com deslocamento do thumb calculado por variante cva.",
+          "SettingSwitch (components/switch) embala ícone, rótulo e descrição para linhas de preferência prontas.",
+        ]}
+      />
+      <RelatedComponents
+        items={[
+          { name: "Toggle", href: "/styleguide/components/toggle", description: "Botão on/off para ações imediatas, não preferências de formulário." },
+          { name: "Toggle Group", href: "/styleguide/components/toggle-group", description: "Escolha segmentada entre opções exclusivas." },
+          { name: "Label", href: "/styleguide/components/label", description: "Rótulo clicável associado ao switch." },
+          { name: "Slider", href: "/styleguide/components/slider", description: "Preferência com valor contínuo em vez de binário." },
+        ]}
+      />
     </StyleguidePage>
   )
 }

@@ -26,6 +26,8 @@ import {
   CodeBlock,
   ComponentHeader,
   Demo,
+  DesignNotes,
+  RelatedComponents,
   Section,
   StyleguidePage,
   type ApiRow,
@@ -746,6 +748,49 @@ export default function AttachmentPage() {
           </ul>
         </div>
       </Section>
+
+      <DesignNotes
+        items={[
+          <>
+            O tom do tile é derivado do tipo de arquivo por{" "}
+            <code className="font-mono text-xs">getFileKind</code> (mapa de
+            extensões/mime), sempre a partir de tokens semânticos — contraste
+            garantido em light e dark.
+          </>,
+          "O status (idle · uploading · done · error) governa quais ações aparecem: cancelar durante o envio, reenviar em erro, baixar e remover quando concluído.",
+          <>
+            <span className="font-medium text-foreground">readOnly</span> oculta
+            ações destrutivas (remover/cancelar/reenviar), mas preserva download
+            e preview — ideal para timelines e visualizações de leitura.
+          </>,
+          "Com previewUrl, a miniatura da imagem substitui o glyph do tipo; durante o upload um overlay com spinner cobre o tile.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Button",
+            href: "/styleguide/components/button",
+            description: "Base das ações do item (baixar, remover, reenviar).",
+          },
+          {
+            name: "Progress",
+            href: "/styleguide/components/progress",
+            description: "Mesmo padrão da barra de progresso de upload.",
+          },
+          {
+            name: "Field",
+            href: "/styleguide/components/field",
+            description: "Envolve o anexo em formulários, com label e erro.",
+          },
+          {
+            name: "Badge",
+            href: "/styleguide/components/badge",
+            description: "Rótulos e metadados curtos ao lado do arquivo.",
+          },
+        ]}
+      />
     </StyleguidePage>
   )
 }

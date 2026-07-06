@@ -22,6 +22,8 @@ import {
   Demo,
   GuidelinesSection,
   Section,
+  DesignNotes,
+  RelatedComponents,
   StyleguidePage,
 } from "@/app/styleguide/_components"
 
@@ -254,6 +256,39 @@ export default function NavigationMenuPage() {
           "Não substitua a navegação lateral principal por ela.",
           "Não coloque formulários dentro dos painéis.",
           "Não empilhe dezenas de links num único painel.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "Navegação de topo com painéis dropdown animados no primitivo Radix NavigationMenu (posicionamento, teclado e aria nativos).",
+          "O viewport usa a superfície flutuante CRM V4 (border-border · bg-popover · shadow-dropdown · rounded-lg); gatilhos e links usam tokens de hover/foco accent.",
+          "viewport={false} ancora cada painel ao próprio item (menus pequenos) em vez de um viewport compartilhado — bom para diferenciar mega-menus de menus curtos.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Sidebar",
+            href: "/styleguide/components/sidebar",
+            description: "Navegação lateral principal; a navigation menu cobre o topo.",
+          },
+          {
+            name: "Breadcrumb",
+            href: "/styleguide/components/breadcrumb",
+            description: "Mostra a posição atual dentro da hierarquia navegada.",
+          },
+          {
+            name: "Menubar",
+            href: "/styleguide/components/menubar",
+            description: "Barra de comandos de app (não navegação) com painéis semelhantes.",
+          },
+          {
+            name: "Dropdown Menu",
+            href: "/styleguide/components/dropdown-menu",
+            description: "Mesma superfície flutuante, usada para ações ancoradas.",
+          },
         ]}
       />
     </StyleguidePage>

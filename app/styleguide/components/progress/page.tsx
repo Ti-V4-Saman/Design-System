@@ -10,7 +10,9 @@ import {
   ComponentHeader,
   DarkModeSection,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -130,6 +132,24 @@ export default function ProgressPage() {
           "Não use para carregamento indeterminado — prefira Skeleton ou Spinner.",
           "Não confie só na cor; mantenha o rótulo textual.",
           "Não anime o value de forma abrupta sem transição.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>Progress é <strong>determinado</strong> (0–100, com fim conhecido): etapas, cotas e uploads. Para carregamento indeterminado, use Spinner ou Skeleton.</>,
+          <>Trilha <code className="font-mono text-xs">bg-muted</code> + indicador <code className="font-mono text-xs">bg-primary</code>; recolorir o indicador via <code className="font-mono text-xs">indicatorClassName</code> (<code className="font-mono text-xs">bg-success/warning/destructive</code>) reflete o estado semântico.</>,
+          <>Radix expõe <code className="font-mono text-xs">role=&quot;progressbar&quot;</code> com <code className="font-mono text-xs">aria-valuenow/min/max</code>; acompanhe sempre com rótulo textual (%), pois cor sozinha não basta.</>,
+          <>Altura ajustável por <code className="font-mono text-xs">className</code> (<code className="font-mono text-xs">h-1/h-2/h-3</code>) para caber em barras finas ou de destaque.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Spinner", href: "/styleguide/components/spinner", description: "Carregamento indeterminado, sem fim conhecido." },
+          { name: "Slider", href: "/styleguide/components/slider", description: "Trilha + preenchimento parecidos, mas para entrada interativa de valor." },
+          { name: "Survey", href: "/styleguide/components/survey", description: "O StepIndicator mostra progresso por etapas do fluxo." },
+          { name: "Badge", href: "/styleguide/components/badge", description: "Exibir a porcentagem ou o estado como rótulo compacto." },
         ]}
       />
     </StyleguidePage>

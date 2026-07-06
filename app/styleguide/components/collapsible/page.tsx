@@ -19,8 +19,10 @@ import {
   ComponentHeader,
   DarkModeSection,
   Demo,
+  DesignNotes,
   GuidelinesSection,
   Kbd,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -195,6 +197,24 @@ export default function CollapsiblePage() {
         donts={[
           "Não use para grupos de seções — prefira o Accordion.",
           "Não esconda conteúdo essencial atrás do gatilho.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>O gatilho não tem visual próprio: use <code className="font-mono text-xs">asChild</code> para vesti-lo com um Button ou um cabeçalho customizado, mantendo o Collapsible como puro controlador de estado.</>,
+          "O chevron rotaciona por group-data-[state=open]:rotate-180, então o feedback de aberto/fechado é derivado do estado do Radix, sem estado manual no call site.",
+          <>Suporta os dois modos: não-controlado com <code className="font-mono text-xs">defaultOpen</code> para mostrar mais/menos simples, e controlado com <code className="font-mono text-xs">open/onOpenChange</code> quando o estado precisa refletir na UI (ex.: contador de filtros ativos).</>,
+          "Use Collapsible para um único bloco opcional; quando há várias seções relacionadas e mutuamente exclusivas, o Accordion resolve melhor.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Accordion", href: "/styleguide/components/accordion", description: "Vários blocos colapsáveis agrupados numa lista." },
+          { name: "Tabs", href: "/styleguide/components/tabs", description: "Alterna conteúdo paralelo em vez de revelar em fluxo." },
+          { name: "Button", href: "/styleguide/components/button", description: "Gatilho típico do Collapsible via asChild." },
+          { name: "Sidebar", href: "/styleguide/components/sidebar", description: "Grupos de navegação que expandem e recolhem." },
         ]}
       />
     </StyleguidePage>

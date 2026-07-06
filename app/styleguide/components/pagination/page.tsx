@@ -20,6 +20,8 @@ import {
   Demo,
   GuidelinesSection,
   Section,
+  DesignNotes,
+  RelatedComponents,
   StyleguidePage,
 } from "@/app/styleguide/_components"
 
@@ -153,6 +155,35 @@ export default function PaginationPage() {
           "Não exiba dezenas de números — colapse com elipses.",
           "Não deixe a página atual sem aria-current=\"page\".",
           "Não esconda Anterior/Próxima; apenas desabilite-os nos limites.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "Não é primitivo Radix: markup semântico <nav aria-label=\"paginação\">/<ul>. A página atual carrega aria-current=\"page\".",
+          "Os links reusam os tokens de botão: página atual como outline, demais como ghost; Anterior/Próxima recebem chevrons e escondem o rótulo no mobile (hidden sm:block).",
+          "A elipse (PaginationEllipsis) marca faixas omitidas e é aria-hidden, com sr-only \"Mais páginas\".",
+          "asChild no PaginationLink permite integrar com o Link do Next mantendo o estilo.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Table",
+            href: "/styleguide/components/table",
+            description: "A paginação percorre conjuntos de dados normalmente exibidos em tabela.",
+          },
+          {
+            name: "Button",
+            href: "/styleguide/components/button",
+            description: "Os links reaproveitam as variantes e tokens de botão (outline/ghost).",
+          },
+          {
+            name: "Breadcrumb",
+            href: "/styleguide/components/breadcrumb",
+            description: "Outro padrão de navegação semântico (nav) baseado em tokens.",
+          },
         ]}
       />
     </StyleguidePage>

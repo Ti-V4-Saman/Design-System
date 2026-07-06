@@ -25,6 +25,8 @@ import {
   Section,
   StyleguidePage,
   type ApiRow,
+  DesignNotes,
+  RelatedComponents,
 } from "@/app/styleguide/_components"
 
 type StatusVariant =
@@ -636,6 +638,22 @@ const columns: CRMColumnDef<Lead>[] = [
             acionados por botões reais dentro de <code className="font-mono text-xs">Popover</code> (foco preso, fecha no Esc).</>,
           <><span className="font-medium text-foreground">Foco por teclado:</span>{" "}
             todos os controles (busca, filtros, paginação, ações) são focáveis via Tab, com anel de foco visível.</>,
+        ]}
+      />
+      <DesignNotes
+        items={[
+          "CRMDataTable sobre o TanStack Table: ordenação, paginação, seleção de linhas, filtros facetados e visibilidade de colunas num só componente.",
+          "Densidade comfortable/compact ajusta o padding de cabeçalho e célula sem alterar o layout das colunas.",
+          "Células dedicadas (CellLink, CellAvatar, CellBadge, CellProgress, CellDate, CellFinancial, CellMulti…) padronizam a renderização por tipo de dado.",
+          "Estado vazio (ícone Inbox) e carregamento (Skeleton) são tratados internamente pelo componente.",
+        ]}
+      />
+      <RelatedComponents
+        items={[
+          { name: "Badge", href: "/styleguide/components/badge", description: "CellBadge sinaliza o estado de cada linha." },
+          { name: "Avatar", href: "/styleguide/components/avatar", description: "CellAvatar mostra identidade na coluna principal." },
+          { name: "Chart", href: "/styleguide/components/chart", description: "Resume visualmente os dados que a tabela detalha." },
+          { name: "Pagination", href: "/styleguide/components/pagination", description: "Padrão de navegação alinhado ao rodapé da tabela." },
         ]}
       />
     </StyleguidePage>

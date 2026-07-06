@@ -45,7 +45,9 @@ import {
   ComponentHeader,
   DarkModeSection,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
   type ApiRow,
@@ -522,6 +524,51 @@ export default function InputGroupPage() {
             <span className="font-medium text-foreground">Senha:</span>{" "}
             o toggle expõe <code className="font-mono text-xs">aria-pressed</code> refletindo a visibilidade.
           </>,
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>
+            O foco e o estado inválido são elevados ao container via seletores{" "}
+            <code className="font-mono text-xs">has-[…]</code>: o anel aparece na
+            borda do grupo inteiro, não no input — por isso o controle interno
+            zera a própria borda e o ring.
+          </>,
+          <>
+            Addons alinham em{" "}
+            <code className="font-mono text-xs">inline-start/end</code> e{" "}
+            <code className="font-mono text-xs">block-start/end</code>; clicar em
+            um addon foca o input (a menos que o clique seja em um botão). Os
+            alinhamentos block transformam o grupo em pilha vertical (toolbars).
+          </>,
+          "InputGroupButton assume ghost/xs por padrão, para ações inline compactas sem sombra que quebrem a moldura do campo.",
+          "Os presets de CRM (SearchInput, CurrencyInput, PasswordInput, CopyInput) são montados sobre essas primitivas — não recrie a moldura do zero.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Field",
+            href: "/styleguide/components/field",
+            description: "Envolve o Input Group com label, descrição e erro.",
+          },
+          {
+            name: "Label",
+            href: "/styleguide/components/label",
+            description: "Rótulo associado ao controle interno do grupo.",
+          },
+          {
+            name: "Button",
+            href: "/styleguide/components/button",
+            description: "Base do InputGroupButton usado nas ações inline.",
+          },
+          {
+            name: "Command",
+            href: "/styleguide/components/command",
+            description: "Busca em paleta, complementar ao SearchInput.",
+          },
         ]}
       />
     </StyleguidePage>

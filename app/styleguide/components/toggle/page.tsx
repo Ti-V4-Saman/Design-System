@@ -14,6 +14,8 @@ import {
   GuidelinesSection,
   Section,
   StyleguidePage,
+  DesignNotes,
+  RelatedComponents,
 } from "@/app/styleguide/_components"
 
 export default function TogglePage() {
@@ -110,6 +112,20 @@ export default function TogglePage() {
           "Não use no lugar de um Switch para preferências de formulário.",
           "Não omita o rótulo acessível em toggles só de ícone.",
           "Não empilhe muitos toggles soltos sem agrupá-los visualmente.",
+        ]}
+      />
+      <DesignNotes
+        items={[
+          "Toggle de dois estados sobre o primitivo Radix: o estado pressionado usa os tokens accent (data-[state=on]:bg-accent).",
+          "variant outline adiciona borda de input para mais presença; sizes sm/default/lg com min-w garantem alvo quadrado em toggles só de ícone.",
+          "Compartilha toggleVariants (cva) com o Toggle Group, mantendo consistência visual entre um toggle solto e o controle segmentado.",
+        ]}
+      />
+      <RelatedComponents
+        items={[
+          { name: "Toggle Group", href: "/styleguide/components/toggle-group", description: "Reúne toggles num controle segmentado com seleção única ou múltipla." },
+          { name: "Switch", href: "/styleguide/components/switch", description: "Preferência booleana de formulário em vez de ação imediata." },
+          { name: "Button", href: "/styleguide/components/button", description: "Ação sem estado persistente de pressionado." },
         ]}
       />
     </StyleguidePage>

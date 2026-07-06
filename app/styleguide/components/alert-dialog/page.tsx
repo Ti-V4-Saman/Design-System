@@ -23,7 +23,9 @@ import {
   CodeBlock,
   ComponentHeader,
   DarkModeSection,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -273,6 +275,24 @@ export default function AlertDialogPage() {
           "Don't write vague labels like 'OK'; use an action verb ('Delete', 'Archive').",
           "Don't omit the description — it carries the consequence of the action.",
           "Don't allow dismissal of a destructive prompt without an explicit choice.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>Compartilha a elevação modal do Dialog (<code className="font-mono text-xs">bg-card</code>, <code className="font-mono text-xs">rounded-xl</code>, <code className="font-mono text-xs">border-border</code>, <code className="font-mono text-xs">shadow-modal</code>), mas é mais estreito (<code className="font-mono text-xs">max-w-sm</code>) e com conteúdo centralizado — o ícone vive num círculo <code className="font-mono text-xs">rounded-full</code> com tint semântico.</>,
+          <>Ao contrário do Dialog, <strong>não</strong> fecha no <code className="font-mono text-xs">Esc</code> nem no clique do overlay (Radix AlertDialog) — exige uma escolha explícita entre confirmar e cancelar.</>,
+          <>A <code className="font-mono text-xs">variant</code> altera apenas o ícone e a cor do botão de confirmação; o significado da ação vem do título e da descrição.</>,
+          <>Durante <code className="font-mono text-xs">loading</code>, ambos os botões ficam desabilitados para impedir que um confirm assíncrono dispare duas vezes.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Dialog", href: "/styleguide/components/dialog", description: "Modal geral para formulários e conteúdo — sem a semântica de confirmação." },
+          { name: "Drawer", href: "/styleguide/components/drawer", description: "Painel deslizante para fluxos mais longos que não cabem num alerta." },
+          { name: "Sheet", href: "/styleguide/components/sheet", description: "Mesmo primitivo do Drawer, para detalhe/edição lateral." },
+          { name: "Sonner", href: "/styleguide/components/sonner", description: "Toast não bloqueante para confirmar o resultado após a ação." },
         ]}
       />
     </StyleguidePage>

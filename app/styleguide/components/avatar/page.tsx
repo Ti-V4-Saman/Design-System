@@ -19,6 +19,8 @@ import {
   GuidelinesSection,
   Section,
   StyleguidePage,
+  DesignNotes,
+  RelatedComponents,
 } from "@/app/styleguide/_components"
 
 export default function AvatarPage() {
@@ -165,6 +167,20 @@ export default function AvatarPage() {
           "Não empilhe mais de ~5 sem contador.",
           "Não dependa só da cor do status.",
           "Não use imagens sem alt.",
+        ]}
+      />
+      <DesignNotes
+        items={[
+          "Avatar do Radix com AvatarImage + AvatarFallback (iniciais quando a imagem falha); o anel after com mix-blend garante contraste da borda em qualquer fundo.",
+          "Três tamanhos (sm 6 / default 8 / lg 10) propagados via data-size aos subcomponentes, inclusive fallback e badge.",
+          "AvatarGroup empilha com -space-x-2 e ring-background; AvatarGroupCount resume o excedente e AvatarBadge posiciona um indicador de status.",
+        ]}
+      />
+      <RelatedComponents
+        items={[
+          { name: "Badge", href: "/styleguide/components/badge", description: "Indicador de status/contagem sobreposto ou ao lado do avatar." },
+          { name: "Cards", href: "/styleguide/components/cards", description: "Avatares como cabeçalho de cartões de contato e perfil." },
+          { name: "Table", href: "/styleguide/components/table", description: "CellAvatar exibe avatar + nome na coluna de identidade." },
         ]}
       />
     </StyleguidePage>

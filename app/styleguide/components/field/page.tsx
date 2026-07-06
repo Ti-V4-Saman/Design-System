@@ -34,7 +34,9 @@ import {
   ComponentHeader,
   DarkModeSection,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -373,6 +375,56 @@ import { ChoiceField } from "@/components/field"
           "Não sinalize erro só com cor — inclua a mensagem.",
           "Não misture orientações diferentes no mesmo grupo sem motivo.",
           "Não deixe controles sem descrição quando a ação não é óbvia.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>
+            As orientações <span className="font-medium text-foreground">vertical</span>,{" "}
+            <span className="font-medium text-foreground">horizontal</span> e{" "}
+            <span className="font-medium text-foreground">responsive</span> usam
+            container queries (<code className="font-mono text-xs">@md/field-group</code>) —
+            o layout troca conforme a largura do grupo, não da viewport.
+          </>,
+          <>
+            <code className="font-mono text-xs">data-invalid</code> propaga a cor
+            destructive para label e conteúdo; <code className="font-mono text-xs">FieldError</code>{" "}
+            é <code className="font-mono text-xs">role=alert</code> e deduplica
+            mensagens repetidas.
+          </>,
+          "FieldLabel pode envolver o próprio controle: quando marcado (has-data-checked), o card inteiro ganha border-primary e bg-accent — base para seleção em cartão (checkbox/radio).",
+          <>
+            Construído sobre <code className="font-mono text-xs">Label</code> e{" "}
+            <code className="font-mono text-xs">Separator</code>;{" "}
+            <code className="font-mono text-xs">FieldGroup</code> é o container
+            que estabelece o contexto responsivo.
+          </>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Input Group",
+            href: "/styleguide/components/input-group",
+            description: "Controle composto com addons para colocar dentro do Field.",
+          },
+          {
+            name: "Label",
+            href: "/styleguide/components/label",
+            description: "FieldLabel estende o Label com estados de grupo e disabled.",
+          },
+          {
+            name: "Button",
+            href: "/styleguide/components/button",
+            description: "Ações de submit e reset no rodapé do formulário.",
+          },
+          {
+            name: "Switch",
+            href: "/styleguide/components/switch",
+            description: "Controle booleano comum em Field horizontal.",
+          },
         ]}
       />
     </StyleguidePage>

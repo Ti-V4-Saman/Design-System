@@ -22,8 +22,10 @@ import {
   DarkModeSection,
   Demo,
   DemoGrid,
+  DesignNotes,
   GuidelinesSection,
   Kbd,
+  RelatedComponents,
   ResponsiveSection,
   Section,
   StyleguidePage,
@@ -283,6 +285,25 @@ export default function TabsPage() {
           "Não coloque muitas abas; considere um select acima de ~6.",
           "Não esconda ações críticas atrás de abas.",
           "Não misture variantes diferentes na mesma tela.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>Duas variantes com intenções distintas: <code className="font-mono text-xs">default</code> é segmentado (fundo preenchido) para trocar visões de um mesmo dado; <code className="font-mono text-xs">line</code> é sublinhado em emerald para navegação de página, mais leve sobre conteúdo denso.</>,
+          <>O tamanho <code className="font-mono text-xs">sm</code> existe para áreas apertadas (toolbars, cards); <code className="font-mono text-xs">md</code> é o padrão de leitura — mantenha um único tamanho por contexto.</>,
+          "A aba ativa é marcada por fundo/sublinhado além do texto, e o estado disabled é pulado na navegação por teclado, então o destaque não depende só de cor.",
+          "Use Tabs para conteúdo paralelo e não-sequencial no mesmo contexto; para etapas com ordem (onboarding, checkout) prefira um stepper, e acima de ~6 opções considere um select.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Sidebar", href: "/styleguide/components/sidebar", description: "Navegação primária em nível de app, não dentro de um registro." },
+          { name: "Navigation Menu", href: "/styleguide/components/navigation-menu", description: "Menu de navegação de topo com submenus." },
+          { name: "Accordion", href: "/styleguide/components/accordion", description: "Revela seções empilhadas quando o espaço é vertical." },
+          { name: "Badge", href: "/styleguide/components/badge", description: "Contadores exibidos ao lado do rótulo da aba." },
+          { name: "Toggle Group", href: "/styleguide/components/toggle-group", description: "Alterna opções sem trocar de painel de conteúdo." },
         ]}
       />
     </StyleguidePage>

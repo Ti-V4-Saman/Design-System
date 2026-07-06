@@ -43,8 +43,10 @@ import {
   ComponentHeader,
   DarkModeSection,
   Demo,
+  DesignNotes,
   GuidelinesSection,
   Kbd,
+  RelatedComponents,
   ResponsiveSection,
   Section,
   StyleguidePage,
@@ -541,6 +543,24 @@ import { DrawerClose } from "@/components/ui/drawer"
           "Não empilhe múltiplos drawers modais.",
           "Não use full em desktop para conteúdo curto.",
           "Não omita o DrawerTitle (quebra a11y).",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>É o mesmo primitivo do <strong>Sheet</strong> (Radix Dialog + <code className="font-mono text-xs">bg-card</code>, <code className="font-mono text-xs">shadow-modal</code>, <code className="font-mono text-xs">border-border</code>); os nomes <code className="font-mono text-xs">Drawer*</code> favorecem bandejas top/bottom, os <code className="font-mono text-xs">Sheet*</code> favorecem painéis laterais. A animação de slide muda conforme o <code className="font-mono text-xs">side</code>.</>,
+          <>A prop <code className="font-mono text-xs">size</code> vira <code className="font-mono text-xs">width</code> em left/right e <code className="font-mono text-xs">height</code> em top/bottom; painéis laterais são sempre <code className="font-mono text-xs">w-full</code> até o <code className="font-mono text-xs">max-w-*</code> do tamanho (cobrem a tela no mobile) e <code className="font-mono text-xs">full</code> vira <code className="font-mono text-xs">w-screen</code>.</>,
+          <>É modal: <code className="font-mono text-xs">Esc</code> e clique no overlay fecham, com foco preso e scroll lock (herdados do Radix Dialog).</>,
+          <>O <code className="font-mono text-xs">CRMDrawer</code> troca o corpo por um skeleton quando <code className="font-mono text-xs">loading</code>, mantendo header e footer fixos e só o corpo rolando.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Sheet", href: "/styleguide/components/sheet", description: "Mesmo primitivo, com nomes Sheet* e presets de CRM (registro/form/filtro)." },
+          { name: "Dialog", href: "/styleguide/components/dialog", description: "Modal centralizado — prefira para conteúdo curto e focado." },
+          { name: "Alert Dialog", href: "/styleguide/components/alert-dialog", description: "Confirmações destrutivas que não devem virar um painel." },
+          { name: "Sidebar", href: "/styleguide/components/sidebar", description: "Painel lateral persistente de navegação (não modal)." },
         ]}
       />
     </StyleguidePage>

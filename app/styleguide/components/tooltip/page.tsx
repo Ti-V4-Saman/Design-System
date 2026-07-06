@@ -22,7 +22,9 @@ import {
   CodeBlock,
   ComponentHeader,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -312,6 +314,22 @@ export default function TooltipPage() {
           "Não use ações críticas por teclado — prefira Popover.",
           "Não escreva textos longos; seja conciso.",
           "Não dispare tooltip em elementos não interativos sem foco.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>Superfície <code className="font-mono text-xs">bg-popover</code> com <code className="font-mono text-xs">border-border</code>, <code className="font-mono text-xs">shadow-dropdown</code>, <code className="font-mono text-xs">rounded-lg</code>, <code className="font-mono text-xs">text-xs</code> e <code className="font-mono text-xs">max-w-xs</code> — a mesma família flutuante do Hover Card/Dropdown, leve, e não a <code className="font-mono text-xs">shadow-modal</code> dos dialogs.</>,
+          <>O <code className="font-mono text-xs">delayDuration</code> padrão de 200ms vem do <code className="font-mono text-xs">TooltipProvider</code> no layout raiz — não é preciso reenvolver cada tooltip.</>,
+          <>É só rótulo: ações e conteúdo dentro do tooltip não são alcançáveis por teclado, então gatilhos desabilitados precisam de um <code className="font-mono text-xs">&lt;span&gt;</code> em volta para ainda emitir hover.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Hover Card", href: "/styleguide/components/hover-card", description: "Prévia rica no hover/foco quando o rótulo curto não basta." },
+          { name: "Dropdown Menu", href: "/styleguide/components/dropdown-menu", description: "Para ações acionáveis por teclado, ao contrário do tooltip." },
+          { name: "Context Menu", href: "/styleguide/components/context-menu", description: "Ações contextuais por clique direito." },
         ]}
       />
     </StyleguidePage>

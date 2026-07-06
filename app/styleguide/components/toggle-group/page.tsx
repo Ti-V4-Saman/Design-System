@@ -21,6 +21,8 @@ import {
   GuidelinesSection,
   Section,
   StyleguidePage,
+  DesignNotes,
+  RelatedComponents,
 } from "@/app/styleguide/_components"
 
 export default function ToggleGroupPage() {
@@ -130,6 +132,21 @@ export default function ToggleGroupPage() {
           "Não misture variant/size por item quebrando o controle segmentado.",
           "Não deixe o grupo desmarcar sem tratar o estado resultante.",
           "Não use como navegação — não é substituto de Tabs.",
+        ]}
+      />
+      <DesignNotes
+        items={[
+          "Os itens herdam variant/size do grupo via React Context, formando um controle segmentado coeso.",
+          "Cantos arredondados apenas nas pontas (first/last) e bordas colapsadas (border-l-0 no outline) evitam borda dupla entre itens.",
+          "Seleção única ou múltipla pelo primitivo Radix; focus:z-10 mantém o anel de foco acima dos itens vizinhos.",
+        ]}
+      />
+      <RelatedComponents
+        items={[
+          { name: "Toggle", href: "/styleguide/components/toggle", description: "Unidade base do grupo — reutiliza os mesmos toggleVariants." },
+          { name: "Tabs", href: "/styleguide/components/tabs", description: "Use para navegar entre painéis; o Toggle Group não é navegação." },
+          { name: "Switch", href: "/styleguide/components/switch", description: "Alternativa para um único estado on/off." },
+          { name: "Button", href: "/styleguide/components/button", description: "Para ações; aqui a intenção é selecionar um estado." },
         ]}
       />
     </StyleguidePage>

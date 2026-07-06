@@ -13,6 +13,8 @@ import {
   GuidelinesSection,
   Section,
   StyleguidePage,
+  DesignNotes,
+  RelatedComponents,
 } from "@/app/styleguide/_components"
 
 const brl = (v: number) => `R$ ${(v * 1000).toLocaleString("pt-BR")}`
@@ -132,6 +134,21 @@ export default function SliderPage() {
           "Não omita altura no contêiner ao usar orientação vertical.",
           "Não use steps grandes onde o usuário precisa de precisão fina.",
           "Não deixe o slider sem rótulo ou contexto de unidade.",
+        ]}
+      />
+      <DesignNotes
+        items={[
+          "Sobre o Slider do Radix: trilho em bg-muted, faixa selecionada em bg-primary e thumbs focáveis por anel (ring cresce no hover e no focus-visible).",
+          "Suporta múltiplos thumbs — passe um array para value/defaultValue para criar faixas (min–max).",
+          "A orientação vertical exige altura no contêiner (min-h-44); o estado data-disabled reduz a opacidade do controle inteiro.",
+        ]}
+      />
+      <RelatedComponents
+        items={[
+          { name: "Progress", href: "/styleguide/components/progress", description: "Mesma linguagem visual de trilho + faixa, mas somente leitura." },
+          { name: "Switch", href: "/styleguide/components/switch", description: "Controle de preferência quando o valor é binário, não contínuo." },
+          { name: "Label", href: "/styleguide/components/label", description: "Rotula o slider e comunica a unidade do valor." },
+          { name: "Toggle Group", href: "/styleguide/components/toggle-group", description: "Alternativa para faixas discretas e mutuamente exclusivas." },
         ]}
       />
     </StyleguidePage>

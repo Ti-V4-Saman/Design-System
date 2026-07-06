@@ -31,7 +31,9 @@ import {
   ComponentHeader,
   DarkModeSection,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
   type ApiRow,
@@ -486,6 +488,22 @@ import { Mail, Phone, Eye } from "lucide-react"
             <span className="font-medium text-foreground">Sem foco preso:</span>{" "}
             diferente de um dialog, o hover card não captura o foco — é uma prévia, não um fluxo.
           </>,
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>A superfície usa os tokens de <strong>popover</strong> (<code className="font-mono text-xs">bg-popover</code>, <code className="font-mono text-xs">text-popover-foreground</code>) com <code className="font-mono text-xs">border-border</code> e <code className="font-mono text-xs">shadow-dropdown</code> — a mesma elevação leve de Tooltip/Dropdown, não a <code className="font-mono text-xs">shadow-modal</code> pesada dos dialogs; largura padrão <code className="font-mono text-xs">w-80</code>.</>,
+          <>Não é um focus trap (diferente do dialog) — é conteúdo <strong>complementar</strong>, ignorado por leitores de tela por padrão; nunca coloque informação essencial só aqui.</>,
+          <>Abre no hover <em>e</em> no foco por teclado; <code className="font-mono text-xs">openDelay</code> (200ms) e <code className="font-mono text-xs">closeDelay</code> (150ms) ajustam a sensação e o posicionamento é collision-aware.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Tooltip", href: "/styleguide/components/tooltip", description: "Dica curta com a mesma família de superfície flutuante; use para rótulos, não prévias ricas." },
+          { name: "Dropdown Menu", href: "/styleguide/components/dropdown-menu", description: "Para ações clicáveis por teclado (o hover card é só leitura)." },
+          { name: "Context Menu", href: "/styleguide/components/context-menu", description: "Ações contextuais acionadas por clique direito." },
         ]}
       />
     </StyleguidePage>

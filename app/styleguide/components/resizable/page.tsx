@@ -11,7 +11,9 @@ import {
   CodeBlock,
   ComponentHeader,
   DarkModeSection,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -148,6 +150,24 @@ export default function ResizablePage() {
           "Não use para divisões fixas que o usuário nunca ajusta (use grid/flex).",
           "Não empilhe muitos níveis de aninhamento a ponto de confundir o layout.",
           "Não remova o anel de foco da alça (acessibilidade por teclado).",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          <>A alça fica discreta em <code className="font-mono text-xs">bg-border</code> e só realça em <code className="font-mono text-xs">primary</code> ao arrastar/focar — sinaliza que a divisão é ajustável sem competir com o conteúdo dos painéis.</>,
+          <>Os tamanhos são percentuais (<code className="font-mono text-xs">defaultSize</code>, <code className="font-mono text-xs">minSize</code>, <code className="font-mono text-xs">maxSize</code>), então o layout se mantém proporcional ao redimensionar a janela em vez de fixar pixels.</>,
+          <>Use <code className="font-mono text-xs">withHandle</code> quando quiser um grip visível; sem ele a fronteira ainda é arrastável, mas menos descoberta — reserve o grip para divisões que o usuário realmente ajusta.</>,
+          "Reserve o Resizable para divisões que o usuário controla (lista/detalhe, editores lado a lado). Para layouts fixos que nunca mudam, grid/flex é mais simples e barato.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Scroll Area", href: "/styleguide/components/scroll-area", description: "Rola o conteúdo de cada painel quando excede a altura." },
+          { name: "Sidebar", href: "/styleguide/components/sidebar", description: "Painel lateral fixo quando não precisa ser ajustável." },
+          { name: "Tabs", href: "/styleguide/components/tabs", description: "Alterna visões num painel em vez de dividir o espaço." },
+          { name: "Sheet", href: "/styleguide/components/sheet", description: "Painel deslizante sobreposto para detalhe temporário." },
         ]}
       />
     </StyleguidePage>

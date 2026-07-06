@@ -11,7 +11,9 @@ import {
   CodeBlock,
   ComponentHeader,
   Demo,
+  DesignNotes,
   GuidelinesSection,
+  RelatedComponents,
   Section,
   StyleguidePage,
   type ApiRow,
@@ -393,6 +395,24 @@ export default function SpinnerPage() {
           </ul>
         </div>
       </Section>
+
+      <DesignNotes
+        items={[
+          <>Spinner é para carregamento <strong>indeterminado e rápido</strong> (salvar, sincronizar, recarregar). Para progresso com fim conhecido use Progress; para o primeiro carregamento de listas/cards, prefira Skeleton.</>,
+          <><code className="font-mono text-xs">tone=&quot;current&quot;</code> herda a cor do texto do contexto; os demais fixam tokens semânticos — nunca cor hardcoded.</>,
+          <>A variante <code className="font-mono text-xs">icon</code> usa o mesmo <code className="font-mono text-xs">Loader2</code> do Button, mantendo consistência quando o Spinner aparece dentro de botões.</>,
+          <><code className="font-mono text-xs">SpinnerOverlay</code> cobre um ancestral <code className="font-mono text-xs">relative</code> com véu (scrim) e bloqueia a interação para recarregar uma área que já tem conteúdo.</>,
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Progress", href: "/styleguide/components/progress", description: "Carregamento determinado, com fim conhecido." },
+          { name: "Button", href: "/styleguide/components/button", description: "O loading embutido usa o mesmo indicador Loader2." },
+          { name: "Table", href: "/styleguide/components/table", description: "O SpinnerOverlay recarrega tabelas mantendo o conteúdo por baixo." },
+          { name: "Sonner (Toast)", href: "/styleguide/components/sonner", description: "O estado loading do toast exibe um spinner." },
+        ]}
+      />
     </StyleguidePage>
   )
 }

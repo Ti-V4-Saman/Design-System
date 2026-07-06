@@ -16,8 +16,10 @@ import {
   ComponentHeader,
   DarkModeSection,
   Demo,
+  DesignNotes,
   GuidelinesSection,
   Kbd,
+  RelatedComponents,
   Section,
   StyleguidePage,
 } from "@/app/styleguide/_components"
@@ -231,6 +233,24 @@ export default function AccordionPage() {
           "Não esconda ações críticas dentro de um item fechado.",
           "Não use para navegação principal (use Tabs/menu).",
           "Não aninhe accordions em muitos níveis.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "A variante default usa apenas divisórias (border-b) para manter listas de FAQ densas e leves; a variante card promove cada item a uma superfície própria (bg-card + shadow-card), reservada a seções independentes de um painel.",
+          <>Escolha o <code className="font-mono text-xs">type</code> pela natureza do conteúdo: <code className="font-mono text-xs">single collapsible</code> foca a atenção em um item por vez (FAQ, ajuda); <code className="font-mono text-xs">multiple</code> permite comparar seções abertas em paralelo (filtros, configurações).</>,
+          "O chevron rotaciona via data-state e o corpo anima altura com as transições do Radix, dando feedback de abrir/fechar sem depender de cor.",
+          "Prefira Accordion quando há um grupo de seções relacionadas e mutuamente exclusivas; para um único bloco de mostrar mais/menos, o Collapsible é mais enxuto.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          { name: "Collapsible", href: "/styleguide/components/collapsible", description: "Um único bloco de mostrar mais/menos, sem agrupamento." },
+          { name: "Tabs", href: "/styleguide/components/tabs", description: "Alterna visões no mesmo espaço quando o conteúdo é paralelo." },
+          { name: "Card", href: "/styleguide/components/cards", description: "Superfície que a variante card do accordion reaproveita." },
+          { name: "Sidebar", href: "/styleguide/components/sidebar", description: "Navegação com grupos colapsáveis em nível de app." },
         ]}
       />
     </StyleguidePage>

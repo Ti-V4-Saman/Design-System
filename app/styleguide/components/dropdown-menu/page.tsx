@@ -47,6 +47,8 @@ import {
   Demo,
   GuidelinesSection,
   Section,
+  DesignNotes,
+  RelatedComponents,
   StyleguidePage,
 } from "@/app/styleguide/_components"
 
@@ -464,6 +466,40 @@ import { Eye, Pencil, Trash2 } from "lucide-react"
           "Não use dropdown para seleção de formulário — use o Select.",
           "Não aninhe mais de um nível de submenu.",
           "Não misture destrutivo sem separá-lo das ações comuns.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "Radix DropdownMenu fornece foco rotativo, typeahead, submenus e aria; o visual CRM V4 é 100% tokens e igual a Popover/Select (bg-popover · shadow-dropdown · border-border).",
+          "A variante destructive por item usa o token semântico e mantém o ícone destrutivo mesmo em foco (! important).",
+          "Suporta CheckboxItem e RadioItem com indicadores on-brand (check e ponto em primary), além de submenus (Sub).",
+          "ActionsMenu é o wrapper data-driven: recebe actions (ações, separadores, labels) e renderiza o gatilho kebab (⋯) + menu.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Context Menu",
+            href: "/styleguide/components/context-menu",
+            description: "Mesma linguagem de itens, acionada por clique-direito.",
+          },
+          {
+            name: "Menubar",
+            href: "/styleguide/components/menubar",
+            description: "Barra de menus de app com o mesmo vocabulário de itens.",
+          },
+          {
+            name: "Command",
+            href: "/styleguide/components/command",
+            description: "Paleta de busca para ações e navegação globais.",
+          },
+          {
+            name: "Navigation Menu",
+            href: "/styleguide/components/navigation-menu",
+            description: "Painéis de navegação de topo (não confundir com menu de ações).",
+          },
         ]}
       />
     </StyleguidePage>

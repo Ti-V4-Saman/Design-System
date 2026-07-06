@@ -40,6 +40,8 @@ import {
   ComponentHeader,
   GuidelinesSection,
   Section,
+  DesignNotes,
+  RelatedComponents,
   StyleguidePage,
 } from "@/app/styleguide/_components"
 
@@ -246,6 +248,44 @@ export default function SidebarPage() {
           "Não use ícones sem rótulo/tooltip.",
           "Não coloque ações destrutivas soltas no topo.",
           "Não transmita o item ativo só pela cor.",
+        ]}
+      />
+
+      <DesignNotes
+        items={[
+          "Usa os tokens dedicados --sidebar (fundo, borda, accent) — isolados dos tokens gerais para permitir um tema de rail próprio.",
+          "Colapsável: no desktop vira rail de ícones (collapsible=\"icon\") ou off-canvas; no mobile vira drawer em overlay controlado pelo provider (useSidebar).",
+          "Estado dirigido por data-attributes (data-state, data-collapsible) com transição de largura; o modo colapsado exige tooltip nos itens.",
+        ]}
+      />
+
+      <RelatedComponents
+        items={[
+          {
+            name: "Navigation Menu",
+            href: "/styleguide/components/navigation-menu",
+            description: "Navegação de topo, complementar ao rail lateral.",
+          },
+          {
+            name: "Breadcrumb",
+            href: "/styleguide/components/breadcrumb",
+            description: "Indica a posição atual dentro da navegação da sidebar.",
+          },
+          {
+            name: "Sheet",
+            href: "/styleguide/components/sheet",
+            description: "O drawer mobile da sidebar segue o mesmo padrão de overlay.",
+          },
+          {
+            name: "Collapsible",
+            href: "/styleguide/components/collapsible",
+            description: "Base dos submenus expansíveis dentro do rail.",
+          },
+          {
+            name: "Tabs",
+            href: "/styleguide/components/tabs",
+            description: "Alternativa para alternar seções quando não cabe um rail.",
+          },
         ]}
       />
     </StyleguidePage>
