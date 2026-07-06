@@ -18,6 +18,13 @@ import {
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
+  ButtonGroup,
+  SplitButton,
+  Toolbar,
+  ToolbarGroup,
+  ToolbarSeparator,
+} from "@/components/button"
+import {
   AccessibilitySection,
   ApiTable,
   CodeBlock,
@@ -436,6 +443,71 @@ export default function ButtonPage() {
             </div>
           </div>
         </div>
+      </Section>
+
+      {/* Family */}
+      <Section
+        title="Família — Grupo, Split e Toolbar"
+        description="Composições do Button: ButtonGroup (segmentado), SplitButton (ação primária + dropdown) e Toolbar (barra de ações)."
+      >
+        <Demo center className="flex-col items-start gap-6">
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-muted-foreground">ButtonGroup (segmentado)</p>
+            <ButtonGroup>
+              <Button variant="outline">Dia</Button>
+              <Button variant="outline" data-active="true" className="bg-accent text-accent-foreground">Semana</Button>
+              <Button variant="outline">Mês</Button>
+            </ButtonGroup>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-muted-foreground">ButtonGroup (ícones)</p>
+            <ButtonGroup>
+              <Button variant="outline" size="icon" aria-label="Adicionar"><Plus /></Button>
+              <Button variant="outline" size="icon" aria-label="Baixar"><Download /></Button>
+              <Button variant="outline" size="icon" aria-label="Configurações"><Settings /></Button>
+            </ButtonGroup>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-muted-foreground">SplitButton (ação primária + dropdown)</p>
+            <SplitButton
+              onClick={() => {}}
+              actions={[
+                { label: "Salvar e criar novo", icon: <Plus />, onSelect: () => {} },
+                { label: "Salvar como rascunho", icon: <Download />, onSelect: () => {} },
+              ]}
+            >
+              Salvar lead
+            </SplitButton>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-muted-foreground">Toolbar (barra de ações)</p>
+            <Toolbar>
+              <ToolbarGroup>
+                <Button variant="ghost" size="icon-sm" aria-label="Novo"><Plus /></Button>
+                <Button variant="ghost" size="icon-sm" aria-label="Email"><Mail /></Button>
+              </ToolbarGroup>
+              <ToolbarSeparator />
+              <ToolbarGroup>
+                <Button variant="ghost" size="icon-sm" aria-label="Configurações"><Settings /></Button>
+                <Button variant="ghost" size="icon-sm" aria-label="Excluir" className="text-destructive hover:text-destructive"><Trash2 /></Button>
+              </ToolbarGroup>
+            </Toolbar>
+          </div>
+        </Demo>
+        <CodeBlock>{`import { ButtonGroup, SplitButton, Toolbar, ToolbarSeparator } from "@/components/button"
+
+<ButtonGroup>
+  <Button variant="outline">Dia</Button>
+  <Button variant="outline">Semana</Button>
+</ButtonGroup>
+
+<SplitButton onClick={save} actions={[{ label: "Salvar e novo", onSelect }]}>Salvar</SplitButton>
+
+<Toolbar>
+  <Button variant="ghost" size="icon-sm"><Plus /></Button>
+  <ToolbarSeparator />
+  <Button variant="ghost" size="icon-sm"><Trash2 /></Button>
+</Toolbar>`}</CodeBlock>
       </Section>
 
       {/* Props */}
