@@ -103,7 +103,7 @@ export function Heatmap({
                     key={`cell-${x}-${y}`}
                     title={`${y} · ${x}: ${valueFormatter(value)}`}
                     className={cn(
-                      "flex aspect-square items-center justify-center rounded-[4px] text-[10px] tabular-nums transition-[outline] outline-none hover:outline-2 hover:outline-ring",
+                      "flex aspect-square items-center justify-center rounded-sm text-[10px] tabular-nums transition-[outline] outline-none hover:outline-2 hover:outline-ring",
                       strong ? "text-primary-foreground" : "text-muted-foreground"
                     )}
                     style={{ backgroundColor: tint(value) }}

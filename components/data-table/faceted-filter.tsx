@@ -84,7 +84,7 @@ export function DataTableFacetedFilter<TData>({
                 >
                   <span
                     className={cn(
-                      "flex size-4 shrink-0 items-center justify-center rounded-[4px] border transition-colors",
+                      "flex size-4 shrink-0 items-center justify-center rounded-sm border transition-colors",
                       isSelected
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-input"

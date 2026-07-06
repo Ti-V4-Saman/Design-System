@@ -53,7 +53,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
         <button
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className="p-1.5 rounded text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="p-1.5 rounded-md text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           aria-label="Previous page"
         >
           <ChevronLeft className="h-4 w-4" />
@@ -75,7 +75,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
               key={page}
               onClick={() => table.setPageIndex(page)}
               className={cn(
-                "h-8 w-8 rounded text-sm transition-colors",
+                "h-8 w-8 rounded-md text-sm transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground font-medium"
                   : "text-foreground hover:bg-muted"
@@ -89,7 +89,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
         <button
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className="p-1.5 rounded text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="p-1.5 rounded-md text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           aria-label="Next page"
         >
           <ChevronRight className="h-4 w-4" />
