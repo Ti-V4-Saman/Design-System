@@ -84,4 +84,10 @@ export const navigation: NavSection[] = [
       { name: "Survey", href: "/styleguide/components/survey" },
     ],
   },
+  {
+    title: "Patterns & Templates",
+    items: [
+      { name: "Patterns", href: "/styleguide/patterns" },
+    ],
+  },
 ]
