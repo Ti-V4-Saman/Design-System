@@ -33,22 +33,22 @@ import {
 } from "@/app/styleguide/_components"
 
 const TABS = [
-  "Foundation",
-  "People",
-  "Dashboard",
-  "Work",
+  "Fundação",
+  "Pessoas",
+  "Painel",
+  "Trabalho",
   "Feed",
-  "Utility",
+  "Utilitários",
 ]
 
 export default function CardsStyleguidePage() {
-  const [activeTab, setActiveTab] = React.useState("Foundation")
+  const [activeTab, setActiveTab] = React.useState("Fundação")
 
   return (
     <StyleguidePage>
       <ComponentHeader
         title="Card Family"
-        description="17 reusable card components sharing the same CRM V4 visual language — all built on the CRMBaseCard shell and the shared CardVariant token set (default · primary · success · warning · destructive · info · muted)."
+        description="17 componentes de card reutilizáveis compartilhando a mesma linguagem visual do CRM V4 — todos construídos sobre a casca CRMBaseCard e o conjunto de tokens CardVariant compartilhado (default · primary · success · warning · destructive · info · muted)."
       />
 
       <div className="space-y-8">
@@ -70,77 +70,77 @@ export default function CardsStyleguidePage() {
           ))}
         </div>
 
-        {/* Foundation */}
-        {activeTab === "Foundation" && (
+        {/* Fundação */}
+        {activeTab === "Fundação" && (
           <div className="flex flex-col gap-8">
-            <Section title="Base Card">
+            <Section title="Card Base">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <CRMBaseCard>
-                  <CardContent className="py-4 text-sm text-muted-foreground">Default card shell</CardContent>
+                  <CardContent className="py-4 text-sm text-muted-foreground">Casca de card padrão</CardContent>
                 </CRMBaseCard>
                 <CRMBaseCard clickable onClick={() => {}}>
-                  <CardContent className="py-4 text-sm text-muted-foreground">Clickable card</CardContent>
+                  <CardContent className="py-4 text-sm text-muted-foreground">Card clicável</CardContent>
                 </CRMBaseCard>
                 <CRMBaseCard selected>
-                  <CardContent className="py-4 text-sm text-muted-foreground">Selected card</CardContent>
+                  <CardContent className="py-4 text-sm text-muted-foreground">Card selecionado</CardContent>
                 </CRMBaseCard>
               </div>
             </Section>
 
-            <Section title="Stat / KPI Card">
+            <Section title="Card de Estatística / KPI">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <StatCard
-                  title="Total Revenue"
-                  value="$48,295"
+                  title="Receita Total"
+                  value="R$ 48.295"
                   variant="success"
                   icon={<DollarSign />}
-                  trend={{ value: 12.5, label: "vs last month" }}
+                  trend={{ value: 12.5, label: "vs. mês anterior" }}
                 />
                 <StatCard
-                  title="New Users"
-                  value="1,284"
+                  title="Novos Usuários"
+                  value="1.284"
                   variant="primary"
                   icon={<Users />}
-                  trend={{ value: 8.2, label: "vs last week" }}
+                  trend={{ value: 8.2, label: "vs. semana anterior" }}
                 />
                 <StatCard
-                  title="Orders"
+                  title="Pedidos"
                   value="342"
                   variant="warning"
                   icon={<ShoppingCart />}
-                  trend={{ value: -3.1, label: "vs yesterday" }}
+                  trend={{ value: -3.1, label: "vs. ontem" }}
                 />
                 <StatCard
-                  title="Conversion"
-                  value="3.6%"
+                  title="Conversão"
+                  value="3,6%"
                   variant="destructive"
                   icon={<TrendingUp />}
-                  description="Based on last 30 days"
+                  description="Com base nos últimos 30 dias"
                 />
               </div>
             </Section>
 
-            <Section title="Content Card">
+            <Section title="Card de Conteúdo">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <ContentCard
-                  title="Q3 Performance Report"
-                  description="Summary of key metrics and initiatives for the third quarter."
-                  action={<Button size="sm" variant="outline">View</Button>}
-                  footer={<span className="text-xs text-muted-foreground">Updated 2 days ago</span>}
+                  title="Relatório de Desempenho do 3º Trimestre"
+                  description="Resumo das principais métricas e iniciativas do terceiro trimestre."
+                  action={<Button size="sm" variant="outline">Ver</Button>}
+                  footer={<span className="text-xs text-muted-foreground">Atualizado há 2 dias</span>}
                 >
                   <p className="text-sm text-muted-foreground">
-                    Revenue targets exceeded by 12%. Customer satisfaction scores improved across all segments.
+                    Metas de receita superadas em 12%. As notas de satisfação do cliente melhoraram em todos os segmentos.
                   </p>
                 </ContentCard>
                 <ContentCard
-                  title="Team Standup Notes"
-                  description="Daily sync — July 5"
-                  action={<Button size="sm" variant="ghost">Edit</Button>}
+                  title="Notas da Daily do Time"
+                  description="Sincronização diária — 5 de julho"
+                  action={<Button size="sm" variant="ghost">Editar</Button>}
                 >
                   <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                    <li>Sprint planning completed</li>
-                    <li>Design review scheduled for Friday</li>
-                    <li>3 blockers resolved</li>
+                    <li>Planejamento da sprint concluído</li>
+                    <li>Revisão de design agendada para sexta-feira</li>
+                    <li>3 impedimentos resolvidos</li>
                   </ul>
                 </ContentCard>
               </div>
@@ -148,71 +148,71 @@ export default function CardsStyleguidePage() {
           </div>
         )}
 
-        {/* People */}
-        {activeTab === "People" && (
+        {/* Pessoas */}
+        {activeTab === "Pessoas" && (
           <div className="flex flex-col gap-8">
-            <Section title="Entity Card">
+            <Section title="Card de Entidade">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <EntityCard
                   icon={<Users />}
                   iconVariant="primary"
                   title="Acme Corporation"
-                  subtitle="Enterprise customer · 240 seats"
-                  meta="Last activity 2 days ago"
-                  badge={{ label: "Active", variant: "success" }}
+                  subtitle="Cliente enterprise · 240 licenças"
+                  meta="Última atividade há 2 dias"
+                  badge={{ label: "Ativo", variant: "success" }}
                   clickable
                   onClick={() => {}}
                 />
                 <EntityCard
                   icon={<Mail />}
                   iconVariant="info"
-                  title="Invoice #1024"
-                  subtitle="$12,400 · Due Jul 20"
-                  badge={{ label: "Pending", variant: "warning" }}
-                  action={<Button size="sm" variant="outline">Pay</Button>}
+                  title="Fatura #1024"
+                  subtitle="R$ 12.400 · Vence em 20/jul"
+                  badge={{ label: "Pendente", variant: "warning" }}
+                  action={<Button size="sm" variant="outline">Pagar</Button>}
                 />
                 <EntityCard
                   icon={<ShoppingCart />}
                   iconVariant="destructive"
-                  title="Order #8821"
-                  subtitle="Cancelled · Jul 3"
-                  badge={{ label: "Cancelled", variant: "destructive" }}
+                  title="Pedido #8821"
+                  subtitle="Cancelado · 3/jul"
+                  badge={{ label: "Cancelado", variant: "destructive" }}
                 />
                 <EntityCard
                   icon={<BarChart2 />}
                   iconVariant="success"
-                  title="Deal: Series B"
-                  subtitle="$2.4M · Closing Jul 30"
-                  badge={{ label: "Won", variant: "success" }}
+                  title="Negócio: Série B"
+                  subtitle="R$ 2,4M · Fecha em 30/jul"
+                  badge={{ label: "Ganho", variant: "success" }}
                 />
               </div>
             </Section>
 
-            <Section title="Profile Card">
+            <Section title="Card de Perfil">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <ProfileCard
                   avatarFallback="JS"
-                  name="Jane Smith"
-                  role="Product Designer"
-                  email="jane@v4company.com"
+                  name="Joana Silva"
+                  role="Designer de Produto"
+                  email="joana@v4company.com"
                   actions={
                     <>
-                      <Button size="sm" variant="outline">Message</Button>
-                      <Button size="sm">Follow</Button>
+                      <Button size="sm" variant="outline">Mensagem</Button>
+                      <Button size="sm">Seguir</Button>
                     </>
                   }
                 />
                 <ProfileCard
                   avatarFallback="MR"
-                  name="Marcus Rivera"
-                  role="Senior Engineer"
-                  email="marcus@v4company.com"
-                  actions={<Button size="sm" variant="outline">View Profile</Button>}
+                  name="Marcos Ribeiro"
+                  role="Engenheiro Sênior"
+                  email="marcos@v4company.com"
+                  actions={<Button size="sm" variant="outline">Ver Perfil</Button>}
                 />
                 <ProfileCard
                   avatarFallback="AT"
                   name="Ana Torres"
-                  role="Account Executive"
+                  role="Executiva de Contas"
                   email="ana@v4company.com"
                 />
               </div>
@@ -220,52 +220,52 @@ export default function CardsStyleguidePage() {
           </div>
         )}
 
-        {/* Dashboard */}
-        {activeTab === "Dashboard" && (
+        {/* Painel */}
+        {activeTab === "Painel" && (
           <div className="flex flex-col gap-8">
-            <Section title="Widget Card">
+            <Section title="Card de Widget">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <WidgetCard
-                  title="Monthly Active Users"
-                  metric="24,531"
-                  trend={{ value: 5.2, label: "vs last month" }}
-                  description="Based on unique sessions"
-                  action={<Button size="sm" variant="ghost">Details</Button>}
+                  title="Usuários Ativos Mensais"
+                  metric="24.531"
+                  trend={{ value: 5.2, label: "vs. mês anterior" }}
+                  description="Com base em sessões únicas"
+                  action={<Button size="sm" variant="ghost">Detalhes</Button>}
                 />
                 <WidgetCard
-                  title="Pipeline Value"
-                  metric="$1.2M"
-                  metricLabel="projected"
-                  trend={{ value: -2.4, label: "vs Q2" }}
+                  title="Valor do Funil"
+                  metric="R$ 1,2M"
+                  metricLabel="projetado"
+                  trend={{ value: -2.4, label: "vs. 2º tri" }}
                 />
                 <WidgetCard
-                  title="Support Tickets"
+                  title="Chamados de Suporte"
                   metric="47"
-                  trend={{ value: 18, label: "open" }}
-                  description="12 critical, 35 normal"
+                  trend={{ value: 18, label: "abertos" }}
+                  description="12 críticos, 35 normais"
                 />
               </div>
             </Section>
 
-            <Section title="Chart Card">
+            <Section title="Card de Gráfico">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <ChartCard
-                  title="Revenue Over Time"
-                  description="Monthly revenue for the last 6 months"
-                  action={<Button size="sm" variant="ghost">Export</Button>}
-                  footer={<span className="text-xs text-muted-foreground">Last updated: today</span>}
+                  title="Receita ao Longo do Tempo"
+                  description="Receita mensal dos últimos 6 meses"
+                  action={<Button size="sm" variant="ghost">Exportar</Button>}
+                  footer={<span className="text-xs text-muted-foreground">Última atualização: hoje</span>}
                 >
-                  {/* Placeholder chart area */}
+                  {/* Área de gráfico placeholder */}
                   <div className="h-40 rounded-lg bg-muted/50 flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground">Chart area</span>
+                    <span className="text-xs text-muted-foreground">Área do gráfico</span>
                   </div>
                 </ChartCard>
                 <ChartCard
-                  title="User Acquisition"
-                  description="By channel — last 30 days"
+                  title="Aquisição de Usuários"
+                  description="Por canal — últimos 30 dias"
                 >
                   <div className="h-40 rounded-lg bg-muted/50 flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground">Chart area</span>
+                    <span className="text-xs text-muted-foreground">Área do gráfico</span>
                   </div>
                 </ChartCard>
               </div>
@@ -273,73 +273,73 @@ export default function CardsStyleguidePage() {
           </div>
         )}
 
-        {/* Work */}
-        {activeTab === "Work" && (
+        {/* Trabalho */}
+        {activeTab === "Trabalho" && (
           <div className="flex flex-col gap-8">
-            <Section title="Task Card">
+            <Section title="Card de Tarefa">
               <div className="flex flex-col gap-2 max-w-lg">
                 <TaskCard
                   id="t1"
-                  title="Finalize onboarding flow wireframes"
+                  title="Finalizar wireframes do fluxo de onboarding"
                   priority="high"
                   assigneeAvatarFallback="JS"
-                  dueDate="Jul 8"
+                  dueDate="8/jul"
                   tags={["Design"]}
                 />
                 <TaskCard
                   id="t2"
-                  title="Review API documentation PR"
+                  title="Revisar PR da documentação da API"
                   completed
                   priority="medium"
                   assigneeAvatarFallback="MR"
-                  dueDate="Jul 5"
+                  dueDate="5/jul"
                 />
                 <TaskCard
                   id="t3"
-                  title="Set up staging environment"
+                  title="Configurar ambiente de homologação"
                   priority="low"
-                  dueDate="Jul 12"
+                  dueDate="12/jul"
                   tags={["Infra", "DevOps"]}
                 />
               </div>
             </Section>
 
-            <Section title="Kanban Card">
+            <Section title="Card de Kanban">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-3xl">
                 <KanbanCard
                   id="k1"
-                  title="Implement OAuth2 login"
-                  description="Support Google and GitHub providers"
+                  title="Implementar login OAuth2"
+                  description="Dar suporte aos provedores Google e GitHub"
                   labels={[
                     { label: "Auth", variant: "primary" },
                     { label: "Backend", variant: "muted" },
                   ]}
                   assigneeAvatarFallback="MR"
                   priority="high"
-                  dueDate="Jul 10"
+                  dueDate="10/jul"
                 />
                 <KanbanCard
                   id="k2"
-                  title="Design system tokens audit"
+                  title="Auditoria de tokens do design system"
                   labels={[{ label: "Design", variant: "info" }]}
                   assigneeAvatarFallback="JS"
                   priority="medium"
                 />
                 <KanbanCard
                   id="k3"
-                  title="Fix pagination bug on mobile"
+                  title="Corrigir bug de paginação no mobile"
                   labels={[{ label: "Bug", variant: "destructive" }]}
                   priority="high"
-                  dueDate="Jul 7"
+                  dueDate="7/jul"
                 />
               </div>
             </Section>
 
-            <Section title="Project Card">
+            <Section title="Card de Projeto">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <ProjectCard
-                  title="CRM V4 Design System"
-                  description="Component library and token system"
+                  title="Design System CRM V4"
+                  description="Biblioteca de componentes e sistema de tokens"
                   progress={68}
                   status="active"
                   team={[
@@ -347,21 +347,21 @@ export default function CardsStyleguidePage() {
                     { fallback: "MR" },
                     { fallback: "AT" },
                   ]}
-                  dueDate="Aug 1"
+                  dueDate="1/ago"
                 />
                 <ProjectCard
-                  title="Mobile App Redesign"
-                  description="iOS and Android refresh"
+                  title="Redesign do App Mobile"
+                  description="Renovação para iOS e Android"
                   progress={100}
                   status="completed"
                   team={[{ fallback: "AT" }, { fallback: "JS" }]}
                 />
                 <ProjectCard
-                  title="Data Pipeline Migration"
-                  description="Moving to new infra"
+                  title="Migração do Pipeline de Dados"
+                  description="Migração para nova infraestrutura"
                   progress={25}
                   status="paused"
-                  dueDate="Sep 15"
+                  dueDate="15/set"
                 />
               </div>
             </Section>
@@ -371,63 +371,63 @@ export default function CardsStyleguidePage() {
         {/* Feed */}
         {activeTab === "Feed" && (
           <div className="flex flex-col gap-8">
-            <Section title="Activity Card">
+            <Section title="Card de Atividade">
               <div className="max-w-lg">
                 <ActivityCard
                   items={[
                     {
                       id: "a1",
                       avatarFallback: "JS",
-                      actor: "Jane Smith",
-                      action: "closed deal",
-                      target: "Acme Corp — $48k",
-                      time: "2 minutes ago",
+                      actor: "Joana Silva",
+                      action: "fechou o negócio",
+                      target: "Acme Corp — R$ 48 mil",
+                      time: "há 2 minutos",
                     },
                     {
                       id: "a2",
                       avatarFallback: "MR",
-                      actor: "Marcus Rivera",
-                      action: "merged PR",
-                      target: "#142 — Auth refactor",
-                      time: "15 minutes ago",
+                      actor: "Marcos Ribeiro",
+                      action: "fez merge do PR",
+                      target: "#142 — Refatoração de auth",
+                      time: "há 15 minutos",
                     },
                     {
                       id: "a3",
                       avatarFallback: "AT",
                       actor: "Ana Torres",
-                      action: "added comment on",
-                      target: "Invoice #1024",
-                      time: "1 hour ago",
+                      action: "comentou em",
+                      target: "Fatura #1024",
+                      time: "há 1 hora",
                     },
                   ]}
                 />
               </div>
             </Section>
 
-            <Section title="Timeline Card">
+            <Section title="Card de Linha do Tempo">
               <div className="max-w-sm">
                 <TimelineCard
-                  title="Deal History"
+                  title="Histórico do Negócio"
                   events={[
                     {
                       id: "e1",
-                      title: "Deal created",
-                      description: "Initiated by Jane Smith",
-                      time: "Jul 1, 09:00",
+                      title: "Negócio criado",
+                      description: "Iniciado por Joana Silva",
+                      time: "1/jul, 09:00",
                       variant: "primary",
                     },
                     {
                       id: "e2",
-                      title: "Proposal sent",
-                      description: "PDF attached · $48,000",
-                      time: "Jul 3, 14:30",
+                      title: "Proposta enviada",
+                      description: "PDF anexado · R$ 48.000",
+                      time: "3/jul, 14:30",
                       variant: "info",
                     },
                     {
                       id: "e3",
-                      title: "Contract signed",
-                      description: "e-signature via DocuSign",
-                      time: "Jul 5, 11:15",
+                      title: "Contrato assinado",
+                      description: "Assinatura eletrônica via DocuSign",
+                      time: "5/jul, 11:15",
                       variant: "success",
                     },
                   ]}
@@ -435,84 +435,84 @@ export default function CardsStyleguidePage() {
               </div>
             </Section>
 
-            <Section title="Comment Card">
+            <Section title="Card de Comentário">
               <div className="flex flex-col gap-3 max-w-lg">
                 <CommentCard
                   avatarFallback="JS"
-                  author="Jane Smith"
-                  time="2h ago"
-                  content="The revised proposal looks great. I've bumped the timeline slightly to account for the legal review — should be back within 3 business days."
+                  author="Joana Silva"
+                  time="há 2h"
+                  content="A proposta revisada ficou ótima. Estendi um pouco o cronograma para acomodar a revisão jurídica — deve voltar em até 3 dias úteis."
                   reactions={[{ emoji: "👍", count: 3 }, { emoji: "🎉", count: 1 }]}
                   onReply={() => {}}
                 />
                 <CommentCard
                   avatarFallback="MR"
-                  author="Marcus Rivera"
-                  time="45min ago"
-                  content="Sounds good. I'll coordinate with legal on our end."
+                  author="Marcos Ribeiro"
+                  time="há 45min"
+                  content="Combinado. Vou alinhar com o jurídico do nosso lado."
                 />
               </div>
             </Section>
           </div>
         )}
 
-        {/* Utility */}
-        {activeTab === "Utility" && (
+        {/* Utilitários */}
+        {activeTab === "Utilitários" && (
           <div className="flex flex-col gap-8">
-            <Section title="Attachment Card">
+            <Section title="Card de Anexo">
               <div className="flex flex-col gap-2 max-w-lg">
                 <AttachmentCard
-                  fileName="Q3 Revenue Report.pdf"
-                  fileSize="2.4 MB"
+                  fileName="Relatorio-Receita-3-Tri.pdf"
+                  fileSize="2,4 MB"
                   fileType="pdf"
-                  uploadedBy="Jane Smith"
-                  uploadedAt="Jul 4"
+                  uploadedBy="Joana Silva"
+                  uploadedAt="4/jul"
                   onDownload={() => {}}
                   onDelete={() => {}}
                 />
                 <AttachmentCard
-                  fileName="product-mockup-v3.png"
+                  fileName="mockup-produto-v3.png"
                   fileSize="890 KB"
                   fileType="image"
-                  uploadedBy="Marcus Rivera"
-                  uploadedAt="Jul 2"
+                  uploadedBy="Marcos Ribeiro"
+                  uploadedAt="2/jul"
                   onDownload={() => {}}
                 />
                 <AttachmentCard
-                  fileName="design-assets.zip"
-                  fileSize="14.2 MB"
+                  fileName="assets-design.zip"
+                  fileSize="14,2 MB"
                   fileType="zip"
-                  uploadedAt="Jun 28"
+                  uploadedAt="28/jun"
                   onDownload={() => {}}
                   onDelete={() => {}}
                 />
               </div>
             </Section>
 
-            <Section title="Empty State Card">
+            <Section title="Card de Estado Vazio">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
                 <EmptyStateCard
                   icon={<FileText />}
-                  title="No documents yet"
-                  description="Upload files or create a new document to get started."
-                  action={<Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Document</Button>}
+                  title="Nenhum documento ainda"
+                  description="Envie arquivos ou crie um novo documento para começar."
+                  action={<Button size="sm"><Plus className="h-4 w-4 mr-1" />Adicionar Documento</Button>}
                 />
                 <EmptyStateCard
                   icon={<Users />}
-                  title="No team members"
-                  description="Invite your team to start collaborating on this project."
-                  action={<Button size="sm" variant="outline"><UserPlus className="h-4 w-4 mr-1" />Invite</Button>}
+                  title="Nenhum membro na equipe"
+                  description="Convide seu time para começar a colaborar neste projeto."
+                  action={<Button size="sm" variant="outline"><UserPlus className="h-4 w-4 mr-1" />Convidar</Button>}
                 />
               </div>
             </Section>
 
-            <Section title="Integration Card">
+            <Section title="Card de Integração">
               <div className="flex flex-col gap-2 max-w-lg">
                 <IntegrationCard
                   icon={<MessageSquare />}
                   iconVariant="primary"
                   name="Slack"
-                  description="Send notifications and updates to your Slack workspace."
+                  description="Envie notificações e atualizações para o seu workspace do Slack."
                   connected
                   onToggle={() => {}}
                 />
@@ -520,7 +520,7 @@ export default function CardsStyleguidePage() {
                   icon={<GitBranch />}
                   iconVariant="muted"
                   name="GitHub"
-                  description="Sync pull requests and issues with your CRM pipeline."
+                  description="Sincronize pull requests e issues com o funil do seu CRM."
                   connected={false}
                   onToggle={() => {}}
                 />
@@ -528,41 +528,41 @@ export default function CardsStyleguidePage() {
                   icon={<Mail />}
                   iconVariant="info"
                   name="Gmail"
-                  description="Track email conversations linked to contacts and deals."
+                  description="Acompanhe conversas de e-mail vinculadas a contatos e negócios."
                   connected
                   onToggle={() => {}}
                 />
               </div>
             </Section>
 
-            <Section title="Quick Action Card">
+            <Section title="Card de Ação Rápida">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl">
                 <QuickActionCard
                   icon={<Send />}
                   iconVariant="primary"
-                  label="Send Proposal"
-                  description="Generate and email a deal proposal"
+                  label="Enviar Proposta"
+                  description="Gere e envie por e-mail uma proposta de negócio"
                   onClick={() => {}}
                 />
                 <QuickActionCard
                   icon={<Calendar />}
                   iconVariant="success"
-                  label="Schedule Meeting"
-                  description="Book a call with your contact"
+                  label="Agendar Reunião"
+                  description="Marque uma ligação com o seu contato"
                   onClick={() => {}}
                 />
                 <QuickActionCard
                   icon={<Zap />}
                   iconVariant="warning"
-                  label="Run Automation"
-                  description="Trigger a workflow sequence"
+                  label="Executar Automação"
+                  description="Dispare uma sequência de fluxo de trabalho"
                   onClick={() => {}}
                 />
                 <QuickActionCard
                   icon={<Plus />}
                   iconVariant="muted"
-                  label="New Task"
-                  description="Add to your pipeline"
+                  label="Nova Tarefa"
+                  description="Adicione ao seu funil"
                   disabled
                 />
               </div>
@@ -572,30 +572,30 @@ export default function CardsStyleguidePage() {
       </div>
 
       <AccessibilitySection
-        title="Accessibility"
+        title="Acessibilidade"
         items={[
-          <>Clickable cards (<code className="font-mono text-xs">CRMBaseCard clickable</code>, QuickActionCard, EntityCard) expose an <code className="font-mono text-xs">onClick</code> — wire them to a real button/link so they are keyboard-focusable and announced as actionable.</>,
-          <>The <code className="font-mono text-xs">disabled</code> state applies <code className="font-mono text-xs">opacity-50</code> and <code className="font-mono text-xs">pointer-events-none</code>, blocking pointer interaction; do not rely on color alone to signal it.</>,
-          <>Icons inside StatCard/EntityCard/IntegrationCard are decorative — always pair them with the visible title/label so meaning does not depend on the glyph.</>,
-          <>Selected cards use a 2px <code className="font-mono text-xs">ring-primary</code>, a non-color cue readable next to the surrounding cards.</>,
+          <>Cards clicáveis (<code className="font-mono text-xs">CRMBaseCard clickable</code>, QuickActionCard, EntityCard) expõem um <code className="font-mono text-xs">onClick</code> — conecte-os a um botão/link real para que sejam focáveis por teclado e anunciados como acionáveis.</>,
+          <>O estado <code className="font-mono text-xs">disabled</code> aplica <code className="font-mono text-xs">opacity-50</code> e <code className="font-mono text-xs">pointer-events-none</code>, bloqueando a interação por ponteiro; não dependa apenas da cor para sinalizá-lo.</>,
+          <>Ícones dentro de StatCard/EntityCard/IntegrationCard são decorativos — sempre os acompanhe do título/rótulo visível para que o significado não dependa do glifo.</>,
+          <>Cards selecionados usam um <code className="font-mono text-xs">ring-primary</code> de 2px, uma pista não-cromática legível ao lado dos cards vizinhos.</>,
         ]}
       />
 
-      <DarkModeSection description="The same cards in both themes — every surface, ring, trend and variant color resolves from tokens (bg-card, ring-primary, text-success/destructive).">
+      <DarkModeSection description="Os mesmos cards em ambos os temas — toda superfície, ring, trend e cor de variante é resolvida a partir de tokens (bg-card, ring-primary, text-success/destructive).">
         <div className="space-y-3">
           <StatCard
-            title="Total Revenue"
-            value="$48,295"
+            title="Receita Total"
+            value="R$ 48.295"
             variant="success"
             icon={<DollarSign />}
-            trend={{ value: 12.5, label: "vs last month" }}
+            trend={{ value: 12.5, label: "vs. mês anterior" }}
           />
           <EntityCard
             icon={<Users />}
             iconVariant="primary"
             title="Acme Corporation"
-            subtitle="Enterprise customer · 240 seats"
-            badge={{ label: "Active", variant: "success" }}
+            subtitle="Cliente enterprise · 240 licenças"
+            badge={{ label: "Ativo", variant: "success" }}
           />
         </div>
       </DarkModeSection>
@@ -603,52 +603,52 @@ export default function CardsStyleguidePage() {
       <Section title="Code">
         <CodeBlock>{`import { CRMBaseCard, StatCard, EntityCard } from "@/components/cards"
 
-// Base shell — clickable / selected / disabled
+// Casca base — clickable / selected / disabled
 <CRMBaseCard clickable selected={isSelected} onClick={select}>
   <CardContent>…</CardContent>
 </CRMBaseCard>
 
-// KPI card with a semantic variant + trend
-<StatCard title="Total Revenue" value="$48,295" variant="success"
-  icon={<DollarSign />} trend={{ value: 12.5, label: "vs last month" }} />
+// Card de KPI com uma variante semântica + trend
+<StatCard title="Receita Total" value="R$ 48.295" variant="success"
+  icon={<DollarSign />} trend={{ value: 12.5, label: "vs. mês anterior" }} />
 
-// Entity row with icon, badge and inline action
-<EntityCard icon={<Mail />} iconVariant="info" title="Invoice #1024"
-  subtitle="$12,400 · Due Jul 20" badge={{ label: "Pending", variant: "warning" }} />`}</CodeBlock>
+// Linha de entidade com ícone, badge e ação inline
+<EntityCard icon={<Mail />} iconVariant="info" title="Fatura #1024"
+  subtitle="R$ 12.400 · Vence em 20/jul" badge={{ label: "Pendente", variant: "warning" }} />`}</CodeBlock>
       </Section>
 
       <ApiSection
         title="API / Props"
-        description="All cards share the CardVariant union: default · primary · success · warning · destructive · info · muted."
+        description="Todos os cards compartilham a união CardVariant: default · primary · success · warning · destructive · info · muted."
         groups={[
           [
-            { prop: "CRMBaseCard.clickable", type: "boolean", default: "false", description: "Adds hover ring + pointer cursor for interactive cards." },
-            { prop: "CRMBaseCard.selected", type: "boolean", default: "false", description: "Applies a 2px ring-primary highlight." },
-            { prop: "CRMBaseCard.disabled", type: "boolean", default: "false", description: "Dims to opacity-50 and disables pointer events." },
-            { prop: "CRMBaseCard.onClick", type: "() => void", description: "Click handler (ignored while disabled)." },
+            { prop: "CRMBaseCard.clickable", type: "boolean", default: "false", description: "Adiciona ring no hover + cursor de ponteiro para cards interativos." },
+            { prop: "CRMBaseCard.selected", type: "boolean", default: "false", description: "Aplica um destaque ring-primary de 2px." },
+            { prop: "CRMBaseCard.disabled", type: "boolean", default: "false", description: "Esmaece para opacity-50 e desabilita eventos de ponteiro." },
+            { prop: "CRMBaseCard.onClick", type: "() => void", description: "Handler de clique (ignorado quando desabilitado)." },
           ],
           [
-            { prop: "StatCard", type: "{ title, value, variant?, icon?, trend?, description? }", description: "KPI tile; trend renders up/down arrow + colored delta." },
-            { prop: "EntityCard", type: "{ icon?, iconVariant?, title, subtitle?, meta?, badge?, action?, clickable? }", description: "Compact entity row with icon, badge and optional action." },
-            { prop: "ProjectCard", type: "{ title, progress, status?, team?, dueDate? }", description: "Project summary with progress bar and status." },
-            { prop: "QuickActionCard", type: "{ icon, label, iconVariant?, description?, onClick?, disabled? }", description: "Tappable action tile for shortcuts." },
+            { prop: "StatCard", type: "{ title, value, variant?, icon?, trend?, description? }", description: "Tile de KPI; o trend renderiza seta para cima/baixo + delta colorido." },
+            { prop: "EntityCard", type: "{ icon?, iconVariant?, title, subtitle?, meta?, badge?, action?, clickable? }", description: "Linha de entidade compacta com ícone, badge e ação opcional." },
+            { prop: "ProjectCard", type: "{ title, progress, status?, team?, dueDate? }", description: "Resumo de projeto com barra de progresso e status." },
+            { prop: "QuickActionCard", type: "{ icon, label, iconVariant?, description?, onClick?, disabled? }", description: "Tile de ação tocável para atalhos." },
           ],
         ]}
       />
 
       <GuidelinesSection
-        title="Best Practices"
+        title="Boas Práticas"
         dos={[
-          "Reuse the CardVariant tokens so status colors stay consistent across every card.",
-          "Pick the card that matches the data: StatCard for KPIs, EntityCard for list rows, ProjectCard for progress.",
-          "Give clickable/quick-action cards a real onClick and a clear affordance.",
-          "Use EmptyStateCard with an actionable CTA when a collection has no items.",
+          "Reutilize os tokens CardVariant para que as cores de status fiquem consistentes em todos os cards.",
+          "Escolha o card que combina com o dado: StatCard para KPIs, EntityCard para linhas de lista, ProjectCard para progresso.",
+          "Dê aos cards clicáveis/de ação rápida um onClick real e uma affordance clara.",
+          "Use o EmptyStateCard com um CTA acionável quando uma coleção não tem itens.",
         ]}
         donts={[
-          "Don't hardcode colors — always drive tone through the variant prop.",
-          "Don't nest cards inside cards; use CardContent sections instead.",
-          "Don't mark a card clickable without wiring an action.",
-          "Don't overload a single card with unrelated metrics — split into multiple tiles.",
+          "Não codifique cores — sempre conduza o tom pela prop variant.",
+          "Não aninhe cards dentro de cards; use seções de CardContent no lugar.",
+          "Não marque um card como clicável sem conectar uma ação.",
+          "Não sobrecarregue um único card com métricas não relacionadas — divida em vários tiles.",
         ]}
       />
 

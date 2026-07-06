@@ -29,18 +29,18 @@ import {
 // ── Mock data ─────────────────────────────────────────────────────────────────
 
 const ROLE_OPTIONS: SurveyOption[] = [
-  { id: "sales", label: "Sales Representative", description: "Manage leads and close deals" },
-  { id: "manager", label: "Sales Manager", description: "Oversee the sales team" },
-  { id: "marketing", label: "Marketing Specialist" },
-  { id: "support", label: "Customer Support" },
+  { id: "sales", label: "Representante de Vendas", description: "Gerencia leads e fecha negócios" },
+  { id: "manager", label: "Gerente de Vendas", description: "Supervisiona o time de vendas" },
+  { id: "marketing", label: "Especialista de Marketing" },
+  { id: "support", label: "Suporte ao Cliente" },
 ]
 
 const TOOL_OPTIONS: SurveyOption[] = [
-  { id: "email", label: "Email campaigns" },
-  { id: "calls", label: "Cold calling" },
-  { id: "social", label: "Social selling" },
-  { id: "events", label: "Events & webinars" },
-  { id: "ads", label: "Paid advertising" },
+  { id: "email", label: "Campanhas de e-mail" },
+  { id: "calls", label: "Ligações a frio" },
+  { id: "social", label: "Venda social" },
+  { id: "events", label: "Eventos e webinars" },
+  { id: "ads", label: "Publicidade paga" },
 ]
 
 const PLAN_OPTIONS: SurveyOption[] = [
@@ -61,27 +61,27 @@ interface Step {
 const STEPS: Step[] = [
   {
     type: "single",
-    question: "What is your primary role?",
-    description: "This helps us tailor your CRM experience.",
+    question: "Qual é a sua função principal?",
+    description: "Isso nos ajuda a personalizar sua experiência no CRM.",
     options: ROLE_OPTIONS,
   },
   {
     type: "multiple",
-    question: "Which channels do you use most?",
-    description: "Select all that apply.",
+    question: "Quais canais você mais utiliza?",
+    description: "Selecione todos que se aplicam.",
     options: TOOL_OPTIONS,
   },
   {
     type: "text",
-    question: "What is your biggest sales challenge?",
-    description: "Be as specific as you like — this helps us improve the product.",
-    placeholder: "e.g. Qualifying leads faster...",
+    question: "Qual é o seu maior desafio em vendas?",
+    description: "Seja o mais específico que quiser — isso nos ajuda a melhorar o produto.",
+    placeholder: "ex.: Qualificar leads mais rápido...",
   },
   {
     type: "dropdown",
-    question: "Which plan are you interested in?",
+    question: "Em qual plano você tem interesse?",
     options: PLAN_OPTIONS,
-    placeholder: "Choose a plan…",
+    placeholder: "Escolha um plano…",
   },
 ]
 
@@ -98,13 +98,13 @@ function MultiStepDemo() {
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-success/10 text-success">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
-        <h2 className="text-xl font-semibold text-foreground">All done!</h2>
-        <p className="text-sm text-muted-foreground">Your responses have been recorded.</p>
+        <h2 className="text-xl font-semibold text-foreground">Tudo pronto!</h2>
+        <p className="text-sm text-muted-foreground">Suas respostas foram registradas.</p>
         <button
           onClick={() => { setStep(0); setAnswers({}); setDone(false) }}
           className="mt-2 text-xs text-primary underline-offset-4 hover:underline"
         >
-          Restart
+          Recomeçar
         </button>
       </div>
     )
@@ -128,7 +128,7 @@ function MultiStepDemo() {
         if (step < STEPS.length - 1) setStep((s) => s + 1)
         else setDone(true)
       }}
-      nextLabel={step === STEPS.length - 1 ? "Submit" : "OK"}
+      nextLabel={step === STEPS.length - 1 ? "Enviar" : "OK"}
       showKeyboardHints
     />
   )
@@ -146,16 +146,16 @@ export default function SurveyPage() {
     <StyleguidePage>
       <ComponentHeader
         title="Survey Question Card"
-        description="A composable system for focused single-question survey flows with keyboard navigation — single/multiple choice, free text and dropdown answer types."
+        description="Um sistema componível para fluxos de pesquisa focados em uma pergunta por vez com navegação por teclado — tipos de resposta de escolha única/múltipla, texto livre e dropdown."
       />
 
-      {/* Interactive demo */}
-      <Section title="Interactive Demo" description="4-step survey — keyboard shortcuts A/B/C… to select, Enter to advance.">
+      {/* Demo interativa */}
+      <Section title="Demo Interativa" description="Pesquisa de 4 etapas — atalhos de teclado A/B/C… para selecionar, Enter para avançar.">
         <MultiStepDemo />
       </Section>
 
-      {/* Building blocks */}
-      <Section title="Building Blocks" description="Each piece of the QuestionCard is exported and usable on its own.">
+      {/* Blocos de construção */}
+      <Section title="Blocos de Construção" description="Cada peça do QuestionCard é exportada e usável isoladamente.">
         <div className="grid gap-8 md:grid-cols-2">
 
           {/* StepIndicator */}
@@ -174,26 +174,26 @@ export default function SurveyPage() {
             <div className="rounded-lg border border-border bg-card p-4">
               <QuestionHeader
                 questionNumber={2}
-                question="What is your primary role?"
-                description="This helps us personalise your experience."
+                question="Qual é a sua função principal?"
+                description="Isso nos ajuda a personalizar sua experiência."
               />
             </div>
           </div>
 
           {/* ChoiceCard states */}
           <div className="space-y-2">
-            <p className="text-xs text-muted-foreground font-medium">ChoiceCard — states</p>
+            <p className="text-xs text-muted-foreground font-medium">ChoiceCard — estados</p>
             <div className="rounded-lg border border-border bg-card p-4 space-y-2">
-              <ChoiceCard id="a" label="Unselected option" shortcut="A" />
-              <ChoiceCard id="b" label="Selected option" shortcut="B" selected />
-              <ChoiceCard id="c" label="With description" shortcut="C" description="Additional context line" />
-              <ChoiceCard id="d" label="Disabled option" shortcut="D" disabled />
+              <ChoiceCard id="a" label="Opção não selecionada" shortcut="A" />
+              <ChoiceCard id="b" label="Opção selecionada" shortcut="B" selected />
+              <ChoiceCard id="c" label="Com descrição" shortcut="C" description="Linha de contexto adicional" />
+              <ChoiceCard id="d" label="Opção desabilitada" shortcut="D" disabled />
             </div>
           </div>
 
           {/* OptionList */}
           <div className="space-y-2">
-            <p className="text-xs text-muted-foreground font-medium">OptionList — single select</p>
+            <p className="text-xs text-muted-foreground font-medium">OptionList — seleção única</p>
             <div className="rounded-lg border border-border bg-card p-4">
               <OptionList
                 options={ROLE_OPTIONS.slice(0, 3)}
@@ -205,7 +205,7 @@ export default function SurveyPage() {
 
           {/* OptionList multi */}
           <div className="space-y-2">
-            <p className="text-xs text-muted-foreground font-medium">OptionList — multi select</p>
+            <p className="text-xs text-muted-foreground font-medium">OptionList — seleção múltipla</p>
             <div className="rounded-lg border border-border bg-card p-4">
               <OptionList
                 options={TOOL_OPTIONS.slice(0, 3)}
@@ -223,14 +223,14 @@ export default function SurveyPage() {
               <QuestionTextInput
                 value={textValue}
                 onChange={setTextValue}
-                placeholder="Short answer…"
+                placeholder="Resposta curta…"
               />
               <QuestionTextInput
                 value={textValue}
                 onChange={setTextValue}
                 multiline
                 maxLength={200}
-                placeholder="Long answer…"
+                placeholder="Resposta longa…"
               />
             </div>
           </div>
@@ -243,33 +243,33 @@ export default function SurveyPage() {
                 options={PLAN_OPTIONS}
                 value={dropdownValue}
                 onChange={setDropdownValue}
-                placeholder="Choose a plan…"
+                placeholder="Escolha um plano…"
               />
             </div>
           </div>
 
           {/* Footer */}
           <div className="space-y-2">
-            <p className="text-xs text-muted-foreground font-medium">QuestionFooter — variants</p>
+            <p className="text-xs text-muted-foreground font-medium">QuestionFooter — variantes</p>
             <div className="rounded-lg border border-border bg-card p-4 space-y-4">
               <QuestionFooter onNext={() => {}} nextLabel="OK" showKeyboardHints />
-              <QuestionFooter onNext={() => {}} onBack={() => {}} nextLabel="Next" showKeyboardHints />
-              <QuestionFooter onNext={() => {}} nextLabel="Submit" nextDisabled showKeyboardHints={false} />
+              <QuestionFooter onNext={() => {}} onBack={() => {}} nextLabel="Avançar" showKeyboardHints />
+              <QuestionFooter onNext={() => {}} nextLabel="Enviar" nextDisabled showKeyboardHints={false} />
             </div>
           </div>
         </div>
       </Section>
 
       {/* States */}
-      <Section title="QuestionCard — States" description="Disabled locks every control and dims the card.">
+      <Section title="QuestionCard — Estados" description="O estado desabilitado trava todos os controles e esmaece o card.">
         <div className="flex flex-wrap gap-8">
           <div className="space-y-2">
-            <p className="text-xs text-muted-foreground font-medium">Disabled</p>
+            <p className="text-xs text-muted-foreground font-medium">Desabilitado</p>
             <QuestionCard
               questionNumber={1}
               totalQuestions={4}
               questionType="single"
-              question="What is your primary role?"
+              question="Qual é a sua função principal?"
               options={ROLE_OPTIONS.slice(0, 3)}
               value="sales"
               disabled
@@ -279,21 +279,21 @@ export default function SurveyPage() {
       </Section>
 
       <AccessibilitySection
-        title="Accessibility"
+        title="Acessibilidade"
         items={[
-          <>Choice options expose keyboard shortcuts (<Kbd>A</Kbd> <Kbd>B</Kbd> <Kbd>C</Kbd>…) rendered as a visible hint on each ChoiceCard.</>,
-          <>Pressing <Kbd>Enter</Kbd> advances to the next step once an answer is present; inside a multiline text input <Kbd>Enter</Kbd> inserts a newline instead of advancing.</>,
-          <>Disabled cards early-return from all key handlers and remove their controls from interaction.</>,
-          <>The StepIndicator and QuestionHeader number communicate progress so users always know where they are in the flow.</>,
-          <>Selected choices use a filled state plus the shortcut badge — status is not signalled by color alone.</>,
+          <>As opções de escolha expõem atalhos de teclado (<Kbd>A</Kbd> <Kbd>B</Kbd> <Kbd>C</Kbd>…) renderizados como uma dica visível em cada ChoiceCard.</>,
+          <>Pressionar <Kbd>Enter</Kbd> avança para a próxima etapa quando há uma resposta presente; dentro de um campo de texto multiline o <Kbd>Enter</Kbd> insere uma quebra de linha em vez de avançar.</>,
+          <>Cards desabilitados retornam cedo de todos os handlers de tecla e removem seus controles da interação.</>,
+          <>O número do StepIndicator e do QuestionHeader comunicam o progresso para que os usuários sempre saibam onde estão no fluxo.</>,
+          <>As escolhas selecionadas usam um estado preenchido mais o badge de atalho — o status não é sinalizado apenas pela cor.</>,
         ]}
       />
 
-      <DarkModeSection description="Survey building blocks in both themes — card surfaces, selected states and the success confirmation all resolve from tokens.">
+      <DarkModeSection description="Blocos de construção da pesquisa em ambos os temas — superfícies de card, estados selecionados e a confirmação de sucesso são todos resolvidos a partir de tokens.">
         <div className="space-y-2">
-          <ChoiceCard id="dm-a" label="Selected option" shortcut="A" selected />
-          <ChoiceCard id="dm-b" label="With description" shortcut="B" description="Additional context line" />
-          <ChoiceCard id="dm-c" label="Unselected option" shortcut="C" />
+          <ChoiceCard id="dm-a" label="Opção selecionada" shortcut="A" selected />
+          <ChoiceCard id="dm-b" label="Com descrição" shortcut="B" description="Linha de contexto adicional" />
+          <ChoiceCard id="dm-c" label="Opção não selecionada" shortcut="C" />
         </div>
       </DarkModeSection>
 
@@ -304,14 +304,14 @@ export default function SurveyPage() {
   questionNumber={step + 1}
   totalQuestions={steps.length}
   questionType="single"          // "single" | "multiple" | "text" | "dropdown"
-  question="What is your primary role?"
-  description="This helps us tailor your CRM experience."
+  question="Qual é a sua função principal?"
+  description="Isso nos ajuda a personalizar sua experiência no CRM."
   options={roleOptions}
   value={answers[step]}
   onChange={(v) => setAnswer(step, v)}
   onBack={step > 0 ? goBack : undefined}
   onNext={goNext}
-  nextLabel={isLast ? "Submit" : "OK"}
+  nextLabel={isLast ? "Enviar" : "OK"}
   showKeyboardHints
 />`}</CodeBlock>
       </Section>
@@ -319,44 +319,44 @@ export default function SurveyPage() {
       {/* Props docs */}
       <ApiSection
         title="API / Props"
-        description="QuestionCard — the full single-question shell composing StepIndicator, QuestionHeader, the answer input and QuestionFooter."
+        description="QuestionCard — a casca completa de pergunta única que compõe StepIndicator, QuestionHeader, o campo de resposta e QuestionFooter."
         groups={[
           [
-            { prop: "questionType", type: '"single" | "multiple" | "text" | "dropdown"', description: "Answer input type (required)." },
-            { prop: "question", type: "string", description: "Question text (required)." },
-            { prop: "description", type: "string", description: "Optional subtext below the question." },
-            { prop: "options", type: "SurveyOption[]", default: "[]", description: "Answer choices for single/multiple/dropdown types." },
-            { prop: "value", type: "string | string[]", description: "Controlled answer value." },
-            { prop: "onChange", type: "(v: string | string[]) => void", description: "Called on answer change." },
-            { prop: "placeholder", type: "string", description: "Placeholder for text/dropdown inputs." },
+            { prop: "questionType", type: '"single" | "multiple" | "text" | "dropdown"', description: "Tipo de campo de resposta (obrigatório)." },
+            { prop: "question", type: "string", description: "Texto da pergunta (obrigatório)." },
+            { prop: "description", type: "string", description: "Subtexto opcional abaixo da pergunta." },
+            { prop: "options", type: "SurveyOption[]", default: "[]", description: "Opções de resposta para os tipos single/multiple/dropdown." },
+            { prop: "value", type: "string | string[]", description: "Valor controlado da resposta." },
+            { prop: "onChange", type: "(v: string | string[]) => void", description: "Chamado ao alterar a resposta." },
+            { prop: "placeholder", type: "string", description: "Placeholder para campos de texto/dropdown." },
           ],
           [
-            { prop: "questionNumber", type: "number", description: "Current step number (shows header + progress)." },
-            { prop: "totalQuestions", type: "number", description: "Total steps for the progress bar." },
-            { prop: "onNext", type: "() => void", description: "Called on OK/Next button or Enter key." },
-            { prop: "onBack", type: "() => void", description: "Called on Back button; button hidden if omitted." },
-            { prop: "onClose", type: "() => void", description: "Renders an X button when provided." },
-            { prop: "nextLabel", type: "string", default: '"OK"', description: "Label for the advance button." },
-            { prop: "backLabel", type: "string", default: '"Back"', description: "Label for the back button." },
-            { prop: "showKeyboardHints", type: "boolean", default: "true", description: "Show the 'press Enter ↵' hint below Next." },
-            { prop: "disabled", type: "boolean", default: "false", description: "Disables all interactive elements." },
+            { prop: "questionNumber", type: "number", description: "Número da etapa atual (mostra cabeçalho + progresso)." },
+            { prop: "totalQuestions", type: "number", description: "Total de etapas para a barra de progresso." },
+            { prop: "onNext", type: "() => void", description: "Chamado no botão OK/Avançar ou na tecla Enter." },
+            { prop: "onBack", type: "() => void", description: "Chamado no botão Voltar; o botão fica oculto se omitido." },
+            { prop: "onClose", type: "() => void", description: "Renderiza um botão X quando fornecido." },
+            { prop: "nextLabel", type: "string", default: '"OK"', description: "Rótulo do botão de avançar." },
+            { prop: "backLabel", type: "string", default: '"Back"', description: "Rótulo do botão de voltar." },
+            { prop: "showKeyboardHints", type: "boolean", default: "true", description: "Mostra a dica 'pressione Enter ↵' abaixo de Avançar." },
+            { prop: "disabled", type: "boolean", default: "false", description: "Desabilita todos os elementos interativos." },
           ],
         ]}
       />
 
       <GuidelinesSection
-        title="Best Practices"
+        title="Boas Práticas"
         dos={[
-          "Ask one question per screen to keep the respondent focused.",
-          "Show progress with questionNumber / totalQuestions so users know how far they are.",
-          "Use 'multiple' for select-all questions and 'single' for exclusive choices.",
-          "Keep keyboard hints on for power users completing long surveys.",
+          "Faça uma pergunta por tela para manter o respondente focado.",
+          "Mostre o progresso com questionNumber / totalQuestions para que os usuários saibam o quanto falta.",
+          "Use 'multiple' para perguntas de selecionar todas e 'single' para escolhas exclusivas.",
+          "Mantenha as dicas de teclado ativas para usuários avançados que completam pesquisas longas.",
         ]}
         donts={[
-          "Don't cram several questions into one QuestionCard — split them into steps.",
-          "Don't write long option labels; keep choices scannable with the shortcut key.",
-          "Don't disable the Next button without an obvious reason (e.g. required answer).",
-          "Don't intercept Enter inside multiline text — let it insert newlines.",
+          "Não amontoe várias perguntas em um único QuestionCard — divida-as em etapas.",
+          "Não escreva rótulos de opção longos; mantenha as escolhas fáceis de escanear com a tecla de atalho.",
+          "Não desabilite o botão Avançar sem um motivo óbvio (ex.: resposta obrigatória).",
+          "Não intercepte o Enter dentro de um texto multiline — deixe-o inserir quebras de linha.",
         ]}
       />
 

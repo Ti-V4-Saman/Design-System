@@ -41,38 +41,38 @@ const VARIANTS: {
 }[] = [
   {
     variant: "default",
-    label: "Default (Info)",
-    title: "Update settings?",
-    description: "This will update your account settings. Your changes will take effect immediately.",
-    confirmLabel: "Update",
-    triggerLabel: "Open Default",
+    label: "Padrão (Info)",
+    title: "Atualizar configurações?",
+    description: "Isso atualizará as configurações da sua conta. Suas alterações terão efeito imediato.",
+    confirmLabel: "Atualizar",
+    triggerLabel: "Abrir Padrão",
     triggerVariant: "outline",
   },
   {
     variant: "destructive",
-    label: "Destructive (Delete)",
-    title: "Delete contact?",
-    description: "This action cannot be undone. This will permanently delete the contact and all associated data.",
-    confirmLabel: "Delete",
-    triggerLabel: "Open Destructive",
+    label: "Destrutivo (Excluir)",
+    title: "Excluir contato?",
+    description: "Esta ação não pode ser desfeita. Isso excluirá permanentemente o contato e todos os dados associados.",
+    confirmLabel: "Excluir",
+    triggerLabel: "Abrir Destrutivo",
     triggerVariant: "destructive",
   },
   {
     variant: "warning",
-    label: "Warning",
-    title: "Archive this project?",
-    description: "Archiving will hide this project from the active list. You can restore it later from the archives.",
-    confirmLabel: "Archive",
-    triggerLabel: "Open Warning",
+    label: "Aviso",
+    title: "Arquivar este projeto?",
+    description: "Arquivar irá ocultar este projeto da lista de ativos. Você poderá restaurá-lo depois a partir do arquivo.",
+    confirmLabel: "Arquivar",
+    triggerLabel: "Abrir Aviso",
     triggerVariant: "outline",
   },
   {
     variant: "success",
-    label: "Success",
-    title: "Publish contract?",
-    description: "Once published, this contract will be visible to all stakeholders and cannot be edited.",
-    confirmLabel: "Publish",
-    triggerLabel: "Open Success",
+    label: "Sucesso",
+    title: "Publicar contrato?",
+    description: "Uma vez publicado, este contrato ficará visível para todos os stakeholders e não poderá ser editado.",
+    confirmLabel: "Publicar",
+    triggerLabel: "Abrir Sucesso",
     triggerVariant: "outline",
   },
 ]
@@ -85,14 +85,14 @@ function AlertDialogPreview() {
         <Trash2 />
       </div>
       <div className="space-y-1.5">
-        <p className="font-heading text-base font-medium text-foreground">Delete contact?</p>
+        <p className="font-heading text-base font-medium text-foreground">Excluir contato?</p>
         <p className="text-sm text-muted-foreground">
-          This action cannot be undone. This will permanently delete the contact.
+          Esta ação não pode ser desfeita. Isso excluirá permanentemente o contato.
         </p>
       </div>
       <div className="flex justify-center gap-2">
-        <Button variant="outline" size="sm">Cancel</Button>
-        <Button variant="destructive" size="sm">Delete</Button>
+        <Button variant="outline" size="sm">Cancelar</Button>
+        <Button variant="destructive" size="sm">Excluir</Button>
       </div>
     </div>
   )
@@ -117,14 +117,14 @@ export default function AlertDialogPage() {
         title="Alert Dialog"
         description={
           <>
-            Modal dialogs for confirmation prompts (Radix AlertDialog). Four semantic variants for different action
-            contexts. For general forms and content use the{" "}
-            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">Dialog</code> instead.
+            Diálogos modais para prompts de confirmação (Radix AlertDialog). Quatro variantes semânticas para
+            diferentes contextos de ação. Para formulários e conteúdo em geral, use o{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">Dialog</code> em vez deste.
           </>
         }
       />
 
-      <Section title="Variants" description="Each variant sets its own icon and confirm-button color: default (Info), destructive, warning and success.">
+      <Section title="Variantes" description="Cada variante define seu próprio ícone e cor do botão de confirmação: padrão (Info), destrutivo, aviso e sucesso.">
         <div className="flex flex-wrap gap-3">
           {VARIANTS.map(({ variant, label, title, description, confirmLabel, triggerLabel, triggerVariant }) => (
             <div key={variant} className="flex flex-col items-start gap-1.5">
@@ -143,19 +143,19 @@ export default function AlertDialogPage() {
         </div>
       </Section>
 
-      <Section title="Loading State" description="While loading, both buttons are disabled and the confirm button shows a spinner — the async action can't be double-fired.">
+      <Section title="Estado de Carregamento" description="Durante o carregamento, ambos os botões ficam desabilitados e o botão de confirmação exibe um spinner — a ação assíncrona não pode ser disparada duas vezes.">
         <div className="flex flex-col items-start gap-1.5">
-          <p className="text-xs text-muted-foreground">Destructive with async confirm</p>
+          <p className="text-xs text-muted-foreground">Destrutivo com confirmação assíncrona</p>
           <Button variant="destructive" size="sm" onClick={() => setLoadingOpen(true)}>
-            Open Loading Dialog
+            Abrir Diálogo de Carregamento
           </Button>
           <CRMAlertDialog
             open={loadingOpen}
             onOpenChange={setLoadingOpen}
             variant="destructive"
-            title="Delete all records?"
-            description="This will permanently remove all 1,247 records from the system. This action cannot be undone."
-            confirmLabel="Deleting…"
+            title="Excluir todos os registros?"
+            description="Isso removerá permanentemente todos os 1.247 registros do sistema. Esta ação não pode ser desfeita."
+            confirmLabel="Excluindo…"
             loading={isLoading}
             onConfirm={handleLoadingConfirm}
             onCancel={() => setLoadingOpen(false)}
@@ -163,46 +163,46 @@ export default function AlertDialogPage() {
         </div>
       </Section>
 
-      <Section title="Controlled" description="Drive open state externally via open / onOpenChange — useful when the dialog is triggered from a menu or a row action.">
+      <Section title="Controlado" description="Controle o estado de abertura externamente via open / onOpenChange — útil quando o diálogo é acionado por um menu ou por uma ação de linha.">
         <div className="flex flex-col items-start gap-1.5">
-          <p className="text-xs text-muted-foreground">Managed via external open state</p>
+          <p className="text-xs text-muted-foreground">Gerenciado por estado de abertura externo</p>
           <Button variant="outline" size="sm" onClick={() => setControlledOpen(true)}>
-            Open Controlled Dialog
+            Abrir Diálogo Controlado
           </Button>
           <CRMAlertDialog
             open={controlledOpen}
             onOpenChange={setControlledOpen}
             variant="warning"
-            title="Reset pipeline stage?"
-            description="All leads in this stage will be moved back to 'New'. This affects 23 active leads."
-            confirmLabel="Reset Stage"
+            title="Redefinir etapa do funil?"
+            description="Todos os leads nesta etapa serão movidos de volta para 'Novo'. Isso afeta 23 leads ativos."
+            confirmLabel="Redefinir Etapa"
             onConfirm={() => { console.log("confirmed"); setControlledOpen(false) }}
             onCancel={() => setControlledOpen(false)}
           />
         </div>
       </Section>
 
-      <Section title="Composition (raw primitives)" description="Compose your own layout with the underlying AlertDialog primitives when CRMAlertDialog isn't enough.">
+      <Section title="Composição (primitivos puros)" description="Componha seu próprio layout com os primitivos subjacentes do AlertDialog quando o CRMAlertDialog não for suficiente.">
         <div className="flex flex-col items-start gap-1.5">
-          <p className="text-xs text-muted-foreground">Custom layout using AlertDialog primitives directly</p>
+          <p className="text-xs text-muted-foreground">Layout personalizado usando os primitivos do AlertDialog diretamente</p>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="outline" size="sm">Open Custom Dialog</Button>
+              <Button variant="outline" size="sm">Abrir Diálogo Personalizado</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogMedia className="bg-primary/10 text-primary">
                   <Settings />
                 </AlertDialogMedia>
-                <AlertDialogTitle>Apply configuration</AlertDialogTitle>
+                <AlertDialogTitle>Aplicar configuração</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This will apply the selected configuration template to all new accounts.
-                  Existing accounts remain unchanged.
+                  Isso aplicará o modelo de configuração selecionado a todas as novas contas.
+                  As contas existentes permanecem inalteradas.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter className="w-full">
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction>Apply template</AlertDialogAction>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                <AlertDialogAction>Aplicar modelo</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -210,71 +210,71 @@ export default function AlertDialogPage() {
       </Section>
 
       <AccessibilitySection
-        title="Accessibility"
+        title="Acessibilidade"
         items={[
-          <>Built on Radix AlertDialog: focus is trapped inside and returned to the trigger on close.</>,
-          <>Unlike a regular dialog, an AlertDialog does <strong>not</strong> close on overlay click or <code className="font-mono text-xs">Esc</code> by default — a confirmation demands an explicit choice.</>,
-          <><code className="font-mono text-xs">AlertDialogTitle</code> and <code className="font-mono text-xs">AlertDialogDescription</code> are wired as the accessible name/description for screen readers — always provide both.</>,
-          <>The variant icon is decorative; meaning comes from the title, description and the destructive/default confirm button color.</>,
-          <>While <code className="font-mono text-xs">loading</code>, both actions are disabled so an async confirm cannot be triggered twice.</>,
+          <>Construído sobre o Radix AlertDialog: o foco fica preso dentro e retorna ao gatilho ao fechar.</>,
+          <>Ao contrário de um diálogo comum, um AlertDialog <strong>não</strong> fecha ao clicar no overlay nem com <code className="font-mono text-xs">Esc</code> por padrão — uma confirmação exige uma escolha explícita.</>,
+          <><code className="font-mono text-xs">AlertDialogTitle</code> e <code className="font-mono text-xs">AlertDialogDescription</code> são conectados como o nome/descrição acessíveis para leitores de tela — sempre forneça ambos.</>,
+          <>O ícone da variante é decorativo; o significado vem do título, da descrição e da cor do botão de confirmação destructive/default.</>,
+          <>Durante o <code className="font-mono text-xs">loading</code>, ambas as ações ficam desabilitadas para que uma confirmação assíncrona não possa ser acionada duas vezes.</>,
         ]}
       />
 
-      <DarkModeSection description="The same confirmation surface in both themes — bg-card, semantic icon tint and shadow-modal all come from tokens.">
+      <DarkModeSection description="A mesma superfície de confirmação em ambos os temas — bg-card, tint semântico do ícone e shadow-modal vêm todos de tokens.">
         <AlertDialogPreview />
       </DarkModeSection>
 
       <Section title="Code">
         <CodeBlock>{`import { CRMAlertDialog } from "@/components/crm-alert-dialog"
 
-// Trigger-driven (uncontrolled)
-<CRMAlertDialog variant="destructive" title="Delete contact?"
-  description="This action cannot be undone."
-  confirmLabel="Delete" onConfirm={remove}>
-  <Button variant="destructive">Delete</Button>
+// Acionado por gatilho (não controlado)
+<CRMAlertDialog variant="destructive" title="Excluir contato?"
+  description="Esta ação não pode ser desfeita."
+  confirmLabel="Excluir" onConfirm={remove}>
+  <Button variant="destructive">Excluir</Button>
 </CRMAlertDialog>
 
-// Controlled + async loading
+// Controlado + carregamento assíncrono
 <CRMAlertDialog open={open} onOpenChange={setOpen} variant="warning"
-  title="Reset stage?" description="Affects 23 leads."
+  title="Redefinir etapa?" description="Afeta 23 leads."
   loading={loading} onConfirm={handleConfirm} onCancel={() => setOpen(false)} />`}</CodeBlock>
       </Section>
 
       <ApiSection
         title="API / Props"
-        description="CRMAlertDialog — a variant-aware wrapper over the Radix AlertDialog primitives."
+        description="CRMAlertDialog — um wrapper ciente de variantes sobre os primitivos do Radix AlertDialog."
         groups={[
           [
-            { prop: "variant", type: '"default" | "destructive" | "warning" | "success"', default: '"default"', description: "Visual variant affecting icon and confirm button color." },
-            { prop: "title", type: "string", description: "Dialog heading (required)." },
-            { prop: "description", type: "string", description: "Body text explaining the action (required)." },
-            { prop: "confirmLabel", type: "string", default: '"Confirm"', description: "Text for the confirm button." },
-            { prop: "cancelLabel", type: "string", default: '"Cancel"', description: "Text for the cancel button." },
+            { prop: "variant", type: '"default" | "destructive" | "warning" | "success"', default: '"default"', description: "Variante visual que afeta o ícone e a cor do botão de confirmação." },
+            { prop: "title", type: "string", description: "Título do diálogo (obrigatório)." },
+            { prop: "description", type: "string", description: "Texto do corpo que explica a ação (obrigatório)." },
+            { prop: "confirmLabel", type: "string", default: '"Confirm"', description: "Texto do botão de confirmação." },
+            { prop: "cancelLabel", type: "string", default: '"Cancel"', description: "Texto do botão de cancelamento." },
           ],
           [
-            { prop: "onConfirm", type: "() => void", description: "Called on confirm button click." },
-            { prop: "onCancel", type: "() => void", description: "Called on cancel button click." },
-            { prop: "loading", type: "boolean", default: "false", description: "Shows spinner and disables both buttons." },
-            { prop: "open", type: "boolean", description: "Controlled open state." },
-            { prop: "onOpenChange", type: "(open: boolean) => void", description: "Controlled open state handler." },
-            { prop: "children", type: "ReactNode", description: "Trigger element (wrapped in AlertDialogTrigger)." },
+            { prop: "onConfirm", type: "() => void", description: "Chamado ao clicar no botão de confirmação." },
+            { prop: "onCancel", type: "() => void", description: "Chamado ao clicar no botão de cancelamento." },
+            { prop: "loading", type: "boolean", default: "false", description: "Mostra o spinner e desabilita ambos os botões." },
+            { prop: "open", type: "boolean", description: "Estado de abertura controlado." },
+            { prop: "onOpenChange", type: "(open: boolean) => void", description: "Handler do estado de abertura controlado." },
+            { prop: "children", type: "ReactNode", description: "Elemento de gatilho (envolvido em AlertDialogTrigger)." },
           ],
         ]}
       />
 
       <GuidelinesSection
-        title="Best Practices"
+        title="Boas Práticas"
         dos={[
-          "Use AlertDialog for destructive or irreversible confirmations (delete, reset, publish).",
-          "Match the variant to the action's tone — destructive for deletes, warning for reversible risk.",
-          "Keep the description specific: name what will change and how many records are affected.",
-          "Set loading during async confirms to prevent double submission.",
+          "Use o AlertDialog para confirmações destrutivas ou irreversíveis (excluir, redefinir, publicar).",
+          "Combine a variante com o tom da ação — destructive para exclusões, warning para risco reversível.",
+          "Mantenha a descrição específica: diga o que vai mudar e quantos registros são afetados.",
+          "Defina loading durante confirmações assíncronas para evitar envio duplicado.",
         ]}
         donts={[
-          "Don't use AlertDialog for regular forms or content — use Dialog.",
-          "Don't write vague labels like 'OK'; use an action verb ('Delete', 'Archive').",
-          "Don't omit the description — it carries the consequence of the action.",
-          "Don't allow dismissal of a destructive prompt without an explicit choice.",
+          "Não use o AlertDialog para formulários ou conteúdo comuns — use o Dialog.",
+          "Não escreva rótulos vagos como 'OK'; use um verbo de ação ('Excluir', 'Arquivar').",
+          "Não omita a descrição — ela carrega a consequência da ação.",
+          "Não permita descartar um prompt destrutivo sem uma escolha explícita.",
         ]}
       />
 

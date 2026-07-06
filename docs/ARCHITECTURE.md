@@ -90,6 +90,24 @@ foi executado nesta fase para preservar backwards-compat.
   sincronizada — recomenda-se movê-lo para fora do sync ou pausar o sync durante
   o desenvolvimento.
 
+## 8. Exceções aceitas (auditoria Fase 9)
+
+Após varredura completa do sistema, duas exceções foram avaliadas e **aceitas**
+(não são inconsistências a corrigir):
+
+1. **Cor categórica `purple`** — em `data-table/cells/cell-badge.tsx` e
+   `calendar/utils.ts`, todas as cores são tokens semânticos
+   (`primary/success/warning/destructive/info/muted`) **exceto** uma opção
+   `purple` (tailwind cru). É uma cor **categórica escolhível** pelo usuário para
+   badges/eventos (rótulo arbitrário), não uma cor de UI. Não há azul, não há
+   conflito de marca. Mantida como o único acento categórico não-semântico.
+2. **`rounded-[2px]` em swatches de chart** — nos indicadores de cor de legenda
+   (`ui/chart.tsx`, `charts/common.tsx`), chips de ~8–10px. `rounded-sm` ficaria
+   arredondado demais nesse tamanho; o raio de 2px é decorativo e intencional.
+
+Todo o resto usa tokens/escala. Varredura Fase 9: **0 azul, 0 hex hardcoded, 0
+`rounded-4xl`, 0 links de nav quebrados, 0 cruft.**
+
 ## 7. Log de decisões (Fase 2)
 
 1. Removidos 6 arquivos-conflito de cruft (`crm-drawer 2.tsx`, `ui/drawer 2.tsx`,

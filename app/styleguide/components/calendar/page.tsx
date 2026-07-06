@@ -31,21 +31,21 @@ function d(day: number, startHour: number, endHour: number): { start: Date; end:
 }
 
 const MOCK_EVENTS: CalendarEvent[] = [
-  { id: "1",  title: "Meeting with John Smith",         ...d(5,  6, 7),   color: "destructive", locked: true },
-  { id: "2",  title: "Company Anniversary Celebration", ...d(6,  1, 2),   color: "success",     locked: true },
-  { id: "3",  title: "Sustainability Symposium",         ...d(3, 10, 11),  color: "purple",      locked: true },
-  { id: "4",  title: "Industry Panel Discussion",        ...d(10,19, 21),  color: "info",        locked: true },
-  { id: "5",  title: "Leadership Summit",                ...d(19, 5, 6),   color: "success",     locked: true },
-  { id: "6",  title: "Cultural Diversity Symposium",     ...d(20, 6, 7),   color: "muted",       locked: true },
-  { id: "7",  title: "Work-Life Balance Workshop",       ...d(25, 8, 8),   color: "info",        locked: true },
-  { id: "8",  title: "Networking Mixer",                 ...d(26,14,14),   color: "primary",     locked: true },
-  { id: "9",  title: "Influencer Marketing Summit",      ...d(27, 3, 4),   color: "destructive", locked: true },
-  { id: "10", title: "Vendor Meet and Greet",            ...d(27,16,17),   color: "destructive", locked: true },
-  { id: "11", title: "Job Training Fair",                ...d(28, 6, 8),   color: "warning",     locked: true },
-  { id: "12", title: "Women in Leadership Forum",        ...d(28, 0, 0),   color: "primary",     locked: true },
-  { id: "13", title: "Sales Training Workshop",          ...d(15, 9, 11),  color: "success",     locked: true },
-  { id: "14", title: "Customer Appreciation Day",        ...d(22, 9, 10),  color: "muted",       locked: true },
-  { id: "15", title: "Health and Wellness Fair",         ...d(2,  8, 10),  color: "warning",     locked: true },
+  { id: "1",  title: "Reunião com João Silva",            ...d(5,  6, 7),   color: "destructive", locked: true },
+  { id: "2",  title: "Celebração de Aniversário da Empresa", ...d(6,  1, 2),   color: "success",     locked: true },
+  { id: "3",  title: "Simpósio de Sustentabilidade",      ...d(3, 10, 11),  color: "purple",      locked: true },
+  { id: "4",  title: "Painel de Discussão do Setor",      ...d(10,19, 21),  color: "info",        locked: true },
+  { id: "5",  title: "Cúpula de Liderança",               ...d(19, 5, 6),   color: "success",     locked: true },
+  { id: "6",  title: "Simpósio de Diversidade Cultural",  ...d(20, 6, 7),   color: "muted",       locked: true },
+  { id: "7",  title: "Workshop de Equilíbrio Trabalho-Vida", ...d(25, 8, 8),   color: "info",        locked: true },
+  { id: "8",  title: "Encontro de Networking",            ...d(26,14,14),   color: "primary",     locked: true },
+  { id: "9",  title: "Cúpula de Marketing de Influência", ...d(27, 3, 4),   color: "destructive", locked: true },
+  { id: "10", title: "Encontro com Fornecedores",         ...d(27,16,17),   color: "destructive", locked: true },
+  { id: "11", title: "Feira de Capacitação Profissional", ...d(28, 6, 8),   color: "warning",     locked: true },
+  { id: "12", title: "Fórum Mulheres na Liderança",       ...d(28, 0, 0),   color: "primary",     locked: true },
+  { id: "13", title: "Workshop de Treinamento de Vendas", ...d(15, 9, 11),  color: "success",     locked: true },
+  { id: "14", title: "Dia de Valorização do Cliente",     ...d(22, 9, 10),  color: "muted",       locked: true },
+  { id: "15", title: "Feira de Saúde e Bem-estar",        ...d(2,  8, 10),  color: "warning",     locked: true },
 ]
 
 export default function CalendarPage() {
@@ -56,18 +56,18 @@ export default function CalendarPage() {
     <StyleguidePage>
       <ComponentHeader
         title="Calendar"
-        description="Full-page event calendar (month · week · day · list) plus popover date and date-range pickers for the CRM V4 Design System. Event colors map to the shared semantic token set."
+        description="Calendário de eventos em página cheia (mês · semana · dia · lista) mais seletores de data e de intervalo de datas em popover para o Design System CRM V4. As cores dos eventos mapeiam para o conjunto de tokens semânticos compartilhado."
       />
 
       <Section
-        title="Views & Pickers"
-        description="Switch between the full event calendar, the single date picker and the date-range picker."
+        title="Visualizações e Seletores"
+        description="Alterne entre o calendário completo de eventos, o seletor de data única e o seletor de intervalo de datas."
       >
         <Tabs defaultValue="full-calendar">
           <TabsList className="mb-6">
-            <TabsTrigger value="full-calendar">Full Calendar</TabsTrigger>
-            <TabsTrigger value="date-picker">Date Picker</TabsTrigger>
-            <TabsTrigger value="date-range">Date Range</TabsTrigger>
+            <TabsTrigger value="full-calendar">Calendário Completo</TabsTrigger>
+            <TabsTrigger value="date-picker">Seletor de Data</TabsTrigger>
+            <TabsTrigger value="date-range">Intervalo de Datas</TabsTrigger>
           </TabsList>
 
           {/* Full Calendar */}
@@ -85,7 +85,7 @@ export default function CalendarPage() {
             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Week view preview */}
               <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">Week View</h3>
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">Visualização de Semana</h3>
                 <div className="h-[400px] border border-border rounded-xl overflow-hidden">
                   <CRMCalendar events={MOCK_EVENTS} defaultView="week" />
                 </div>
@@ -93,7 +93,7 @@ export default function CalendarPage() {
 
               {/* List view preview */}
               <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">List View</h3>
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">Visualização de Lista</h3>
                 <div className="h-[400px] border border-border rounded-xl overflow-hidden">
                   <CRMCalendar events={MOCK_EVENTS} defaultView="list" />
                 </div>
@@ -105,22 +105,22 @@ export default function CalendarPage() {
           <TabsContent value="date-picker">
             <div className="max-w-sm space-y-6">
               <div className="space-y-2">
-                <p className="text-sm font-medium text-foreground">Default</p>
+                <p className="text-sm font-medium text-foreground">Padrão</p>
                 <CRMDatePicker value={singleDate} onChange={setSingleDate} />
                 {singleDate && (
                   <p className="text-xs text-muted-foreground">
-                    Selected: {singleDate.toLocaleDateString()}
+                    Selecionado: {singleDate.toLocaleDateString()}
                   </p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <p className="text-sm font-medium text-foreground">With custom placeholder</p>
-                <CRMDatePicker placeholder="Select closing date" />
+                <p className="text-sm font-medium text-foreground">Com placeholder personalizado</p>
+                <CRMDatePicker placeholder="Selecione a data de fechamento" />
               </div>
 
               <div className="space-y-2">
-                <p className="text-sm font-medium text-foreground">Disabled</p>
+                <p className="text-sm font-medium text-foreground">Desabilitado</p>
                 <CRMDatePicker disabled />
               </div>
             </div>
@@ -130,23 +130,23 @@ export default function CalendarPage() {
           <TabsContent value="date-range">
             <div className="max-w-sm space-y-6">
               <div className="space-y-2">
-                <p className="text-sm font-medium text-foreground">Default</p>
+                <p className="text-sm font-medium text-foreground">Padrão</p>
                 <CRMDateRangePicker value={dateRange} onChange={setDateRange} />
                 {dateRange?.from && (
                   <p className="text-xs text-muted-foreground">
-                    From: {dateRange.from.toLocaleDateString()}
-                    {dateRange.to && ` · To: ${dateRange.to.toLocaleDateString()}`}
+                    De: {dateRange.from.toLocaleDateString()}
+                    {dateRange.to && ` · Até: ${dateRange.to.toLocaleDateString()}`}
                   </p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <p className="text-sm font-medium text-foreground">With placeholder</p>
-                <CRMDateRangePicker placeholder="Select contract period" />
+                <p className="text-sm font-medium text-foreground">Com placeholder</p>
+                <CRMDateRangePicker placeholder="Selecione o período do contrato" />
               </div>
 
               <div className="space-y-2">
-                <p className="text-sm font-medium text-foreground">Disabled</p>
+                <p className="text-sm font-medium text-foreground">Desabilitado</p>
                 <CRMDateRangePicker disabled />
               </div>
             </div>
@@ -155,20 +155,20 @@ export default function CalendarPage() {
       </Section>
 
       <AccessibilitySection
-        title="Accessibility"
+        title="Acessibilidade"
         items={[
-          <>The pickers build on the Radix Popover + react-day-picker grid: the trigger button toggles with <code className="font-mono text-xs">Enter</code>/<code className="font-mono text-xs">Space</code>, and focus moves into the calendar on open.</>,
-          <>Inside the calendar grid, arrow keys move between days, <code className="font-mono text-xs">Esc</code> closes the popover and returns focus to the trigger.</>,
-          <>Disabled pickers set the underlying <code className="font-mono text-xs">disabled</code> attribute, removing them from the tab order.</>,
-          <>Event colors are decorative — the event title always carries the meaning, so information is never conveyed by color alone.</>,
-          <>The calendar header exposes real buttons for prev/next/today and view switching, all reachable by keyboard.</>,
+          <>Os seletores são construídos sobre o Radix Popover + a grade do react-day-picker: o botão de gatilho alterna com <code className="font-mono text-xs">Enter</code>/<code className="font-mono text-xs">Espaço</code>, e o foco entra no calendário ao abrir.</>,
+          <>Dentro da grade do calendário, as setas navegam entre os dias, <code className="font-mono text-xs">Esc</code> fecha o popover e devolve o foco ao gatilho.</>,
+          <>Seletores desabilitados definem o atributo <code className="font-mono text-xs">disabled</code> subjacente, removendo-os da ordem de tabulação.</>,
+          <>As cores dos eventos são decorativas — o título do evento sempre carrega o significado, então a informação nunca é transmitida apenas pela cor.</>,
+          <>O cabeçalho do calendário expõe botões reais para anterior/próximo/hoje e troca de visualização, todos acessíveis por teclado.</>,
         ]}
       />
 
-      <DarkModeSection description="Pickers and event colors in both themes — surfaces, borders and semantic event colors all resolve from tokens.">
+      <DarkModeSection description="Seletores e cores de eventos em ambos os temas — superfícies, bordas e cores semânticas de eventos são todas resolvidas a partir de tokens.">
         <div className="space-y-4">
-          <CRMDatePicker placeholder="Pick a date" />
-          <CRMDateRangePicker placeholder="Pick a range" />
+          <CRMDatePicker placeholder="Escolha uma data" />
+          <CRMDateRangePicker placeholder="Escolha um intervalo" />
         </div>
       </DarkModeSection>
 
@@ -182,14 +182,14 @@ const events: CalendarEvent[] = [
   { id: "1", title: "Kickoff", start, end, color: "primary" },
 ]
 
-// Full calendar — default view + event/date callbacks
+// Calendário completo — visualização padrão + callbacks de evento/data
 <CRMCalendar events={events} defaultView="month"
   onEventClick={(e) => open(e)} onAddEvent={() => create()} />
 
-// Single date picker (controlled)
-<CRMDatePicker value={date} onChange={setDate} placeholder="Pick a date" />
+// Seletor de data única (controlado)
+<CRMDatePicker value={date} onChange={setDate} placeholder="Escolha uma data" />
 
-// Date range picker (controlled)
+// Seletor de intervalo de datas (controlado)
 <CRMDateRangePicker value={range} onChange={setRange} />`}</CodeBlock>
       </Section>
 
@@ -197,37 +197,37 @@ const events: CalendarEvent[] = [
         title="API / Props"
         groups={[
           [
-            { prop: "CRMCalendar.events", type: "CalendarEvent[]", default: "[]", description: "Events to render across all views." },
-            { prop: "CRMCalendar.defaultView", type: '"month" | "week" | "day" | "list"', default: '"month"', description: "Initial view; switchable in the header." },
-            { prop: "CRMCalendar.defaultDate", type: "Date", default: "new Date()", description: "Date the calendar first centers on." },
-            { prop: "CRMCalendar.onEventClick", type: "(event: CalendarEvent) => void", description: "Fired when an event pill is clicked." },
-            { prop: "CRMCalendar.onDateClick", type: "(date: Date) => void", description: "Fired when a day cell is clicked (month view)." },
-            { prop: "CRMCalendar.onAddEvent", type: "(date?: Date) => void", description: "Fired by the header add-event action." },
+            { prop: "CRMCalendar.events", type: "CalendarEvent[]", default: "[]", description: "Eventos a renderizar em todas as visualizações." },
+            { prop: "CRMCalendar.defaultView", type: '"month" | "week" | "day" | "list"', default: '"month"', description: "Visualização inicial; alternável no cabeçalho." },
+            { prop: "CRMCalendar.defaultDate", type: "Date", default: "new Date()", description: "Data em que o calendário se centraliza inicialmente." },
+            { prop: "CRMCalendar.onEventClick", type: "(event: CalendarEvent) => void", description: "Disparado ao clicar em uma pílula de evento." },
+            { prop: "CRMCalendar.onDateClick", type: "(date: Date) => void", description: "Disparado ao clicar em uma célula de dia (visualização de mês)." },
+            { prop: "CRMCalendar.onAddEvent", type: "(date?: Date) => void", description: "Disparado pela ação de adicionar evento do cabeçalho." },
           ],
           [
-            { prop: "CalendarEvent", type: "{ id, title, start: Date, end: Date, color?, locked? }", description: "Event shape; color is an EventColorVariant." },
-            { prop: "EventColorVariant", type: '"primary" | "success" | "warning" | "destructive" | "info" | "muted" | "purple"', default: '"muted"', description: "Semantic color of the event pill." },
+            { prop: "CalendarEvent", type: "{ id, title, start: Date, end: Date, color?, locked? }", description: "Formato do evento; color é um EventColorVariant." },
+            { prop: "EventColorVariant", type: '"primary" | "success" | "warning" | "destructive" | "info" | "muted" | "purple"', default: '"muted"', description: "Cor semântica da pílula do evento." },
           ],
           [
-            { prop: "CRMDatePicker", type: "{ value?: Date, onChange?, placeholder?, disabled? }", description: "Single-date popover picker (mode=\"single\")." },
-            { prop: "CRMDateRangePicker", type: "{ value?: DateRange, onChange?, placeholder?, disabled? }", description: "Two-month range popover picker (mode=\"range\")." },
+            { prop: "CRMDatePicker", type: "{ value?: Date, onChange?, placeholder?, disabled? }", description: "Seletor de data única em popover (mode=\"single\")." },
+            { prop: "CRMDateRangePicker", type: "{ value?: DateRange, onChange?, placeholder?, disabled? }", description: "Seletor de intervalo de dois meses em popover (mode=\"range\")." },
           ],
         ]}
       />
 
       <GuidelinesSection
-        title="Best Practices"
+        title="Boas Práticas"
         dos={[
-          "Give the full CRMCalendar a fixed-height container — it fills its parent (h-full).",
-          "Use event color variants semantically (destructive for conflicts, success for confirmed).",
-          "Control the pickers with value/onChange when the date feeds a form.",
-          "Use the date-range picker for contract periods and reporting windows.",
+          "Dê ao CRMCalendar completo um container de altura fixa — ele preenche o pai (h-full).",
+          "Use as variantes de cor de evento de forma semântica (destructive para conflitos, success para confirmados).",
+          "Controle os seletores com value/onChange quando a data alimenta um formulário.",
+          "Use o seletor de intervalo de datas para períodos de contrato e janelas de relatório.",
         ]}
         donts={[
-          "Don't render CRMCalendar without a height — it will collapse.",
-          "Don't rely on event color alone to convey status; keep a descriptive title.",
-          "Don't reimplement a raw <input type=\"date\"> — use the CRM pickers for token-consistent surfaces.",
-          "Don't hardcode event colors outside the EventColorVariant set.",
+          "Não renderize o CRMCalendar sem altura — ele vai colapsar.",
+          "Não dependa apenas da cor do evento para transmitir o status; mantenha um título descritivo.",
+          "Não reimplemente um <input type=\"date\"> puro — use os seletores do CRM para superfícies consistentes com os tokens.",
+          "Não codifique cores de evento fora do conjunto EventColorVariant.",
         ]}
       />
 
