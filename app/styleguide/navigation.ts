@@ -41,6 +41,7 @@ export const navigation: NavSection[] = [
       { name: "Sheet", href: "/styleguide/components/sheet" },
       { name: "Sidebar", href: "/styleguide/components/sidebar" },
       { name: "Sonner (Toast)", href: "/styleguide/components/sonner" },
+      { name: "Spinner", href: "/styleguide/components/spinner" },
       { name: "Survey", href: "/styleguide/components/survey" },
       { name: "Table", href: "/styleguide/components/table" },
       { name: "Tabs", href: "/styleguide/components/tabs" },
