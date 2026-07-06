@@ -17,42 +17,17 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar"
-
-/* ---------- page-local helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-xl border bg-card p-5">{children}</div>
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      {children}
-    </pre>
-  )
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 /** The reusable CRM workspace menu bar. */
 function WorkspaceMenubar() {
@@ -149,20 +124,20 @@ function WorkspaceMenubar() {
   )
 }
 
-/* ---------- page ---------- */
-
 export default function MenubarPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Menubar</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Barra de menus estilo aplicativo (Radix Menubar). Compartilha a linguagem dos menus do CRM
-          V4 (superfície <code>bg-popover</code> + <code>shadow-dropdown</code>, itens com foco
-          <code> accent</code>, checkbox/radio/submenu, destrutivo semântico). A barra é uma faixa em
-          <code> bg-card</code>. Navegação entre menus por setas.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Menubar"
+        description={
+          <>
+            Barra de menus estilo aplicativo (Radix Menubar). Compartilha a linguagem dos menus do CRM
+            V4 (superfície <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-popover</code> + <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">shadow-dropdown</code>, itens com foco{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">accent</code>, checkbox/radio/submenu, destrutivo semântico). A barra é uma faixa em{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-card</code>; navegação entre menus por setas.
+          </>
+        }
+      />
 
       <Section
         title="Padrão"
@@ -191,9 +166,35 @@ export default function MenubarPage() {
         </div>
       </Section>
 
-      <Section title="Uso & API" description="Root Menubar › MenubarMenu › Trigger + Content.">
-        <div className="space-y-4">
-          <CodeBlock>{`import {
+      <AccessibilitySection
+        items={[
+          <><kbd className="font-mono text-xs">←</kbd> <kbd className="font-mono text-xs">→</kbd> alternam entre menus.</>,
+          <><kbd className="font-mono text-xs">↑</kbd> <kbd className="font-mono text-xs">↓</kbd> navegam itens · <kbd className="font-mono text-xs">Enter</kbd> aciona.</>,
+          <><kbd className="font-mono text-xs">Esc</kbd> fecha · typeahead por digitação.</>,
+          <>Foco retorna ao gatilho ao fechar; itens têm roles de menu do Radix.</>,
+        ]}
+      />
+
+      <DarkModeSection description="A mesma faixa de menus nos dois temas — bg-card na barra, bg-popover nos painéis, tudo por token.">
+        <WorkspaceMenubar />
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "Menubar", type: "—", description: "Raiz da barra; contém vários MenubarMenu." },
+            { prop: "MenubarMenu", type: "—", description: "Um menu (Trigger + Content)." },
+            { prop: "MenubarItem", type: "variant, inset, disabled", default: '"default"', description: "Item de ação; variant default · destructive." },
+            { prop: "MenubarCheckboxItem", type: "checked, onCheckedChange", description: "Item alternável." },
+            { prop: "MenubarRadioGroup / RadioItem", type: "value, onValueChange", description: "Opções exclusivas." },
+            { prop: "MenubarSub", type: "—", description: "Submenu aninhado (SubTrigger + SubContent)." },
+            { prop: "MenubarShortcut", type: "—", description: "Atalho alinhado à direita." },
+          ],
+        ]}
+      />
+
+      <Section title="Código" description="Root Menubar › MenubarMenu › Trigger + Content.">
+        <CodeBlock>{`import {
   Menubar, MenubarMenu, MenubarTrigger, MenubarContent,
   MenubarItem, MenubarSeparator, MenubarShortcut,
   MenubarCheckboxItem, MenubarRadioGroup, MenubarRadioItem,
@@ -210,44 +211,20 @@ export default function MenubarPage() {
     </MenubarContent>
   </MenubarMenu>
 </Menubar>`}</CodeBlock>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Itens & props</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><code>MenubarItem</code> — <code>variant</code> (default · destructive), <code>inset</code>, <code>disabled</code></li>
-                <li><code>MenubarCheckboxItem</code> / <code>RadioGroup</code> / <code>RadioItem</code></li>
-                <li><code>MenubarSub</code> — submenus · <code>MenubarShortcut</code> — atalho</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Acessibilidade & teclado</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><kbd className="rounded bg-muted px-1">←</kbd> <kbd className="rounded bg-muted px-1">→</kbd> alternam entre menus</li>
-                <li><kbd className="rounded bg-muted px-1">↑</kbd> <kbd className="rounded bg-muted px-1">↓</kbd> navegam itens · <kbd className="rounded bg-muted px-1">Enter</kbd> aciona</li>
-                <li><kbd className="rounded bg-muted px-1">Esc</kbd> fecha · typeahead por digitação</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-success/40 bg-success/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-success">Do</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Use em telas densas de trabalho (workspace, editor).</li>
-                <li>Agrupe ações por menu de forma previsível.</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-destructive">Don&apos;t</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Não use como navegação principal do app (use a sidebar).</li>
-                <li>Não sobrecarregue com dezenas de itens por menu.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use em telas densas de trabalho (workspace, editor).",
+          "Agrupe ações por menu de forma previsível.",
+          "Separe a ação destrutiva das ações comuns.",
+        ]}
+        donts={[
+          "Não use como navegação principal do app (use a sidebar).",
+          "Não sobrecarregue com dezenas de itens por menu.",
+          "Não aninhe muitos níveis de submenu.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

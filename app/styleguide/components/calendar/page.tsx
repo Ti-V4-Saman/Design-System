@@ -6,6 +6,16 @@ import { CRMCalendar } from "@/components/calendar"
 import { CRMDatePicker } from "@/components/date-picker"
 import { CRMDateRangePicker } from "@/components/date-range-picker"
 import type { CalendarEvent } from "@/components/calendar/types"
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 // Helper: date at specific hour in current month
 function d(day: number, startHour: number, endHour: number): { start: Date; end: Date } {
@@ -41,103 +51,183 @@ export default function CalendarPage() {
   const [dateRange, setDateRange] = React.useState<{ from: Date | undefined; to?: Date | undefined } | undefined>()
 
   return (
-    <div className="p-8 space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">Calendar</h1>
-        <p className="text-muted-foreground mt-1">
-          Full-page event calendar and date picker components for the CRM V4 Design System.
-        </p>
-      </div>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Calendar"
+        description="Full-page event calendar (month · week · day · list) plus popover date and date-range pickers for the CRM V4 Design System. Event colors map to the shared semantic token set."
+      />
 
-      <Tabs defaultValue="full-calendar">
-        <TabsList className="mb-6">
-          <TabsTrigger value="full-calendar">Full Calendar</TabsTrigger>
-          <TabsTrigger value="date-picker">Date Picker</TabsTrigger>
-          <TabsTrigger value="date-range">Date Range</TabsTrigger>
-        </TabsList>
+      <Section
+        title="Views & Pickers"
+        description="Switch between the full event calendar, the single date picker and the date-range picker."
+      >
+        <Tabs defaultValue="full-calendar">
+          <TabsList className="mb-6">
+            <TabsTrigger value="full-calendar">Full Calendar</TabsTrigger>
+            <TabsTrigger value="date-picker">Date Picker</TabsTrigger>
+            <TabsTrigger value="date-range">Date Range</TabsTrigger>
+          </TabsList>
 
-        {/* Full Calendar */}
-        <TabsContent value="full-calendar">
-          <div className="h-[780px]">
-            <CRMCalendar
-              events={MOCK_EVENTS}
-              defaultView="month"
-              onEventClick={(e) => console.log("event clicked", e.title)}
-              onDateClick={(d) => console.log("date clicked", d)}
-              onAddEvent={() => console.log("add event")}
-            />
-          </div>
+          {/* Full Calendar */}
+          <TabsContent value="full-calendar">
+            <div className="h-[780px]">
+              <CRMCalendar
+                events={MOCK_EVENTS}
+                defaultView="month"
+                onEventClick={(e) => console.log("event clicked", e.title)}
+                onDateClick={(d) => console.log("date clicked", d)}
+                onAddEvent={() => console.log("add event")}
+              />
+            </div>
 
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Week view preview */}
-            <div>
-              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">Week View</h3>
-              <div className="h-[400px] border border-border rounded-xl overflow-hidden">
-                <CRMCalendar events={MOCK_EVENTS} defaultView="week" />
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Week view preview */}
+              <div>
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">Week View</h3>
+                <div className="h-[400px] border border-border rounded-xl overflow-hidden">
+                  <CRMCalendar events={MOCK_EVENTS} defaultView="week" />
+                </div>
+              </div>
+
+              {/* List view preview */}
+              <div>
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">List View</h3>
+                <div className="h-[400px] border border-border rounded-xl overflow-hidden">
+                  <CRMCalendar events={MOCK_EVENTS} defaultView="list" />
+                </div>
               </div>
             </div>
+          </TabsContent>
 
-            {/* List view preview */}
-            <div>
-              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">List View</h3>
-              <div className="h-[400px] border border-border rounded-xl overflow-hidden">
-                <CRMCalendar events={MOCK_EVENTS} defaultView="list" />
+          {/* Date Picker */}
+          <TabsContent value="date-picker">
+            <div className="max-w-sm space-y-6">
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-foreground">Default</p>
+                <CRMDatePicker value={singleDate} onChange={setSingleDate} />
+                {singleDate && (
+                  <p className="text-xs text-muted-foreground">
+                    Selected: {singleDate.toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-foreground">With custom placeholder</p>
+                <CRMDatePicker placeholder="Select closing date" />
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-foreground">Disabled</p>
+                <CRMDatePicker disabled />
               </div>
             </div>
-          </div>
-        </TabsContent>
+          </TabsContent>
 
-        {/* Date Picker */}
-        <TabsContent value="date-picker">
-          <div className="max-w-sm space-y-6">
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-foreground">Default</p>
-              <CRMDatePicker value={singleDate} onChange={setSingleDate} />
-              {singleDate && (
-                <p className="text-xs text-muted-foreground">
-                  Selected: {singleDate.toLocaleDateString()}
-                </p>
-              )}
-            </div>
+          {/* Date Range */}
+          <TabsContent value="date-range">
+            <div className="max-w-sm space-y-6">
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-foreground">Default</p>
+                <CRMDateRangePicker value={dateRange} onChange={setDateRange} />
+                {dateRange?.from && (
+                  <p className="text-xs text-muted-foreground">
+                    From: {dateRange.from.toLocaleDateString()}
+                    {dateRange.to && ` · To: ${dateRange.to.toLocaleDateString()}`}
+                  </p>
+                )}
+              </div>
 
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-foreground">With custom placeholder</p>
-              <CRMDatePicker placeholder="Select closing date" />
-            </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-foreground">With placeholder</p>
+                <CRMDateRangePicker placeholder="Select contract period" />
+              </div>
 
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-foreground">Disabled</p>
-              <CRMDatePicker disabled />
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-foreground">Disabled</p>
+                <CRMDateRangePicker disabled />
+              </div>
             </div>
-          </div>
-        </TabsContent>
+          </TabsContent>
+        </Tabs>
+      </Section>
 
-        {/* Date Range */}
-        <TabsContent value="date-range">
-          <div className="max-w-sm space-y-6">
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-foreground">Default</p>
-              <CRMDateRangePicker value={dateRange} onChange={setDateRange} />
-              {dateRange?.from && (
-                <p className="text-xs text-muted-foreground">
-                  From: {dateRange.from.toLocaleDateString()}
-                  {dateRange.to && ` · To: ${dateRange.to.toLocaleDateString()}`}
-                </p>
-              )}
-            </div>
+      <AccessibilitySection
+        title="Accessibility"
+        items={[
+          <>The pickers build on the Radix Popover + react-day-picker grid: the trigger button toggles with <code className="font-mono text-xs">Enter</code>/<code className="font-mono text-xs">Space</code>, and focus moves into the calendar on open.</>,
+          <>Inside the calendar grid, arrow keys move between days, <code className="font-mono text-xs">Esc</code> closes the popover and returns focus to the trigger.</>,
+          <>Disabled pickers set the underlying <code className="font-mono text-xs">disabled</code> attribute, removing them from the tab order.</>,
+          <>Event colors are decorative — the event title always carries the meaning, so information is never conveyed by color alone.</>,
+          <>The calendar header exposes real buttons for prev/next/today and view switching, all reachable by keyboard.</>,
+        ]}
+      />
 
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-foreground">With placeholder</p>
-              <CRMDateRangePicker placeholder="Select contract period" />
-            </div>
+      <DarkModeSection description="Pickers and event colors in both themes — surfaces, borders and semantic event colors all resolve from tokens.">
+        <div className="space-y-4">
+          <CRMDatePicker placeholder="Pick a date" />
+          <CRMDateRangePicker placeholder="Pick a range" />
+        </div>
+      </DarkModeSection>
 
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-foreground">Disabled</p>
-              <CRMDateRangePicker disabled />
-            </div>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
+      <Section title="Code">
+        <CodeBlock>{`import { CRMCalendar } from "@/components/calendar"
+import { CRMDatePicker } from "@/components/date-picker"
+import { CRMDateRangePicker } from "@/components/date-range-picker"
+import type { CalendarEvent } from "@/components/calendar/types"
+
+const events: CalendarEvent[] = [
+  { id: "1", title: "Kickoff", start, end, color: "primary" },
+]
+
+// Full calendar — default view + event/date callbacks
+<CRMCalendar events={events} defaultView="month"
+  onEventClick={(e) => open(e)} onAddEvent={() => create()} />
+
+// Single date picker (controlled)
+<CRMDatePicker value={date} onChange={setDate} placeholder="Pick a date" />
+
+// Date range picker (controlled)
+<CRMDateRangePicker value={range} onChange={setRange} />`}</CodeBlock>
+      </Section>
+
+      <ApiSection
+        title="API / Props"
+        groups={[
+          [
+            { prop: "CRMCalendar.events", type: "CalendarEvent[]", default: "[]", description: "Events to render across all views." },
+            { prop: "CRMCalendar.defaultView", type: '"month" | "week" | "day" | "list"', default: '"month"', description: "Initial view; switchable in the header." },
+            { prop: "CRMCalendar.defaultDate", type: "Date", default: "new Date()", description: "Date the calendar first centers on." },
+            { prop: "CRMCalendar.onEventClick", type: "(event: CalendarEvent) => void", description: "Fired when an event pill is clicked." },
+            { prop: "CRMCalendar.onDateClick", type: "(date: Date) => void", description: "Fired when a day cell is clicked (month view)." },
+            { prop: "CRMCalendar.onAddEvent", type: "(date?: Date) => void", description: "Fired by the header add-event action." },
+          ],
+          [
+            { prop: "CalendarEvent", type: "{ id, title, start: Date, end: Date, color?, locked? }", description: "Event shape; color is an EventColorVariant." },
+            { prop: "EventColorVariant", type: '"primary" | "success" | "warning" | "destructive" | "info" | "muted" | "purple"', default: '"muted"', description: "Semantic color of the event pill." },
+          ],
+          [
+            { prop: "CRMDatePicker", type: "{ value?: Date, onChange?, placeholder?, disabled? }", description: "Single-date popover picker (mode=\"single\")." },
+            { prop: "CRMDateRangePicker", type: "{ value?: DateRange, onChange?, placeholder?, disabled? }", description: "Two-month range popover picker (mode=\"range\")." },
+          ],
+        ]}
+      />
+
+      <GuidelinesSection
+        title="Best Practices"
+        dos={[
+          "Give the full CRMCalendar a fixed-height container — it fills its parent (h-full).",
+          "Use event color variants semantically (destructive for conflicts, success for confirmed).",
+          "Control the pickers with value/onChange when the date feeds a form.",
+          "Use the date-range picker for contract periods and reporting windows.",
+        ]}
+        donts={[
+          "Don't render CRMCalendar without a height — it will collapse.",
+          "Don't rely on event color alone to convey status; keep a descriptive title.",
+          "Don't reimplement a raw <input type=\"date\"> — use the CRM pickers for token-consistent surfaces.",
+          "Don't hardcode event colors outside the EventColorVariant set.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

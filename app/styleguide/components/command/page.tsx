@@ -16,7 +16,6 @@ import {
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import {
   Command,
   CommandEmpty,
@@ -35,6 +34,18 @@ import {
   type CommandItemData,
   type ComboboxOption,
 } from "@/components/command"
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Kbd,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 // ─── Mock CRM data ───────────────────────────────────────────────────────────
 
@@ -92,15 +103,6 @@ const STATUSES: ComboboxOption[] = [
 ]
 
 // ─── Layout helpers ──────────────────────────────────────────────────────────
-
-function SectionTitle({ children, hint }: { children: React.ReactNode; hint?: string }) {
-  return (
-    <div className="mb-4 mt-12 border-t border-border pt-8 first:mt-0 first:border-0 first:pt-0">
-      <h2 className="text-lg font-semibold text-foreground">{children}</h2>
-      {hint ? <p className="text-sm text-muted-foreground">{hint}</p> : null}
-    </div>
-  )
-}
 
 /** Inline Command example reused for light/dark. */
 function InlineCommand() {
@@ -165,99 +167,105 @@ export default function CommandPage() {
   )
 
   return (
-    <div className="max-w-7xl p-8">
-      <div className="mb-2">
-        <h1 className="mb-1 text-2xl font-bold text-foreground">Command</h1>
-        <p className="text-sm text-muted-foreground">
-          Paleta de comandos do CRM V4 sobre{" "}
-          <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">cmdk</code> +{" "}
-          <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">Dialog</code>. Busca,
-          navegação por teclado e acessibilidade do cmdk; visual 100% com tokens CRM V4 (seleção
-          em <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">accent</code> emerald).
-        </p>
-      </div>
-
-      {/* ── Command Menu ⌘K ── */}
-      <SectionTitle hint="Paleta global controlada por useCommandMenu. Atalho ⌘K / Ctrl+K, grupos estáticos, recentes e busca async com skeleton.">
-        Command Menu (⌘K)
-      </SectionTitle>
-      <div className="flex flex-wrap items-center gap-3">
-        <Button onClick={() => menu.setOpen(true)}>
-          Abrir paleta
-          <CommandShortcut className="ml-2 rounded bg-primary-foreground/15 px-1.5 py-0.5 text-primary-foreground">
-            ⌘K
-          </CommandShortcut>
-        </Button>
-        <span className="text-sm text-muted-foreground">
-          ou pressione{" "}
-          <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-xs">⌘K</kbd>
-        </span>
-        {lastAction ? (
-          <span className="rounded-md bg-accent px-2 py-1 text-xs font-medium text-accent-foreground">
-            {lastAction}
-          </span>
-        ) : null}
-      </div>
-      <p className="mt-3 text-xs text-muted-foreground">
-        Digite para buscar entidades (ex.: &quot;hauck&quot;, &quot;sandra&quot;) — a busca é
-        assíncrona e mostra o estado de loading.
-      </p>
-
-      <CommandMenu
-        open={menu.open}
-        onOpenChange={menu.setOpen}
-        groups={groups}
-        recent={RECENT}
-        onSearch={handleSearch}
-        searchHeading="Clientes & Leads"
+    <StyleguidePage>
+      <ComponentHeader
+        title="Command"
+        description={
+          <>
+            Paleta de comandos do CRM V4 sobre{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">cmdk</code> +{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">Dialog</code>. Busca,
+            navegação por teclado e acessibilidade do cmdk; visual 100% com tokens CRM V4 (seleção
+            em <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">accent</code> emerald).
+          </>
+        }
       />
 
-      {/* ── Inline ── */}
-      <SectionTitle hint="Command embutido (não-modal), para painéis e menus contextuais.">
-        Inline Command
-      </SectionTitle>
-      <div className="max-w-md">
-        <InlineCommand />
-      </div>
+      <Section
+        title="Command Menu (⌘K)"
+        description="Paleta global controlada por useCommandMenu. Atalho ⌘K / Ctrl+K, grupos estáticos, recentes e busca async com skeleton."
+      >
+        <Demo className="space-y-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <Button onClick={() => menu.setOpen(true)}>
+              Abrir paleta
+              <CommandShortcut className="ml-2 rounded bg-primary-foreground/15 px-1.5 py-0.5 text-primary-foreground">
+                ⌘K
+              </CommandShortcut>
+            </Button>
+            <span className="text-sm text-muted-foreground">
+              ou pressione <Kbd>⌘K</Kbd>
+            </span>
+            {lastAction ? (
+              <span className="rounded-md bg-accent px-2 py-1 text-xs font-medium text-accent-foreground">
+                {lastAction}
+              </span>
+            ) : null}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Digite para buscar entidades (ex.: &quot;hauck&quot;, &quot;sandra&quot;) — a busca é
+            assíncrona e mostra o estado de loading.
+          </p>
+        </Demo>
 
-      {/* ── Combobox ── */}
-      <SectionTitle hint="Select buscável (Command + Popover). Check no item selecionado, empty state e opções desabilitadas.">
-        Command Combobox
-      </SectionTitle>
-      <div className="flex flex-wrap items-end gap-6">
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-foreground">Responsável</label>
-          <CommandCombobox
-            options={OWNERS}
-            value={owner}
-            onChange={setOwner}
-            placeholder="Selecionar responsável"
-            searchPlaceholder="Buscar pessoa…"
-            heading="Time"
-          />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-foreground">Status</label>
-          <CommandCombobox
-            options={STATUSES}
-            value={status}
-            onChange={setStatus}
-            placeholder="Selecionar status"
-            searchPlaceholder="Buscar status…"
-          />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-muted-foreground">Desabilitado</label>
-          <CommandCombobox options={OWNERS} placeholder="Indisponível" disabled />
-        </div>
-      </div>
+        <CommandMenu
+          open={menu.open}
+          onOpenChange={menu.setOpen}
+          groups={groups}
+          recent={RECENT}
+          onSearch={handleSearch}
+          searchHeading="Clientes & Leads"
+        />
+      </Section>
 
-      {/* ── States ── */}
-      <SectionTitle hint="Estados de item e de lista.">Estados</SectionTitle>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Card>
-          <CardContent className="pt-6">
-            <p className="mb-3 text-sm font-medium text-foreground">Itens — normal, selecionado, desabilitado</p>
+      <Section
+        title="Composição — Inline Command"
+        description="Command embutido (não-modal), para painéis e menus contextuais."
+      >
+        <Demo>
+          <div className="max-w-md">
+            <InlineCommand />
+          </div>
+        </Demo>
+      </Section>
+
+      <Section
+        title="Composição — Command Combobox"
+        description="Select buscável (Command + Popover). Check no item selecionado, empty state e opções desabilitadas."
+      >
+        <Demo center className="items-end gap-6">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-foreground">Responsável</label>
+            <CommandCombobox
+              options={OWNERS}
+              value={owner}
+              onChange={setOwner}
+              placeholder="Selecionar responsável"
+              searchPlaceholder="Buscar pessoa…"
+              heading="Time"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-foreground">Status</label>
+            <CommandCombobox
+              options={STATUSES}
+              value={status}
+              onChange={setStatus}
+              placeholder="Selecionar status"
+              searchPlaceholder="Buscar status…"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-muted-foreground">Desabilitado</label>
+            <CommandCombobox options={OWNERS} placeholder="Indisponível" disabled />
+          </div>
+        </Demo>
+      </Section>
+
+      <Section title="Estados" description="Estados de item e de lista.">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <Demo className="space-y-3">
+            <p className="text-sm font-medium text-foreground">Itens — normal, selecionado, desabilitado</p>
             <Command className="border border-border">
               <CommandList>
                 <CommandGroup heading="Exemplos">
@@ -281,11 +289,9 @@ export default function CommandPage() {
                 </CommandGroup>
               </CommandList>
             </Command>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <p className="mb-3 text-sm font-medium text-foreground">Empty state (busque por &quot;xyz&quot;)</p>
+          </Demo>
+          <Demo className="space-y-3">
+            <p className="text-sm font-medium text-foreground">Empty state (busque por &quot;xyz&quot;)</p>
             <Command className="border border-border">
               <CommandInput placeholder="Buscar…" />
               <CommandList>
@@ -302,33 +308,48 @@ export default function CommandPage() {
                 </CommandGroup>
               </CommandList>
             </Command>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* ── Light / Dark ── */}
-      <SectionTitle hint="O mesmo Command nos dois temas — superfície e seleção vêm dos tokens.">
-        Light &amp; Dark
-      </SectionTitle>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-xl border border-border bg-background p-4">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Light</p>
-          <InlineCommand />
+          </Demo>
         </div>
-        <div className="dark rounded-xl border border-border bg-background p-4">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Dark</p>
-          <InlineCommand />
-        </div>
-      </div>
+      </Section>
 
-      {/* ── Uso & API ── */}
-      <SectionTitle hint="Import via barrel. CommandMenu controlado; combobox single-select.">
-        Uso &amp; API
-      </SectionTitle>
-      <Card>
-        <CardContent className="pt-6">
-          <pre className="overflow-x-auto rounded-lg bg-muted p-4 font-mono text-xs leading-relaxed text-foreground">
-{`import { CommandMenu, CommandCombobox, useCommandMenu } from "@/components/command"
+      <AccessibilitySection
+        items={[
+          <>Navegação total por teclado (setas, <code className="font-mono text-xs">Enter</code>, <code className="font-mono text-xs">Esc</code>) via cmdk.</>,
+          <>Atalho global <Kbd>⌘K</Kbd> / <Kbd>Ctrl+K</Kbd> para abrir a paleta.</>,
+          <>Itens desabilitados não são focáveis nem selecionáveis.</>,
+          <>Estado vazio sempre visível (<code className="font-mono text-xs">CommandEmpty</code>) para orientar o usuário.</>,
+          <>Busca assíncrona sinaliza carregamento enquanto os resultados chegam.</>,
+        ]}
+      />
+
+      <DarkModeSection description="O mesmo Command nos dois temas — superfície e seleção vêm dos tokens.">
+        <InlineCommand />
+      </DarkModeSection>
+
+      <ApiSection
+        description="Import via barrel. CommandMenu controlado; combobox single-select."
+        groups={[
+          [
+            { prop: "CommandMenu.open / onOpenChange", type: "boolean / (o) => void", description: "Estado controlado da paleta (use useCommandMenu)." },
+            { prop: "CommandMenu.groups", type: "CommandGroupData[]", default: "[]", description: "Grupos estáticos (Navegação, Ações rápidas)." },
+            { prop: "CommandMenu.recent", type: "CommandItemData[]", default: "[]", description: "Itens recentes exibidos sem query." },
+            { prop: "CommandMenu.onSearch", type: "(q) => Promise<CommandItemData[]>", description: "Busca assíncrona → skeleton de loading." },
+            { prop: "CommandMenu.searchHeading", type: "string", default: '"Resultados"', description: "Título do grupo de resultados da busca." },
+            { prop: "useCommandMenu()", type: "{ open, setOpen, toggle }", description: "Hook com estado + atalho ⌘K registrado." },
+          ],
+          [
+            { prop: "CommandCombobox.options", type: "ComboboxOption[]", description: "Opções { value, label, icon?, disabled? }." },
+            { prop: "CommandCombobox.value / onChange", type: "string / (v) => void", description: "Valor selecionado (single-select controlado)." },
+            { prop: "CommandCombobox.placeholder", type: "string", description: "Texto do gatilho quando nada selecionado." },
+            { prop: "CommandCombobox.searchPlaceholder", type: "string", description: "Placeholder do input de busca." },
+            { prop: "CommandCombobox.heading", type: "string", description: "Título opcional do grupo na lista." },
+            { prop: "CommandCombobox.disabled", type: "boolean", default: "false", description: "Desabilita o combobox." },
+          ],
+        ]}
+      />
+
+      <Section title="Código">
+        <CodeBlock>{`import { CommandMenu, CommandCombobox, useCommandMenu } from "@/components/command"
 
 // Paleta global ⌘K
 const menu = useCommandMenu()               // { open, setOpen, toggle } + atalho ⌘K
@@ -342,33 +363,23 @@ const menu = useCommandMenu()               // { open, setOpen, toggle } + atalh
 />
 
 // Select buscável
-<CommandCombobox options={owners} value={owner} onChange={setOwner} placeholder="Responsável" />`}
-          </pre>
-        </CardContent>
-      </Card>
+<CommandCombobox options={owners} value={owner} onChange={setOwner} placeholder="Responsável" />`}</CodeBlock>
+      </Section>
 
-      {/* ── Do / Don't ── */}
-      <SectionTitle>Boas práticas</SectionTitle>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-lg border border-success/30 bg-success/5 p-4">
-          <p className="mb-2 text-sm font-semibold text-success">Do</p>
-          <ul className="space-y-1.5 text-sm text-muted-foreground">
-            <li>• Agrupe comandos por intenção (Navegação, Ações, Resultados).</li>
-            <li>• Exponha atalhos consistentes (⌘K para abrir, letras para navegar).</li>
-            <li>• Use busca async com loading para entidades do CRM.</li>
-            <li>• Prefira CommandCombobox a Select quando houver muitas opções.</li>
-          </ul>
-        </div>
-        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4">
-          <p className="mb-2 text-sm font-semibold text-destructive">Don&apos;t</p>
-          <ul className="space-y-1.5 text-sm text-muted-foreground">
-            <li>• Não coloque dezenas de itens sem grupos ou busca.</li>
-            <li>• Não use a paleta para fluxos longos com formulários.</li>
-            <li>• Não esconda o estado vazio — sempre oriente o usuário.</li>
-            <li>• Não sobrescreva o atalho ⌘K de outros contextos de input.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+      <GuidelinesSection
+        dos={[
+          "Agrupe comandos por intenção (Navegação, Ações, Resultados).",
+          "Exponha atalhos consistentes (⌘K para abrir, letras para navegar).",
+          "Use busca async com loading para entidades do CRM.",
+          "Prefira CommandCombobox a Select quando houver muitas opções.",
+        ]}
+        donts={[
+          "Não coloque dezenas de itens sem grupos ou busca.",
+          "Não use a paleta para fluxos longos com formulários.",
+          "Não esconda o estado vazio — sempre oriente o usuário.",
+          "Não sobrescreva o atalho ⌘K de outros contextos de input.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

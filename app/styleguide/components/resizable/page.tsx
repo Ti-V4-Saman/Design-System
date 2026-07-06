@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 
 import {
@@ -7,21 +5,17 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
-function Section({ title, description, children }: { title: string; description?: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>}
-      </div>
-      {children}
-    </section>
-  )
-}
-function CodeBlock({ children }: { children: string }) {
-  return <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">{children}</pre>
-}
 function Pane({ label, className }: { label: string; className?: string }) {
   return (
     <div className={"flex h-full items-center justify-center p-6 text-sm text-muted-foreground " + (className ?? "")}>
@@ -32,14 +26,16 @@ function Pane({ label, className }: { label: string; className?: string }) {
 
 export default function ResizablePage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Resizable</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Painéis divididos ajustáveis por arraste (react-resizable-panels). A alça usa <code>bg-border</code>
-          e destaca em <code>primary</code> ao arrastar. Ideal para layouts lista/detalhe e editores lado a lado.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Resizable"
+        description={
+          <>
+            Painéis divididos ajustáveis por arraste (react-resizable-panels). A alça usa <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-border</code>{" "}
+            e destaca em <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">primary</code> ao arrastar. Ideal para layouts lista/detalhe e editores lado a lado.
+          </>
+        }
+      />
 
       <Section title="Horizontal — lista / detalhe" description="Arraste a alça central para ajustar a divisão.">
         <div className="h-64 overflow-hidden rounded-xl border border-border">
@@ -91,9 +87,45 @@ export default function ResizablePage() {
         </div>
       </Section>
 
-      <Section title="Uso & API">
-        <div className="space-y-4">
-          <CodeBlock>{`import {
+      <AccessibilitySection
+        items={[
+          <>A alça é focável por teclado e navegável via <code className="font-mono text-xs">Tab</code>.</>,
+          <>Com a alça focada, as setas (<code className="font-mono text-xs">←/→</code> ou <code className="font-mono text-xs">↑/↓</code>) ajustam a divisão em passos.</>,
+          <>A alça expõe <code className="font-mono text-xs">role=&quot;separator&quot;</code> com <code className="font-mono text-xs">aria-valuenow</code> refletindo o tamanho atual (Radix / react-resizable-panels).</>,
+          <>O anel de foco (<code className="font-mono text-xs">focus-visible:ring-ring</code>) mantém a alça visível ao navegar por teclado.</>,
+        ]}
+      />
+
+      <DarkModeSection description="A alça e as superfícies dos painéis vêm dos tokens — bg-border, bg-card e bg-muted nos dois temas.">
+        <div className="h-40 overflow-hidden rounded-xl border border-border">
+          <ResizablePanelGroup direction="horizontal">
+            <ResizablePanel defaultSize={40}>
+              <Pane label="Lista" className="bg-muted/20" />
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+            <ResizablePanel defaultSize={60}>
+              <Pane label="Detalhe" />
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </div>
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "ResizablePanelGroup.direction", type: '"horizontal" | "vertical"', description: "Eixo da divisão dos painéis." },
+            { prop: "ResizablePanelGroup", type: "onLayout, autoSaveId", description: "Callback de layout e persistência opcional do tamanho." },
+          ],
+          [
+            { prop: "ResizablePanel.defaultSize", type: "number", description: "Tamanho inicial do painel, em porcentagem (0–100)." },
+            { prop: "ResizablePanel.minSize / maxSize", type: "number", description: "Limites mínimo/máximo do painel, em porcentagem." },
+            { prop: "ResizableHandle.withHandle", type: "boolean", default: "false", description: "Exibe a alça com grip visível para arraste." },
+          ],
+        ]}
+      />
+
+      <Section title="Código">
+        <CodeBlock>{`import {
   ResizablePanelGroup, ResizablePanel, ResizableHandle,
 } from "@/components/ui/resizable"
 
@@ -102,17 +134,22 @@ export default function ResizablePage() {
   <ResizableHandle withHandle />
   <ResizablePanel defaultSize={65}>Detalhe</ResizablePanel>
 </ResizablePanelGroup>`}</CodeBlock>
-          <div className="rounded-xl border border-border bg-card p-5 text-sm">
-            <p className="mb-2 font-medium text-foreground">Notas</p>
-            <ul className="space-y-1 text-muted-foreground">
-              <li><code>direction</code> horizontal · vertical; <code>defaultSize</code>/<code>minSize</code>/<code>maxSize</code> em %</li>
-              <li><code>withHandle</code> mostra a alça com grip; aninhe grupos para layouts complexos</li>
-              <li>Alça focável por teclado; setas ajustam o tamanho</li>
-              <li>O contêiner precisa ter altura definida.</li>
-            </ul>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Dê ao contêiner uma altura definida — os painéis herdam h-full.",
+          "Use minSize para impedir que um painel colapse além do legível.",
+          "Aninhe grupos para montar layouts de 3+ áreas (ex.: inbox).",
+          "Use withHandle para deixar claro que a divisão é ajustável.",
+        ]}
+        donts={[
+          "Não deixe o contêiner sem altura — os painéis não terão dimensão.",
+          "Não use para divisões fixas que o usuário nunca ajusta (use grid/flex).",
+          "Não empilhe muitos níveis de aninhamento a ponto de confundir o layout.",
+          "Não remova o anel de foco da alça (acessibilidade por teclado).",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

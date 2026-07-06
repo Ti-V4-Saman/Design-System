@@ -12,42 +12,18 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
-
-/* ---------- page-local helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-xl border bg-card p-5">{children}</div>
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      {children}
-    </pre>
-  )
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Kbd,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 const CONTACTS = [
   { name: "Ana Souza", role: "Head of Growth", initials: "AS" },
@@ -63,15 +39,17 @@ export default function CollapsiblePage() {
   const [filtersOpen, setFiltersOpen] = React.useState(false)
 
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Collapsible</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Alterna a visibilidade de um bloco com animação de altura, sobre o primitivo Radix
-          Collapsible. Ideal para &quot;mostrar mais/menos&quot;, painéis de filtro e linhas
-          expansíveis. Estilo 100% via tokens do CRM V4.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Collapsible"
+        description={
+          <>
+            Alterna a visibilidade de um bloco com animação de altura, sobre o primitivo Radix
+            Collapsible. Ideal para &quot;mostrar mais/menos&quot;, painéis de filtro e linhas
+            expansíveis. Estilo 100% via tokens do CRM V4.
+          </>
+        }
+      />
 
       <Section
         title="Básico — mostrar mais/menos"
@@ -105,7 +83,7 @@ export default function CollapsiblePage() {
       </Section>
 
       <Section
-        title="Painel de filtros (controlado)"
+        title="Estados — painel de filtros (controlado)"
         description="Estado controlado via open/onOpenChange — padrão de 'filtros avançados' em listas de CRM."
       >
         <Demo>
@@ -144,7 +122,7 @@ export default function CollapsiblePage() {
       </Section>
 
       <Section
-        title="Mostrar todos (lista)"
+        title="Composição — mostrar todos (lista)"
         description="Exibe os primeiros itens e colapsa o restante — comum em listas de contatos/atividades."
       >
         <Demo>
@@ -152,9 +130,47 @@ export default function CollapsiblePage() {
         </Demo>
       </Section>
 
-      <Section title="Uso & API" description="Três primitivos; estilize o gatilho no call site.">
-        <div className="space-y-4">
-          <CodeBlock>{`import {
+      <AccessibilitySection
+        items={[
+          <>O gatilho expõe <code className="font-mono text-xs">aria-expanded</code> e <code className="font-mono text-xs">aria-controls</code> apontando para o corpo (Radix).</>,
+          <><Kbd>Enter</Kbd> / <Kbd>Espaço</Kbd> alternam a abertura no gatilho focado.</>,
+          <>Foco visível com ring; respeita a prop <code className="font-mono text-xs">disabled</code>.</>,
+        ]}
+      />
+
+      <DarkModeSection description="O mesmo bloco colapsável nos dois temas — superfície, borda e foco via tokens.">
+        <Collapsible defaultOpen className="w-full max-w-md space-y-2">
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-sm font-medium text-foreground">Notas do deal</p>
+            <CollapsibleTrigger asChild>
+              <Button variant="ghost" size="sm" className="group">
+                Ver mais
+                <ChevronDown className="transition-transform group-data-[state=open]:rotate-180" />
+              </Button>
+            </CollapsibleTrigger>
+          </div>
+          <CollapsibleContent>
+            <p className="text-sm text-muted-foreground">
+              Próximo passo: enviar proposta revisada até sexta.
+            </p>
+          </CollapsibleContent>
+        </Collapsible>
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "Collapsible", type: "open, onOpenChange", description: "Estado controlado da abertura." },
+            { prop: "Collapsible.defaultOpen", type: "boolean", default: "false", description: "Estado inicial no modo não-controlado." },
+            { prop: "Collapsible.disabled", type: "boolean", default: "false", description: "Desabilita o gatilho." },
+            { prop: "CollapsibleTrigger", type: "asChild", description: "Renderiza o filho como gatilho (ex.: um Button)." },
+            { prop: "CollapsibleContent", type: "children", description: "Corpo com animação de altura." },
+          ],
+        ]}
+      />
+
+      <Section title="Código" description="Três primitivos; estilize o gatilho no call site.">
+        <CodeBlock>{`import {
   Collapsible, CollapsibleTrigger, CollapsibleContent,
 } from "@/components/ui/collapsible"
 
@@ -169,45 +185,19 @@ export default function CollapsiblePage() {
 
 // controlado:
 <Collapsible open={open} onOpenChange={setOpen}> … </Collapsible>`}</CodeBlock>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Props</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><code>Collapsible</code> — <code>open</code> / <code>onOpenChange</code>, <code>defaultOpen</code>, <code>disabled</code></li>
-                <li><code>CollapsibleTrigger</code> — <code>asChild</code> p/ usar um Button</li>
-                <li><code>CollapsibleContent</code> — corpo com animação de altura</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Acessibilidade & teclado</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Gatilho com <code>aria-expanded</code> / <code>aria-controls</code> (Radix)</li>
-                <li><kbd className="rounded bg-muted px-1">Enter</kbd> / <kbd className="rounded bg-muted px-1">Espaço</kbd> alternam</li>
-                <li>Foco visível com ring; respeita <code>disabled</code></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-success/40 bg-success/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-success">Do</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Use para conteúdo opcional/secundário (mostrar mais).</li>
-                <li>Deixe claro o que expande (rótulo + chevron).</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-destructive">Don&apos;t</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Não use para grupos de seções — prefira o Accordion.</li>
-                <li>Não esconda conteúdo essencial atrás do gatilho.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use para conteúdo opcional/secundário (mostrar mais).",
+          "Deixe claro o que expande (rótulo + chevron).",
+        ]}
+        donts={[
+          "Não use para grupos de seções — prefira o Accordion.",
+          "Não esconda conteúdo essencial atrás do gatilho.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }
 

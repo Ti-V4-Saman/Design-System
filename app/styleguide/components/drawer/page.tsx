@@ -36,48 +36,23 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Kbd,
+  ResponsiveSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 /* -------------------------------------------------------------------------------------------------
- * Page-local presentation helpers
+ * Demo helpers
  * -----------------------------------------------------------------------------------------------*/
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="rounded-xl border bg-card p-5">
-      <div className="flex flex-wrap items-center gap-3">{children}</div>
-    </div>
-  )
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      {children}
-    </pre>
-  )
-}
 
 function Field({
   icon: Icon,
@@ -111,9 +86,25 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   )
 }
 
-/* -------------------------------------------------------------------------------------------------
- * Sub-demos
- * -----------------------------------------------------------------------------------------------*/
+/** Non-portaled replica of the drawer surface, to show it in both themes. */
+function DrawerPreview() {
+  return (
+    <div className="flex max-w-sm flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-[var(--shadow-modal)]">
+      <div className="border-b border-border p-4">
+        <p className="font-heading text-base font-medium text-foreground">Editar contato</p>
+        <p className="text-sm text-muted-foreground">Atualize os dados e salve.</p>
+      </div>
+      <div className="space-y-2 p-4 text-sm text-muted-foreground">
+        <div className="h-9 rounded-md border border-input bg-transparent" />
+        <div className="h-9 rounded-md border border-input bg-transparent" />
+      </div>
+      <div className="flex justify-end gap-2 border-t border-border bg-muted/50 p-4">
+        <Button variant="outline" size="sm">Cancelar</Button>
+        <Button size="sm">Salvar</Button>
+      </div>
+    </div>
+  )
+}
 
 const SIDES = [
   { side: "right", label: "Right (padrão)", icon: PanelRight },
@@ -298,21 +289,22 @@ export default function DrawerPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Drawer</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Painel deslizante ancorado a qualquer borda, construído sobre o Radix Dialog (foco preso,
-          scroll lock, ESC, aria). Toda a aparência vem dos tokens do CRM V4 — troque o tema para
-          ver em dark mode.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Drawer"
+        description={
+          <>
+            Painel deslizante ancorado a qualquer borda, construído sobre o Radix Dialog (foco preso,
+            scroll lock, ESC, aria). Toda a aparência vem dos tokens do CRM V4.
+          </>
+        }
+      />
 
       <Section
         title="Sides"
         description="A prop side ancora o painel em qualquer borda. Right é o padrão para detalhes e formulários."
       >
-        <Demo>
+        <Demo center>
           {SIDES.map(({ side, label, icon: Icon }) => (
             <CRMDrawer
               key={side}
@@ -343,7 +335,7 @@ export default function DrawerPage() {
         title="Sizes"
         description="size controla a largura (left/right) ou a altura (top/bottom): sm · default · lg · xl · full."
       >
-        <Demo>
+        <Demo center>
           {SIZES.map((size) => (
             <CRMDrawer
               key={size}
@@ -369,7 +361,7 @@ export default function DrawerPage() {
         title="Estados — Loading & Empty"
         description="O CRMDrawer troca o corpo por um skeleton com a prop loading. O estado vazio é uma composição no corpo."
       >
-        <Demo>
+        <Demo center>
           <CRMDrawer
             loading={loading}
             title="Carregando contato"
@@ -410,10 +402,10 @@ export default function DrawerPage() {
       </Section>
 
       <Section
-        title="Exemplos reais de CRM"
+        title="Composição — exemplos reais de CRM"
         description="Padrões recorrentes: painel de detalhes, formulário de edição e filtros — compostos com os primitivos."
       >
-        <Demo>
+        <Demo center>
           <ContactDetailDrawer />
           <EditContactDrawer />
           <FiltersDrawer />
@@ -421,10 +413,10 @@ export default function DrawerPage() {
       </Section>
 
       <Section
-        title="Controlado"
+        title="Composição — controlado"
         description="Controle open / onOpenChange para abrir o drawer a partir de qualquer lógica da aplicação."
       >
-        <Demo>
+        <Demo center>
           <Button onClick={() => setControlledOpen(true)}>Abrir programaticamente</Button>
           <span className="text-sm text-muted-foreground">
             Estado: {controlledOpen ? "aberto" : "fechado"}
@@ -445,14 +437,20 @@ export default function DrawerPage() {
         </Demo>
       </Section>
 
-      <Section
-        title="Light / Dark & Responsivo"
-        description="As superfícies vêm dos tokens, então o drawer acompanha o tema. Em telas estreitas os painéis laterais ocupam a largura total (w-full) até o max-width."
-      >
-        <Demo>
+      <AccessibilitySection
+        items={[
+          <><Kbd>Esc</Kbd> fecha o drawer e o clique no overlay também (modal).</>,
+          <><Kbd>Tab</Kbd> mantém o foco preso dentro do painel; ao fechar, o foco retorna ao trigger.</>,
+          <><code className="font-mono text-xs">DrawerTitle</code> é obrigatório para rotular o painel a leitores de tela.</>,
+          <>Scroll lock impede a rolagem do fundo enquanto o drawer está aberto.</>,
+        ]}
+      />
+
+      <ResponsiveSection description="Em telas estreitas os painéis laterais ocupam a largura total (w-full) até o max-width do tamanho escolhido. Reduza a largura da janela para comparar.">
+        <Demo center>
           <CRMDrawer
-            title="Tema atual"
-            description="Alterne o tema no topo para comparar."
+            title="Painel responsivo"
+            description="Ocupa w-full em telas pequenas."
             trigger={<Button variant="outline">Abrir drawer</Button>}
             footer={
               <DrawerClose asChild>
@@ -461,13 +459,34 @@ export default function DrawerPage() {
             }
           >
             <p className="text-sm text-muted-foreground">
-              bg-card, border-border e shadow-modal se adaptam automaticamente a light/dark.
+              A largura acompanha o tamanho; em mobile o painel cobre a tela até o max-width.
             </p>
           </CRMDrawer>
         </Demo>
-      </Section>
+      </ResponsiveSection>
 
-      <Section title="Uso & API" description="Import único; primitivos para controle total ou CRMDrawer para o caminho rápido.">
+      <DarkModeSection description="A mesma superfície de drawer nos dois temas — bg-card, border-border e shadow-modal via tokens.">
+        <DrawerPreview />
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "side", type: '"right" | "left" | "top" | "bottom"', default: '"right"', description: "Borda em que o painel é ancorado." },
+            { prop: "size", type: '"sm" | "default" | "lg" | "xl" | "full"', default: '"default"', description: "Largura (left/right) ou altura (top/bottom)." },
+            { prop: "title / description", type: "ReactNode", description: "Conteúdo do cabeçalho." },
+            { prop: "trigger / footer", type: "ReactNode", description: "Elemento que abre o drawer e ações do rodapé." },
+          ],
+          [
+            { prop: "loading", type: "boolean", default: "false", description: "Troca o corpo por um skeleton enquanto carrega." },
+            { prop: "open / onOpenChange", type: "boolean / fn", description: "Estado controlado do drawer." },
+            { prop: "defaultOpen", type: "boolean", description: "Estado inicial no modo não-controlado." },
+            { prop: "showClose", type: "boolean", default: "true", description: "Renderiza o botão X de fechar." },
+          ],
+        ]}
+      />
+
+      <Section title="Código" description="Import único; primitivos para controle total ou CRMDrawer para o caminho rápido.">
         <div className="space-y-4">
           <div>
             <p className="mb-2 text-sm font-medium">CRMDrawer (caminho rápido)</p>
@@ -509,52 +528,21 @@ import { DrawerClose } from "@/components/ui/drawer"
   </DrawerContent>
 </Drawer>`}</CodeBlock>
           </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Props</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><code>side</code> — right · left · top · bottom (padrão right)</li>
-                <li><code>size</code> — sm · default · lg · xl · full</li>
-                <li><code>title</code>, <code>description</code> — cabeçalho</li>
-                <li><code>trigger</code>, <code>footer</code> — nós React</li>
-                <li><code>loading</code> — skeleton no corpo</li>
-                <li><code>open</code> / <code>onOpenChange</code> — controlado</li>
-                <li><code>showClose</code> — botão X (padrão true)</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Acessibilidade & teclado</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><kbd className="rounded bg-muted px-1">Esc</kbd> fecha o drawer</li>
-                <li><kbd className="rounded bg-muted px-1">Tab</kbd> mantém o foco preso dentro</li>
-                <li>Foco retorna ao trigger ao fechar</li>
-                <li><code>DrawerTitle</code> obrigatório para leitores de tela</li>
-                <li>Overlay clicável fecha (modal)</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-success/40 bg-success/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-success">Do</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Use right/left para detalhes e formulários no CRM.</li>
-                <li>Coloque ações primárias no <code>DrawerFooter</code>.</li>
-                <li>Deixe o corpo rolar; mantenha header/footer fixos.</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-destructive">Don&apos;t</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Não empilhe múltiplos drawers modais.</li>
-                <li>Não use full em desktop para conteúdo curto.</li>
-                <li>Não omita o <code>DrawerTitle</code> (quebra a11y).</li>
-              </ul>
-            </div>
-          </div>
         </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use right/left para detalhes e formulários no CRM.",
+          "Coloque ações primárias no DrawerFooter.",
+          "Deixe o corpo rolar; mantenha header/footer fixos.",
+        ]}
+        donts={[
+          "Não empilhe múltiplos drawers modais.",
+          "Não use full em desktop para conteúdo curto.",
+          "Não omita o DrawerTitle (quebra a11y).",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

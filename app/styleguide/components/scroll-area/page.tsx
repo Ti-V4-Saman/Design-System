@@ -3,24 +3,17 @@ import * as React from "react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-
-function Section({ title, description, children }: { title: string; description?: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>}
-      </div>
-      {children}
-    </section>
-  )
-}
-function Demo({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-xl border bg-card p-5">{children}</div>
-}
-function CodeBlock({ children }: { children: string }) {
-  return <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">{children}</pre>
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 const CONTACTS = Array.from({ length: 20 }, (_, i) => ({
   name: ["Ana Souza", "Bruno Lima", "Carla Dias", "Diego Reis", "Elisa Nunes"][i % 5] + ` ${i + 1}`,
@@ -31,14 +24,16 @@ const TAGS = ["Prioritário", "Follow-up", "Enterprise", "Inbound", "Outbound", 
 
 export default function ScrollAreaPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Scroll Area</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Área de rolagem com barras customizadas (Radix ScrollArea). O thumb usa <code>bg-border</code>
-          para se integrar às superfícies do CRM V4. Ideal para listas densas, feeds e faixas horizontais.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Scroll Area"
+        description={
+          <>
+            Área de rolagem com barras customizadas (Radix ScrollArea). O thumb usa <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-border</code>{" "}
+            para se integrar às superfícies do CRM V4. Ideal para listas densas, feeds e faixas horizontais.
+          </>
+        }
+      />
 
       <Section title="Vertical" description="Lista longa de contatos num contêiner de altura fixa.">
         <Demo>
@@ -75,9 +70,43 @@ export default function ScrollAreaPage() {
         </Demo>
       </Section>
 
-      <Section title="Uso & API">
-        <div className="space-y-4">
-          <CodeBlock>{`import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+      <AccessibilitySection
+        items={[
+          <>O viewport é rolável por teclado (setas, <code className="font-mono text-xs">PageUp/PageDown</code>, <code className="font-mono text-xs">Home/End</code>) e recebe anel de foco visível.</>,
+          <>Rolagem por roda do mouse e trackpad funcionam normalmente sobre o conteúdo.</>,
+          <>As barras customizadas complementam — não substituem — a rolagem nativa; conteúdo permanece acessível sem mouse.</>,
+          <>Prefira conteúdo semântico dentro do viewport (listas, headings) para leitores de tela.</>,
+        ]}
+      />
+
+      <DarkModeSection description="O thumb (bg-border) e as superfícies internas vêm dos tokens — mesma leitura nos dois temas.">
+        <ScrollArea className="h-40 w-full rounded-lg border border-border">
+          <div className="p-2">
+            {CONTACTS.slice(0, 8).map((c, i) => (
+              <div key={i} className="flex items-center gap-3 rounded-md px-2 py-2 hover:bg-muted">
+                <Avatar className="size-8"><AvatarFallback>{c.name.slice(0, 2)}</AvatarFallback></Avatar>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium text-foreground">{c.name}</p>
+                  <p className="truncate text-xs text-muted-foreground">{c.org}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "ScrollArea.className", type: "string", description: "Defina altura/largura aqui; o conteúdo determina se há rolagem." },
+            { prop: "ScrollArea", type: "type, scrollHideDelay", description: "Comportamento de exibição das barras (Radix Root)." },
+            { prop: "ScrollBar.orientation", type: '"vertical" | "horizontal"', default: '"vertical"', description: "Eixo da barra; use horizontal para faixas roláveis." },
+          ],
+        ]}
+      />
+
+      <Section title="Código">
+        <CodeBlock>{`import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 <ScrollArea className="h-72 w-full rounded-lg border">
   {/* conteúdo vertical */}
@@ -87,16 +116,22 @@ export default function ScrollAreaPage() {
   <div className="flex w-max gap-3 p-4">{/* cards */}</div>
   <ScrollBar orientation="horizontal" />
 </ScrollArea>`}</CodeBlock>
-          <div className="rounded-xl border border-border bg-card p-5 text-sm">
-            <p className="mb-2 font-medium text-foreground">Notas</p>
-            <ul className="space-y-1 text-muted-foreground">
-              <li>Defina altura/largura no <code>ScrollArea</code>; o conteúdo determina a rolagem.</li>
-              <li>Para rolagem horizontal, use <code>whitespace-nowrap</code> + <code>ScrollBar orientation=&quot;horizontal&quot;</code>.</li>
-              <li>Rolagem por teclado e roda do mouse funcionam normalmente.</li>
-            </ul>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Defina altura/largura no ScrollArea para delimitar a rolagem.",
+          "Use whitespace-nowrap + ScrollBar horizontal para faixas de cards.",
+          "Aplique em listas densas onde a barra nativa quebraria a superfície.",
+          "Mantenha conteúdo semântico (listas, headings) dentro do viewport.",
+        ]}
+        donts={[
+          "Não aninhe várias ScrollAreas roláveis no mesmo eixo.",
+          "Não use para a rolagem principal da página (deixe o body rolar).",
+          "Não esqueça a ScrollBar horizontal ao rolar no eixo X.",
+          "Não coloque conteúdo interativo fora do viewport rolável.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

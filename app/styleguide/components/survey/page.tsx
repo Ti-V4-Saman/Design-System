@@ -12,20 +12,17 @@ import {
   QuestionFooter,
   type SurveyOption,
 } from "@/components/survey"
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function Section({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
-  return (
-    <section className="space-y-4">
-      <div>
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{title}</h2>
-        {description && <p className="mt-0.5 text-xs text-muted-foreground">{description}</p>}
-      </div>
-      {children}
-    </section>
-  )
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  GuidelinesSection,
+  Kbd,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 // ── Mock data ─────────────────────────────────────────────────────────────────
 
@@ -144,21 +141,19 @@ export default function SurveyPage() {
   const [dropdownValue, setDropdownValue] = React.useState("")
 
   return (
-    <div className="p-8 space-y-16">
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">Survey Question Card</h1>
-        <p className="text-muted-foreground mt-1">
-          A composable system for focused single-question survey flows with keyboard navigation.
-        </p>
-      </div>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Survey Question Card"
+        description="A composable system for focused single-question survey flows with keyboard navigation — single/multiple choice, free text and dropdown answer types."
+      />
 
       {/* Interactive demo */}
-      <Section title="Interactive Demo" description="4-step survey — keyboard shortcuts A/B/C… to select, Enter to advance">
+      <Section title="Interactive Demo" description="4-step survey — keyboard shortcuts A/B/C… to select, Enter to advance.">
         <MultiStepDemo />
       </Section>
 
       {/* Building blocks */}
-      <Section title="Building Blocks">
+      <Section title="Building Blocks" description="Each piece of the QuestionCard is exported and usable on its own.">
         <div className="grid gap-8 md:grid-cols-2">
 
           {/* StepIndicator */}
@@ -264,7 +259,7 @@ export default function SurveyPage() {
       </Section>
 
       {/* States */}
-      <Section title="QuestionCard — States">
+      <Section title="QuestionCard — States" description="Disabled locks every control and dims the card.">
         <div className="flex flex-wrap gap-8">
           <div className="space-y-2">
             <p className="text-xs text-muted-foreground font-medium">Disabled</p>
@@ -281,48 +276,87 @@ export default function SurveyPage() {
         </div>
       </Section>
 
-      {/* Props docs */}
-      <Section title="Props — QuestionCard">
-        <div className="border border-border rounded-lg overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-muted/30 border-b border-border">
-                <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">Prop</th>
-                <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">Type</th>
-                <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">Default</th>
-                <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {[
-                ["questionType", '"single" | "multiple" | "text" | "dropdown"', "—", "Answer input type (required)"],
-                ["question", "string", "—", "Question text (required)"],
-                ["description", "string", "—", "Optional subtext below the question"],
-                ["options", "SurveyOption[]", "[]", "Answer choices for single/multiple/dropdown types"],
-                ["value", "string | string[]", "—", "Controlled answer value"],
-                ["onChange", "(v: string | string[]) => void", "—", "Called on answer change"],
-                ["questionNumber", "number", "—", "Current step number (shows header + progress)"],
-                ["totalQuestions", "number", "—", "Total steps for progress bar"],
-                ["onNext", "() => void", "—", "Called on OK/Next button or Enter key"],
-                ["onBack", "() => void", "—", "Called on Back button; hides button if omitted"],
-                ["onClose", "() => void", "—", "Renders X button if provided"],
-                ["nextLabel", "string", '"OK"', "Label for the advance button"],
-                ["backLabel", "string", '"Back"', "Label for the back button"],
-                ["showKeyboardHints", "boolean", "true", "Show 'press Enter ↵' hint below Next button"],
-                ["disabled", "boolean", "false", "Disables all interactive elements"],
-                ["placeholder", "string", "—", "Placeholder for text/dropdown inputs"],
-              ].map(([prop, type, def, desc]) => (
-                <tr key={prop} className="hover:bg-muted/20">
-                  <td className="px-4 py-2.5 font-mono text-xs text-primary">{prop}</td>
-                  <td className="px-4 py-2.5 font-mono text-xs text-muted-foreground">{type}</td>
-                  <td className="px-4 py-2.5 font-mono text-xs text-muted-foreground">{def}</td>
-                  <td className="px-4 py-2.5 text-xs text-foreground">{desc}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <AccessibilitySection
+        title="Accessibility"
+        items={[
+          <>Choice options expose keyboard shortcuts (<Kbd>A</Kbd> <Kbd>B</Kbd> <Kbd>C</Kbd>…) rendered as a visible hint on each ChoiceCard.</>,
+          <>Pressing <Kbd>Enter</Kbd> advances to the next step once an answer is present; inside a multiline text input <Kbd>Enter</Kbd> inserts a newline instead of advancing.</>,
+          <>Disabled cards early-return from all key handlers and remove their controls from interaction.</>,
+          <>The StepIndicator and QuestionHeader number communicate progress so users always know where they are in the flow.</>,
+          <>Selected choices use a filled state plus the shortcut badge — status is not signalled by color alone.</>,
+        ]}
+      />
+
+      <DarkModeSection description="Survey building blocks in both themes — card surfaces, selected states and the success confirmation all resolve from tokens.">
+        <div className="space-y-2">
+          <ChoiceCard id="dm-a" label="Selected option" shortcut="A" selected />
+          <ChoiceCard id="dm-b" label="With description" shortcut="B" description="Additional context line" />
+          <ChoiceCard id="dm-c" label="Unselected option" shortcut="C" />
         </div>
+      </DarkModeSection>
+
+      <Section title="Code">
+        <CodeBlock>{`import { QuestionCard } from "@/components/survey"
+
+<QuestionCard
+  questionNumber={step + 1}
+  totalQuestions={steps.length}
+  questionType="single"          // "single" | "multiple" | "text" | "dropdown"
+  question="What is your primary role?"
+  description="This helps us tailor your CRM experience."
+  options={roleOptions}
+  value={answers[step]}
+  onChange={(v) => setAnswer(step, v)}
+  onBack={step > 0 ? goBack : undefined}
+  onNext={goNext}
+  nextLabel={isLast ? "Submit" : "OK"}
+  showKeyboardHints
+/>`}</CodeBlock>
       </Section>
-    </div>
+
+      {/* Props docs */}
+      <ApiSection
+        title="API / Props"
+        description="QuestionCard — the full single-question shell composing StepIndicator, QuestionHeader, the answer input and QuestionFooter."
+        groups={[
+          [
+            { prop: "questionType", type: '"single" | "multiple" | "text" | "dropdown"', description: "Answer input type (required)." },
+            { prop: "question", type: "string", description: "Question text (required)." },
+            { prop: "description", type: "string", description: "Optional subtext below the question." },
+            { prop: "options", type: "SurveyOption[]", default: "[]", description: "Answer choices for single/multiple/dropdown types." },
+            { prop: "value", type: "string | string[]", description: "Controlled answer value." },
+            { prop: "onChange", type: "(v: string | string[]) => void", description: "Called on answer change." },
+            { prop: "placeholder", type: "string", description: "Placeholder for text/dropdown inputs." },
+          ],
+          [
+            { prop: "questionNumber", type: "number", description: "Current step number (shows header + progress)." },
+            { prop: "totalQuestions", type: "number", description: "Total steps for the progress bar." },
+            { prop: "onNext", type: "() => void", description: "Called on OK/Next button or Enter key." },
+            { prop: "onBack", type: "() => void", description: "Called on Back button; button hidden if omitted." },
+            { prop: "onClose", type: "() => void", description: "Renders an X button when provided." },
+            { prop: "nextLabel", type: "string", default: '"OK"', description: "Label for the advance button." },
+            { prop: "backLabel", type: "string", default: '"Back"', description: "Label for the back button." },
+            { prop: "showKeyboardHints", type: "boolean", default: "true", description: "Show the 'press Enter ↵' hint below Next." },
+            { prop: "disabled", type: "boolean", default: "false", description: "Disables all interactive elements." },
+          ],
+        ]}
+      />
+
+      <GuidelinesSection
+        title="Best Practices"
+        dos={[
+          "Ask one question per screen to keep the respondent focused.",
+          "Show progress with questionNumber / totalQuestions so users know how far they are.",
+          "Use 'multiple' for select-all questions and 'single' for exclusive choices.",
+          "Keep keyboard hints on for power users completing long surveys.",
+        ]}
+        donts={[
+          "Don't cram several questions into one QuestionCard — split them into steps.",
+          "Don't write long option labels; keep choices scannable with the shortcut key.",
+          "Don't disable the Next button without an obvious reason (e.g. required answer).",
+          "Don't intercept Enter inside multiline text — let it insert newlines.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

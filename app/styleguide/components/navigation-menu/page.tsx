@@ -13,42 +13,17 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-
-/* ---------- page-local helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-xl border bg-card p-5">{children}</div>
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      {children}
-    </pre>
-  )
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 function ListItem({
   icon: Icon,
@@ -74,20 +49,39 @@ function ListItem({
   )
 }
 
-/* ---------- page ---------- */
+/** Non-portaled replica of an open panel, to show the surface in both themes. */
+function NavPanelPreview() {
+  return (
+    <div className="w-[280px] rounded-md border border-border bg-popover p-2 text-popover-foreground shadow-[var(--shadow-dropdown)]">
+      <div className="rounded-sm bg-accent px-3 py-2">
+        <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+          <BarChart3 className="size-4 text-muted-foreground" /> Dashboard
+        </div>
+        <p className="text-sm leading-snug text-muted-foreground">Visão geral de KPIs, metas e pipeline.</p>
+      </div>
+      <div className="rounded-sm px-3 py-2">
+        <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+          <Users className="size-4 text-muted-foreground" /> Clientes
+        </div>
+        <p className="text-sm leading-snug text-muted-foreground">Contatos, empresas e histórico.</p>
+      </div>
+    </div>
+  )
+}
 
 export default function NavigationMenuPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Navigation Menu</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Navegação de topo com painéis suspensos animados (Radix NavigationMenu). O viewport usa a
-          superfície flutuante do CRM V4 (<code>bg-popover</code> + <code>shadow-dropdown</code>);
-          gatilhos e links usam os tokens <code>accent</code>. Ideal para cabeçalhos de app e
-          mega-menus.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Navigation Menu"
+        description={
+          <>
+            Navegação de topo com painéis suspensos animados (Radix NavigationMenu). O viewport usa a
+            superfície flutuante do CRM V4 (<code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-popover</code> + <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">shadow-dropdown</code>);
+            gatilhos e links usam os tokens <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">accent</code>. Ideal para cabeçalhos de app e mega-menus.
+          </>
+        }
+      />
 
       <Section
         title="Padrão (com viewport)"
@@ -200,9 +194,32 @@ export default function NavigationMenuPage() {
         </div>
       </Section>
 
-      <Section title="Uso & API" description="Root › List › Item › Trigger + Content (painel) ou Link (item simples).">
-        <div className="space-y-4">
-          <CodeBlock>{`import {
+      <AccessibilitySection
+        items={[
+          <><kbd className="font-mono text-xs">Tab</kbd> foca os gatilhos; <kbd className="font-mono text-xs">Enter</kbd>/setas abrem o painel.</>,
+          <>Setas navegam dentro do painel · <kbd className="font-mono text-xs">Esc</kbd> fecha.</>,
+          <>Region com aria do Radix; foco visível com ring.</>,
+        ]}
+      />
+
+      <DarkModeSection description="A superfície flutuante do painel nos dois temas — bg-popover, accent no item ativo e shadow-dropdown.">
+        <NavPanelPreview />
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "NavigationMenu.viewport", type: "boolean", default: "true", description: "Usa o viewport animado compartilhado; false ancora cada painel sob o item." },
+            { prop: "NavigationMenuTrigger", type: "—", description: "Abre o painel; adiciona chevron automático." },
+            { prop: "NavigationMenuContent", type: "—", description: "Conteúdo do painel suspenso." },
+            { prop: "NavigationMenuLink", type: "asChild", description: "Link de navegação; asChild para o Next Link." },
+            { prop: "navigationMenuTriggerStyle()", type: "() => string", description: "Classe utilitária para estilizar links de topo como gatilhos." },
+          ],
+        ]}
+      />
+
+      <Section title="Código" description="Root › List › Item › Trigger + Content (painel) ou Link (item simples).">
+        <CodeBlock>{`import {
   NavigationMenu, NavigationMenuList, NavigationMenuItem,
   NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink,
   navigationMenuTriggerStyle,
@@ -225,46 +242,20 @@ export default function NavigationMenuPage() {
     </NavigationMenuItem>
   </NavigationMenuList>
 </NavigationMenu>`}</CodeBlock>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Props</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><code>NavigationMenu</code> — <code>viewport</code> (default true)</li>
-                <li><code>NavigationMenuTrigger</code> — abre painel (chevron automático)</li>
-                <li><code>NavigationMenuContent</code> — conteúdo do painel</li>
-                <li><code>NavigationMenuLink</code> — link; <code>asChild</code> p/ Next Link</li>
-                <li><code>navigationMenuTriggerStyle()</code> — estilo p/ links de topo</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Acessibilidade & teclado</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><kbd className="rounded bg-muted px-1">Tab</kbd> foca os gatilhos; <kbd className="rounded bg-muted px-1">Enter</kbd>/setas abrem</li>
-                <li>Setas navegam dentro do painel · <kbd className="rounded bg-muted px-1">Esc</kbd> fecha</li>
-                <li>Region com aria do Radix; foco visível com ring</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-success/40 bg-success/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-success">Do</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Use para navegação de topo com poucas seções.</li>
-                <li>Descreva cada link com um subtítulo curto.</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-destructive">Don&apos;t</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Não substitua a navegação lateral principal por ela.</li>
-                <li>Não coloque formulários dentro dos painéis.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use para navegação de topo com poucas seções.",
+          "Descreva cada link com um subtítulo curto.",
+          "Use viewport={false} para menus pequenos ancorados.",
+        ]}
+        donts={[
+          "Não substitua a navegação lateral principal por ela.",
+          "Não coloque formulários dentro dos painéis.",
+          "Não empilhe dezenas de links num único painel.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

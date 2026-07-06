@@ -15,6 +15,16 @@ import {
   RadarChart,
   Sparkline,
 } from "@/components/charts"
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 // ─── Formatters ────────────────────────────────────────────────────────────
 const brl = (v: number) =>
@@ -142,15 +152,6 @@ function ChartDemo({
   )
 }
 
-function SectionTitle({ children, hint }: { children: React.ReactNode; hint?: string }) {
-  return (
-    <div className="mb-4 mt-12 border-t border-border pt-8 first:mt-0 first:border-0 first:pt-0">
-      <h2 className="text-lg font-semibold text-foreground">{children}</h2>
-      {hint && <p className="text-sm text-muted-foreground">{hint}</p>}
-    </div>
-  )
-}
-
 const mrrSeries = [
   { key: "mrr", label: "MRR" },
   { key: "goal", label: "Meta", color: "neutral" as const },
@@ -174,248 +175,295 @@ export default function ChartPage() {
   })
 
   return (
-    <div className="max-w-7xl p-8">
-      <div className="mb-2">
-        <h1 className="mb-1 text-2xl font-bold text-foreground">Charts</h1>
-        <p className="text-sm text-muted-foreground">
-          Família de gráficos do CRM V4 sobre{" "}
-          <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">recharts</code> +{" "}
-          <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">ChartContainer</code>{" "}
-          do shadcn. Cores dos tokens{" "}
-          <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">--chart-1…5</code>{" "}
-          (emerald-led, sem azul). Todos respondem a light/dark via tokens.
-        </p>
-      </div>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Charts"
+        description={
+          <>
+            Família de gráficos do CRM V4 sobre{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">recharts</code> +{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">ChartContainer</code>{" "}
+            do shadcn. Cores dos tokens{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">--chart-1…5</code>{" "}
+            (emerald-led, sem azul). Todos respondem a light/dark via tokens.
+          </>
+        }
+      />
 
       {/* ── KPI cards + Sparklines ── */}
-      <SectionTitle hint="Número grande, delta colorido e sparkline inline. invertDelta trata churn (menor = melhor).">
-        KPI Trend &amp; Sparkline
-      </SectionTitle>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardContent className="pt-6">
-            <KpiTrend label="MRR" value={brl(151000)} delta={6.3} deltaCaption="vs. mês anterior" data={mrrTrend} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <KpiTrend label="Novos Leads" value={int(390)} delta={9.9} deltaCaption="vs. mês anterior" data={leadsTrend} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <KpiTrend label="Conversão" value={pct(19)} delta={8.6} deltaCaption="vs. mês anterior" data={convTrend} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <KpiTrend label="Churn" value={pct(2.1)} delta={-8.7} deltaCaption="vs. mês anterior" data={churnTrend} invertDelta />
-          </CardContent>
-        </Card>
-      </div>
-      <div className="mt-4 flex flex-wrap items-center gap-6 rounded-lg border border-border bg-card p-4">
-        <span className="text-sm text-muted-foreground">Sparklines isolados:</span>
-        <Sparkline data={mrrTrend} width={120} />
-        <Sparkline data={leadsTrend} variant="area" width={120} color="secondary" />
-        <Sparkline data={churnTrend} width={120} color="danger" />
-      </div>
+      <Section
+        title="KPI Trend & Sparkline"
+        description="Número grande, delta colorido e sparkline inline. invertDelta trata churn (menor = melhor)."
+      >
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardContent className="pt-6">
+              <KpiTrend label="MRR" value={brl(151000)} delta={6.3} deltaCaption="vs. mês anterior" data={mrrTrend} />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <KpiTrend label="Novos Leads" value={int(390)} delta={9.9} deltaCaption="vs. mês anterior" data={leadsTrend} />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <KpiTrend label="Conversão" value={pct(19)} delta={8.6} deltaCaption="vs. mês anterior" data={convTrend} />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <KpiTrend label="Churn" value={pct(2.1)} delta={-8.7} deltaCaption="vs. mês anterior" data={churnTrend} invertDelta />
+            </CardContent>
+          </Card>
+        </div>
+        <div className="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-card p-4">
+          <span className="text-sm text-muted-foreground">Sparklines isolados:</span>
+          <Sparkline data={mrrTrend} width={120} />
+          <Sparkline data={leadsTrend} variant="area" width={120} color="secondary" />
+          <Sparkline data={churnTrend} width={120} color="danger" />
+        </div>
+      </Section>
 
       {/* ── Line / Multi-series + interactive highlight ── */}
-      <SectionTitle hint="MRR vs. meta em 12 meses. Passe o mouse para o tooltip; use os botões para destacar uma série.">
-        Line &amp; Multi-Series
-      </SectionTitle>
-      <div className="mb-3 flex flex-wrap gap-2">
-        {(["all", "mrr", "goal"] as const).map((k) => (
-          <Button
-            key={k}
-            size="sm"
-            variant={highlight === k ? "default" : "outline"}
-            onClick={() => setHighlight(k)}
-          >
-            {k === "all" ? "Todas" : k === "mrr" ? "Destacar MRR" : "Destacar Meta"}
-          </Button>
-        ))}
-      </div>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <ChartDemo title="MRR vs. Meta" description="Multi-série com destaque interativo e eixo Y formatado.">
-          <LineChart
-            data={mrrData}
-            series={highlightedSeries}
-            categoryKey="month"
-            valueFormatter={brl}
-            showYAxis
-          />
-        </ChartDemo>
-        <ChartDemo title="MRR — série única" description="Linha reta, com pontos visíveis (dots).">
-          <LineChart
-            data={mrrData}
-            series={[{ key: "mrr", label: "MRR" }]}
-            categoryKey="month"
-            valueFormatter={brl}
-            curved={false}
-            dots
-          />
-        </ChartDemo>
-      </div>
+      <Section
+        title="Line & Multi-Series"
+        description="MRR vs. meta em 12 meses. Passe o mouse para o tooltip; use os botões para destacar uma série."
+      >
+        <div className="flex flex-wrap gap-2">
+          {(["all", "mrr", "goal"] as const).map((k) => (
+            <Button
+              key={k}
+              size="sm"
+              variant={highlight === k ? "default" : "outline"}
+              onClick={() => setHighlight(k)}
+            >
+              {k === "all" ? "Todas" : k === "mrr" ? "Destacar MRR" : "Destacar Meta"}
+            </Button>
+          ))}
+        </div>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <ChartDemo title="MRR vs. Meta" description="Multi-série com destaque interativo e eixo Y formatado.">
+            <LineChart
+              data={mrrData}
+              series={highlightedSeries}
+              categoryKey="month"
+              valueFormatter={brl}
+              showYAxis
+            />
+          </ChartDemo>
+          <ChartDemo title="MRR — série única" description="Linha reta, com pontos visíveis (dots).">
+            <LineChart
+              data={mrrData}
+              series={[{ key: "mrr", label: "MRR" }]}
+              categoryKey="month"
+              valueFormatter={brl}
+              curved={false}
+              dots
+            />
+          </ChartDemo>
+        </div>
+      </Section>
 
       {/* ── Area ── */}
-      <SectionTitle hint="Fill em gradiente derivado dos tokens. stacked empilha as séries.">Area &amp; Stacked Area</SectionTitle>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <ChartDemo title="MRR (área)" description="Área simples com gradiente emerald.">
-          <AreaChart data={mrrData} series={[{ key: "mrr", label: "MRR" }]} categoryKey="month" valueFormatter={brl} />
-        </ChartDemo>
-        <ChartDemo title="Receita por produto" description="Stacked area — Core, Add-ons e Serviços.">
-          <AreaChart
-            data={revenueData}
-            series={[
-              { key: "core", label: "Core" },
-              { key: "addons", label: "Add-ons" },
-              { key: "services", label: "Serviços", color: "warning" },
-            ]}
-            categoryKey="month"
-            valueFormatter={brl}
-            stacked
-          />
-        </ChartDemo>
-      </div>
+      <Section
+        title="Area & Stacked Area"
+        description="Fill em gradiente derivado dos tokens. stacked empilha as séries."
+      >
+        <div className="grid gap-4 lg:grid-cols-2">
+          <ChartDemo title="MRR (área)" description="Área simples com gradiente emerald.">
+            <AreaChart data={mrrData} series={[{ key: "mrr", label: "MRR" }]} categoryKey="month" valueFormatter={brl} />
+          </ChartDemo>
+          <ChartDemo title="Receita por produto" description="Stacked area — Core, Add-ons e Serviços.">
+            <AreaChart
+              data={revenueData}
+              series={[
+                { key: "core", label: "Core" },
+                { key: "addons", label: "Add-ons" },
+                { key: "services", label: "Serviços", color: "warning" },
+              ]}
+              categoryKey="month"
+              valueFormatter={brl}
+              stacked
+            />
+          </ChartDemo>
+        </div>
+      </Section>
 
       {/* ── Bar ── */}
-      <SectionTitle hint="Agrupado, empilhado e horizontal a partir do mesmo componente.">Bar · Stacked · Horizontal</SectionTitle>
-      <div className="grid gap-4 lg:grid-cols-3">
-        <ChartDemo title="Deals por estágio" description="Stacked bar por trimestre.">
-          <BarChart
-            data={dealsData}
-            series={[
-              { key: "won", label: "Ganhos" },
-              { key: "open", label: "Abertos", color: "secondary" },
-              { key: "lost", label: "Perdidos", color: "danger" },
-            ]}
-            categoryKey="quarter"
-            stacked
-          />
-        </ChartDemo>
-        <ChartDemo title="Deals (agrupado)" description="Barras lado a lado.">
-          <BarChart
-            data={dealsData}
-            series={[
-              { key: "won", label: "Ganhos" },
-              { key: "lost", label: "Perdidos", color: "danger" },
-            ]}
-            categoryKey="quarter"
-          />
-        </ChartDemo>
-        <ChartDemo title="Leads por origem" description="Barras horizontais, ranqueadas.">
-          <BarChart
-            data={sourceData}
-            series={[{ key: "leads", label: "Leads" }]}
-            categoryKey="source"
-            horizontal
-            valueFormatter={int}
-          />
-        </ChartDemo>
-      </div>
+      <Section
+        title="Bar · Stacked · Horizontal"
+        description="Agrupado, empilhado e horizontal a partir do mesmo componente."
+      >
+        <div className="grid gap-4 lg:grid-cols-3">
+          <ChartDemo title="Deals por estágio" description="Stacked bar por trimestre.">
+            <BarChart
+              data={dealsData}
+              series={[
+                { key: "won", label: "Ganhos" },
+                { key: "open", label: "Abertos", color: "secondary" },
+                { key: "lost", label: "Perdidos", color: "danger" },
+              ]}
+              categoryKey="quarter"
+              stacked
+            />
+          </ChartDemo>
+          <ChartDemo title="Deals (agrupado)" description="Barras lado a lado.">
+            <BarChart
+              data={dealsData}
+              series={[
+                { key: "won", label: "Ganhos" },
+                { key: "lost", label: "Perdidos", color: "danger" },
+              ]}
+              categoryKey="quarter"
+            />
+          </ChartDemo>
+          <ChartDemo title="Leads por origem" description="Barras horizontais, ranqueadas.">
+            <BarChart
+              data={sourceData}
+              series={[{ key: "leads", label: "Leads" }]}
+              categoryKey="source"
+              horizontal
+              valueFormatter={int}
+            />
+          </ChartDemo>
+        </div>
+      </Section>
 
       {/* ── Pie / Donut ── */}
-      <SectionTitle hint="Fatias na paleta CRM. Donut aceita rótulo central (total).">Pie &amp; Donut</SectionTitle>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <ChartDemo title="Leads por canal (pie)" description="Distribuição proporcional.">
-          <PieChart data={channelData} valueFormatter={int} height={280} />
-        </ChartDemo>
-        <ChartDemo title="Leads por canal (donut)" description="Com total no centro.">
-          <PieChart
-            data={channelData}
-            donut
-            centerLabel={{ value: int(1042), caption: "leads" }}
-            valueFormatter={int}
-            height={280}
-          />
-        </ChartDemo>
-      </div>
+      <Section title="Pie & Donut" description="Fatias na paleta CRM. Donut aceita rótulo central (total).">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <ChartDemo title="Leads por canal (pie)" description="Distribuição proporcional.">
+            <PieChart data={channelData} valueFormatter={int} height={280} />
+          </ChartDemo>
+          <ChartDemo title="Leads por canal (donut)" description="Com total no centro.">
+            <PieChart
+              data={channelData}
+              donut
+              centerLabel={{ value: int(1042), caption: "leads" }}
+              valueFormatter={int}
+              height={280}
+            />
+          </ChartDemo>
+        </div>
+      </Section>
 
       {/* ── Radar + Funnel ── */}
-      <SectionTitle hint="Radar compara reps por dimensão; funnel mostra a conversão do pipeline.">Radar &amp; Funnel</SectionTitle>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <ChartDemo title="Performance por rep" description="Ana vs. Bruno em 6 dimensões.">
-          <RadarChart
-            data={repData}
-            series={[
-              { key: "ana", label: "Ana" },
-              { key: "bruno", label: "Bruno", color: "warning" },
-            ]}
-            categoryKey="dimension"
-          />
-        </ChartDemo>
-        <ChartDemo title="Conversão do pipeline" description="Visitantes → Leads → MQL → SQL → Deals.">
-          <FunnelChart data={funnelData} />
-        </ChartDemo>
-      </div>
+      <Section
+        title="Radar & Funnel"
+        description="Radar compara reps por dimensão; funnel mostra a conversão do pipeline."
+      >
+        <div className="grid gap-4 lg:grid-cols-2">
+          <ChartDemo title="Performance por rep" description="Ana vs. Bruno em 6 dimensões.">
+            <RadarChart
+              data={repData}
+              series={[
+                { key: "ana", label: "Ana" },
+                { key: "bruno", label: "Bruno", color: "warning" },
+              ]}
+              categoryKey="dimension"
+            />
+          </ChartDemo>
+          <ChartDemo title="Conversão do pipeline" description="Visitantes → Leads → MQL → SQL → Deals.">
+            <FunnelChart data={funnelData} />
+          </ChartDemo>
+        </div>
+      </Section>
 
       {/* ── States ── */}
-      <SectionTitle hint="Todo wrapper trata data vazia (empty) e prop loading (skeleton).">Estados — Loading &amp; Empty</SectionTitle>
-      <div className="mb-3">
-        <Button size="sm" onClick={simulateLoading}>Simular loading (2s)</Button>
-      </div>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <ChartDemo title="Loading (skeleton)" description="prop loading enquanto os dados chegam.">
-          <LineChart data={mrrData} series={mrrSeries} categoryKey="month" loading={loading} valueFormatter={brl} />
-        </ChartDemo>
-        <ChartDemo title="Empty state" description="data vazio → mensagem e ícone.">
-          <BarChart
-            data={[]}
-            series={[{ key: "leads", label: "Leads" }]}
-            categoryKey="source"
-            emptyMessage="Nenhum lead no período selecionado."
-          />
-        </ChartDemo>
-      </div>
-
-      {/* ── Light / Dark side by side ── */}
-      <SectionTitle hint="O mesmo gráfico nos dois temas — cores e superfícies vêm dos tokens.">Light &amp; Dark</SectionTitle>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-xl border border-border bg-background p-4">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Light</p>
-          <AreaChart data={mrrData} series={[{ key: "mrr", label: "MRR" }]} categoryKey="month" valueFormatter={brl} height={220} />
+      <Section
+        title="Estados — Loading & Empty"
+        description="Todo wrapper trata data vazia (empty) e prop loading (skeleton)."
+      >
+        <div>
+          <Button size="sm" onClick={simulateLoading}>Simular loading (2s)</Button>
         </div>
-        <div className="dark rounded-xl border border-border bg-background p-4">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Dark</p>
-          <AreaChart data={mrrData} series={[{ key: "mrr", label: "MRR" }]} categoryKey="month" valueFormatter={brl} height={220} />
+        <div className="grid gap-4 lg:grid-cols-2">
+          <ChartDemo title="Loading (skeleton)" description="prop loading enquanto os dados chegam.">
+            <LineChart data={mrrData} series={mrrSeries} categoryKey="month" loading={loading} valueFormatter={brl} />
+          </ChartDemo>
+          <ChartDemo title="Empty state" description="data vazio → mensagem e ícone.">
+            <BarChart
+              data={[]}
+              series={[{ key: "leads", label: "Leads" }]}
+              categoryKey="source"
+              emptyMessage="Nenhum lead no período selecionado."
+            />
+          </ChartDemo>
         </div>
-      </div>
+      </Section>
 
       {/* ── Heatmap ── */}
-      <SectionTitle hint="Componente custom (grid CSS com rampa emerald sobre --muted) — recharts não tem heatmap nativo.">Heatmap</SectionTitle>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <ChartDemo
-          title="Atividade por horário"
-          description="Interações registradas por dia da semana × faixa de horário — melhores janelas de contato."
-        >
-          <Heatmap
-            data={activityData}
-            xLabels={heatmapXLabels}
-            yLabels={heatmapYLabels}
-            valueFormatter={int}
-          />
-        </ChartDemo>
-        <ChartDemo title="Estados" description="Loading (skeleton) e empty compartilhados com a família.">
-          <div className="space-y-4">
+      <Section
+        title="Heatmap"
+        description="Componente custom (grid CSS com rampa emerald sobre --muted) — recharts não tem heatmap nativo."
+      >
+        <div className="grid gap-4 lg:grid-cols-2">
+          <ChartDemo
+            title="Atividade por horário"
+            description="Interações registradas por dia da semana × faixa de horário — melhores janelas de contato."
+          >
             <Heatmap
               data={activityData}
               xLabels={heatmapXLabels}
               yLabels={heatmapYLabels}
-              loading={loading}
-              height={140}
+              valueFormatter={int}
             />
-            <Heatmap data={[]} xLabels={heatmapXLabels} yLabels={heatmapYLabels} height={120} />
-          </div>
-        </ChartDemo>
-      </div>
+          </ChartDemo>
+          <ChartDemo title="Estados" description="Loading (skeleton) e empty compartilhados com a família.">
+            <div className="space-y-4">
+              <Heatmap
+                data={activityData}
+                xLabels={heatmapXLabels}
+                yLabels={heatmapYLabels}
+                loading={loading}
+                height={140}
+              />
+              <Heatmap data={[]} xLabels={heatmapXLabels} yLabels={heatmapYLabels} height={120} />
+            </div>
+          </ChartDemo>
+        </div>
+      </Section>
 
-      {/* ── API / docs ── */}
-      <SectionTitle hint="Import único via barrel. Props comuns compartilhadas entre os cartesianos.">Uso &amp; API</SectionTitle>
-      <Card>
-        <CardContent className="pt-6">
-          <pre className="overflow-x-auto rounded-lg bg-muted p-4 font-mono text-xs leading-relaxed text-foreground">
-{`import { LineChart, BarChart, PieChart, KpiTrend } from "@/components/charts"
+      <AccessibilitySection
+        items={[
+          <><code className="font-mono text-xs">accessibilityLayer</code> do recharts habilita navegação por teclado nos cartesianos.</>,
+          <>Estados de loading/empty expõem <code className="font-mono text-xs">role=&quot;status&quot;</code> / <code className="font-mono text-xs">aria-busy</code>.</>,
+          <>Sparkline é decorativo com <code className="font-mono text-xs">role=&quot;img&quot;</code> e <code className="font-mono text-xs">aria-label</code> descritivo.</>,
+          <>Cores não são o único canal: legendas e tooltips rotulam cada série.</>,
+        ]}
+      />
+
+      <DarkModeSection description="O mesmo gráfico nos dois temas — cores e superfícies vêm dos tokens.">
+        <AreaChart data={mrrData} series={[{ key: "mrr", label: "MRR" }]} categoryKey="month" valueFormatter={brl} height={220} />
+      </DarkModeSection>
+
+      <ApiSection
+        description="Import único via barrel. Props comuns compartilhadas entre os cartesianos."
+        groups={[
+          [
+            { prop: "data", type: "ChartDatum[]", description: "Linhas de dados, ex.: { month, mrr, goal }." },
+            { prop: "series", type: "ChartSeries[]", description: "{ key, label?, color? } por série plotada." },
+            { prop: "categoryKey", type: "string", description: "Chave do eixo de categoria (x, ou y no horizontal)." },
+            { prop: "valueFormatter", type: "(v: number) => string", description: "Formata ticks e tooltip (R$, %, milhares)." },
+            { prop: "loading", type: "boolean", default: "false", description: "Renderiza o skeleton no lugar do gráfico." },
+            { prop: "height", type: "number", default: "260", description: "Altura em px." },
+            { prop: "showGrid / Legend / Tooltip / XAxis / YAxis", type: "boolean", description: "Alterna elementos auxiliares do gráfico." },
+            { prop: "emptyMessage", type: "string", description: "Mensagem quando data está vazio." },
+          ],
+          [
+            { prop: "series[].color", type: '"primary" | "secondary" | "warning" | "danger" | "neutral" | CSS', description: "Role semântico ou cor/token explícito." },
+            { prop: "BarChart.stacked / horizontal", type: "boolean", default: "false", description: "Empilha séries ou inverte a orientação." },
+            { prop: "PieChart.donut / centerLabel", type: "boolean / { value, caption }", description: "Donut com rótulo central opcional." },
+            { prop: "KpiTrend", type: "label, value, delta?, invertDelta?, data", description: "Card de KPI; invertDelta trata churn (menor = melhor)." },
+            { prop: "Sparkline", type: "data, variant?, color?, width?", description: 'Mini-gráfico inline; variant "line" | "area".' },
+            { prop: "Heatmap", type: "data, xLabels, yLabels, valueFormatter?", description: "Grid custom (rampa emerald) — loading/empty compartilhados." },
+          ],
+        ]}
+      />
+
+      <Section title="Código">
+        <CodeBlock>{`import { LineChart, BarChart, PieChart, KpiTrend } from "@/components/charts"
 
 // Multi-série, eixo Y formatado, tooltip e legenda automáticos
 <LineChart
@@ -430,35 +478,23 @@ export default function ChartPage() {
 <BarChart data={deals} series={[{ key: "lost", color: "danger" }]} categoryKey="quarter" stacked />
 
 // KPI: valor + delta + sparkline (invertDelta p/ churn)
-<KpiTrend label="Churn" value="2,1%" delta={-8.7} data={churnTrend} invertDelta />`}
-          </pre>
-          <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
-            <div>
-              <p className="font-medium text-foreground">Props cartesianas comuns</p>
-              <p className="text-muted-foreground">
-                <code className="font-mono text-xs">data</code>,{" "}
-                <code className="font-mono text-xs">series</code>,{" "}
-                <code className="font-mono text-xs">categoryKey</code>,{" "}
-                <code className="font-mono text-xs">valueFormatter</code>,{" "}
-                <code className="font-mono text-xs">loading</code>,{" "}
-                <code className="font-mono text-xs">height</code>,{" "}
-                <code className="font-mono text-xs">showGrid/Legend/Tooltip/XAxis/YAxis</code>,{" "}
-                <code className="font-mono text-xs">emptyMessage</code>.
-              </p>
-            </div>
-            <div>
-              <p className="font-medium text-foreground">Acessibilidade</p>
-              <p className="text-muted-foreground">
-                <code className="font-mono text-xs">accessibilityLayer</code> do recharts (navegação por teclado),
-                estados <code className="font-mono text-xs">role=&quot;status&quot;</code> /{" "}
-                <code className="font-mono text-xs">aria-busy</code>, sparkline com{" "}
-                <code className="font-mono text-xs">role=&quot;img&quot;</code> e{" "}
-                <code className="font-mono text-xs">aria-label</code>.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+<KpiTrend label="Churn" value="2,1%" delta={-8.7} data={churnTrend} invertDelta />`}</CodeBlock>
+      </Section>
+
+      <GuidelinesSection
+        dos={[
+          "Use valueFormatter para formatar eixos e tooltips (R$, %, milhares).",
+          "Escolha cores por role semântico (danger para perdas, warning para atenção).",
+          "Trate loading e empty — todos os wrappers já suportam.",
+          "Prefira KpiTrend + Sparkline para destacar métricas isoladas.",
+        ]}
+        donts={[
+          "Não use azul — a paleta CRM é emerald-led (--chart-1…5).",
+          "Não empilhe séries demais a ponto de poluir a leitura.",
+          "Não hardcode cores — use os tokens/roles semânticos.",
+          "Não esconda o eixo Y quando a escala importa para a decisão.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

@@ -11,40 +11,35 @@ import {
 } from "lucide-react"
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-
-function Section({ title, description, children }: { title: string; description?: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>}
-      </div>
-      {children}
-    </section>
-  )
-}
-function Demo({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-xl border bg-card p-5"><div className="flex flex-wrap items-center gap-6">{children}</div></div>
-}
-function CodeBlock({ children }: { children: string }) {
-  return <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">{children}</pre>
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 export default function ToggleGroupPage() {
   const [view, setView] = React.useState("list")
 
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Toggle Group</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Conjunto de toggles como controle segmentado (Radix ToggleGroup). Seleção única ou múltipla;
-          itens herdam variante/tamanho do grupo. Tokens <code>accent</code> no estado ativo.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Toggle Group"
+        description={
+          <>
+            Conjunto de toggles como controle segmentado (Radix ToggleGroup). Seleção única ou múltipla;
+            itens herdam variante/tamanho do grupo. Tokens <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">accent</code> no estado ativo.
+          </>
+        }
+      />
 
       <Section title="Seleção única — alternador de visão" description="type=single: uma opção ativa por vez (ex.: Lista/Grade/Kanban).">
-        <Demo>
+        <Demo center>
           <ToggleGroup type="single" variant="outline" value={view} onValueChange={(v) => v && setView(v)}>
             <ToggleGroupItem value="list" aria-label="Lista"><List /> Lista</ToggleGroupItem>
             <ToggleGroupItem value="grid" aria-label="Grade"><LayoutGrid /> Grade</ToggleGroupItem>
@@ -55,7 +50,7 @@ export default function ToggleGroupPage() {
       </Section>
 
       <Section title="Seleção múltipla — formatação" description="type=multiple: várias opções simultâneas.">
-        <Demo>
+        <Demo center>
           <ToggleGroup type="multiple" variant="outline" defaultValue={["left"]}>
             <ToggleGroupItem value="left" aria-label="Alinhar à esquerda"><AlignLeft /></ToggleGroupItem>
             <ToggleGroupItem value="center" aria-label="Centralizar"><AlignCenter /></ToggleGroupItem>
@@ -65,7 +60,7 @@ export default function ToggleGroupPage() {
       </Section>
 
       <Section title="Variante default & tamanhos">
-        <Demo>
+        <Demo center>
           <ToggleGroup type="single" defaultValue="a" size="sm">
             <ToggleGroupItem value="a">Dia</ToggleGroupItem>
             <ToggleGroupItem value="b">Semana</ToggleGroupItem>
@@ -80,9 +75,40 @@ export default function ToggleGroupPage() {
         </Demo>
       </Section>
 
-      <Section title="Uso & API">
-        <div className="space-y-4">
-          <CodeBlock>{`import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+      <AccessibilitySection
+        items={[
+          <>As setas navegam entre os itens do grupo (roving tabindex, Radix).</>,
+          <>Em <code className="font-mono text-xs">type=&quot;single&quot;</code> o grupo se comporta como radiogroup; em <code className="font-mono text-xs">multiple</code>, cada item tem <code className="font-mono text-xs">aria-pressed</code>.</>,
+          <><code className="font-mono text-xs">aria-label</code> é obrigatório em itens que mostram apenas ícone.</>,
+          <>Foco visível por item; <code className="font-mono text-xs">Enter</code>/<code className="font-mono text-xs">Espaço</code> alternam a seleção.</>,
+        ]}
+      />
+
+      <DarkModeSection description="O item ativo (accent) e a borda outline do segmento vêm dos tokens — mesma leitura nos dois temas.">
+        <ToggleGroup type="single" variant="outline" defaultValue="grid">
+          <ToggleGroupItem value="list" aria-label="Lista"><List /> Lista</ToggleGroupItem>
+          <ToggleGroupItem value="grid" aria-label="Grade"><LayoutGrid /> Grade</ToggleGroupItem>
+          <ToggleGroupItem value="kanban" aria-label="Kanban"><Kanban /> Kanban</ToggleGroupItem>
+        </ToggleGroup>
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "type", type: '"single" | "multiple"', description: "single = uma opção ativa; multiple = várias simultâneas." },
+            { prop: "value / defaultValue", type: "string | string[]", description: "Valor(es) selecionado(s); array em multiple." },
+            { prop: "onValueChange", type: "(value) => void", description: "Callback ao mudar a seleção (trate valor vazio em single)." },
+          ],
+          [
+            { prop: "variant", type: '"default" | "outline"', default: '"default"', description: "Herdado pelos itens via contexto." },
+            { prop: "size", type: '"sm" | "default" | "lg"', default: '"default"', description: "Herdado pelos itens via contexto." },
+            { prop: "ToggleGroupItem.value", type: "string", description: "Identifica cada item; aria-label quando só ícone." },
+          ],
+        ]}
+      />
+
+      <Section title="Código">
+        <CodeBlock>{`import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 
 <ToggleGroup type="single" variant="outline" value={view} onValueChange={setView}>
   <ToggleGroupItem value="list"><List /> Lista</ToggleGroupItem>
@@ -90,16 +116,22 @@ export default function ToggleGroupPage() {
 </ToggleGroup>
 
 <ToggleGroup type="multiple" defaultValue={["left"]}> … </ToggleGroup>`}</CodeBlock>
-          <div className="rounded-xl border border-border bg-card p-5 text-sm">
-            <p className="mb-2 font-medium text-foreground">Notas</p>
-            <ul className="space-y-1 text-muted-foreground">
-              <li><code>type</code> single · multiple; <code>variant</code>/<code>size</code> no grupo (herdados pelos itens)</li>
-              <li>Em single, trate o valor vazio (desmarcar) para não zerar a visão.</li>
-              <li>Setas navegam entre itens; <code>aria-label</code> quando só ícone.</li>
-            </ul>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use type=single para escolhas mutuamente exclusivas (ex.: visão).",
+          "Defina variant/size no grupo — os itens herdam via contexto.",
+          "Em single, trate o valor vazio (desmarcar) para não zerar a visão.",
+          "Dê aria-label a itens que mostram só ícone.",
+        ]}
+        donts={[
+          "Não use para um único estado on/off — use Toggle.",
+          "Não misture variant/size por item quebrando o controle segmentado.",
+          "Não deixe o grupo desmarcar sem tratar o estado resultante.",
+          "Não use como navegação — não é substituto de Tabs.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

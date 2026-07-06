@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   AlertDialog,
@@ -16,6 +17,16 @@ import {
 } from "@/components/ui/alert-dialog"
 import { CRMAlertDialog, type CRMAlertDialogVariant } from "@/components/crm-alert-dialog"
 import { Settings } from "lucide-react"
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 const VARIANTS: {
   variant: CRMAlertDialogVariant
@@ -64,12 +75,24 @@ const VARIANTS: {
   },
 ]
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+/** Non-portaled replica of the alert-dialog surface, to show it in both themes. */
+function AlertDialogPreview() {
   return (
-    <section className="space-y-4">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{title}</h2>
-      {children}
-    </section>
+    <div className="grid gap-4 rounded-xl border border-border bg-card p-6 text-center shadow-[var(--shadow-modal)]">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive [&_svg]:h-6 [&_svg]:w-6">
+        <Trash2 />
+      </div>
+      <div className="space-y-1.5">
+        <p className="font-heading text-base font-medium text-foreground">Delete contact?</p>
+        <p className="text-sm text-muted-foreground">
+          This action cannot be undone. This will permanently delete the contact.
+        </p>
+      </div>
+      <div className="flex justify-center gap-2">
+        <Button variant="outline" size="sm">Cancel</Button>
+        <Button variant="destructive" size="sm">Delete</Button>
+      </div>
+    </div>
   )
 }
 
@@ -87,15 +110,19 @@ export default function AlertDialogPage() {
   }
 
   return (
-    <div className="p-8 space-y-12">
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">Alert Dialog</h1>
-        <p className="text-muted-foreground mt-1">
-          Modal dialogs for confirmation prompts. Four semantic variants for different action contexts.
-        </p>
-      </div>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Alert Dialog"
+        description={
+          <>
+            Modal dialogs for confirmation prompts (Radix AlertDialog). Four semantic variants for different action
+            contexts. For general forms and content use the{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">Dialog</code> instead.
+          </>
+        }
+      />
 
-      <Section title="Variants">
+      <Section title="Variants" description="Each variant sets its own icon and confirm-button color: default (Info), destructive, warning and success.">
         <div className="flex flex-wrap gap-3">
           {VARIANTS.map(({ variant, label, title, description, confirmLabel, triggerLabel, triggerVariant }) => (
             <div key={variant} className="flex flex-col items-start gap-1.5">
@@ -114,7 +141,7 @@ export default function AlertDialogPage() {
         </div>
       </Section>
 
-      <Section title="Loading State">
+      <Section title="Loading State" description="While loading, both buttons are disabled and the confirm button shows a spinner — the async action can't be double-fired.">
         <div className="flex flex-col items-start gap-1.5">
           <p className="text-xs text-muted-foreground">Destructive with async confirm</p>
           <Button variant="destructive" size="sm" onClick={() => setLoadingOpen(true)}>
@@ -134,7 +161,7 @@ export default function AlertDialogPage() {
         </div>
       </Section>
 
-      <Section title="Controlled">
+      <Section title="Controlled" description="Drive open state externally via open / onOpenChange — useful when the dialog is triggered from a menu or a row action.">
         <div className="flex flex-col items-start gap-1.5">
           <p className="text-xs text-muted-foreground">Managed via external open state</p>
           <Button variant="outline" size="sm" onClick={() => setControlledOpen(true)}>
@@ -153,7 +180,7 @@ export default function AlertDialogPage() {
         </div>
       </Section>
 
-      <Section title="Composition (raw primitives)">
+      <Section title="Composition (raw primitives)" description="Compose your own layout with the underlying AlertDialog primitives when CRMAlertDialog isn't enough.">
         <div className="flex flex-col items-start gap-1.5">
           <p className="text-xs text-muted-foreground">Custom layout using AlertDialog primitives directly</p>
           <AlertDialog>
@@ -180,42 +207,74 @@ export default function AlertDialogPage() {
         </div>
       </Section>
 
-      <Section title="Props — CRMAlertDialog">
-        <div className="border border-border rounded-lg overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-muted/30 border-b border-border">
-                <th className="px-4 py-2.5 text-left font-semibold text-xs uppercase tracking-wide text-muted-foreground">Prop</th>
-                <th className="px-4 py-2.5 text-left font-semibold text-xs uppercase tracking-wide text-muted-foreground">Type</th>
-                <th className="px-4 py-2.5 text-left font-semibold text-xs uppercase tracking-wide text-muted-foreground">Default</th>
-                <th className="px-4 py-2.5 text-left font-semibold text-xs uppercase tracking-wide text-muted-foreground">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {[
-                ["variant", '"default" | "destructive" | "warning" | "success"', '"default"', "Visual variant affecting icon and confirm button color"],
-                ["title", "string", "—", "Dialog heading (required)"],
-                ["description", "string", "—", "Body text explaining the action (required)"],
-                ["confirmLabel", "string", '"Confirm"', "Text for the confirm button"],
-                ["cancelLabel", "string", '"Cancel"', "Text for the cancel button"],
-                ["onConfirm", "() => void", "—", "Called on confirm button click"],
-                ["onCancel", "() => void", "—", "Called on cancel button click"],
-                ["loading", "boolean", "false", "Shows spinner and disables buttons"],
-                ["open", "boolean", "—", "Controlled open state"],
-                ["onOpenChange", "(open: boolean) => void", "—", "Controlled open state handler"],
-                ["children", "ReactNode", "—", "Trigger element (wrapped in AlertDialogTrigger)"],
-              ].map(([prop, type, def, desc]) => (
-                <tr key={prop} className="hover:bg-muted/20">
-                  <td className="px-4 py-2.5 font-mono text-xs text-primary">{prop}</td>
-                  <td className="px-4 py-2.5 font-mono text-xs text-muted-foreground">{type}</td>
-                  <td className="px-4 py-2.5 font-mono text-xs text-muted-foreground">{def}</td>
-                  <td className="px-4 py-2.5 text-xs text-foreground">{desc}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <AccessibilitySection
+        title="Accessibility"
+        items={[
+          <>Built on Radix AlertDialog: focus is trapped inside and returned to the trigger on close.</>,
+          <>Unlike a regular dialog, an AlertDialog does <strong>not</strong> close on overlay click or <code className="font-mono text-xs">Esc</code> by default — a confirmation demands an explicit choice.</>,
+          <><code className="font-mono text-xs">AlertDialogTitle</code> and <code className="font-mono text-xs">AlertDialogDescription</code> are wired as the accessible name/description for screen readers — always provide both.</>,
+          <>The variant icon is decorative; meaning comes from the title, description and the destructive/default confirm button color.</>,
+          <>While <code className="font-mono text-xs">loading</code>, both actions are disabled so an async confirm can't be triggered twice.</>,
+        ]}
+      />
+
+      <DarkModeSection description="The same confirmation surface in both themes — bg-card, semantic icon tint and shadow-modal all come from tokens.">
+        <AlertDialogPreview />
+      </DarkModeSection>
+
+      <Section title="Code">
+        <CodeBlock>{`import { CRMAlertDialog } from "@/components/crm-alert-dialog"
+
+// Trigger-driven (uncontrolled)
+<CRMAlertDialog variant="destructive" title="Delete contact?"
+  description="This action cannot be undone."
+  confirmLabel="Delete" onConfirm={remove}>
+  <Button variant="destructive">Delete</Button>
+</CRMAlertDialog>
+
+// Controlled + async loading
+<CRMAlertDialog open={open} onOpenChange={setOpen} variant="warning"
+  title="Reset stage?" description="Affects 23 leads."
+  loading={loading} onConfirm={handleConfirm} onCancel={() => setOpen(false)} />`}</CodeBlock>
       </Section>
-    </div>
+
+      <ApiSection
+        title="API / Props"
+        description="CRMAlertDialog — a variant-aware wrapper over the Radix AlertDialog primitives."
+        groups={[
+          [
+            { prop: "variant", type: '"default" | "destructive" | "warning" | "success"', default: '"default"', description: "Visual variant affecting icon and confirm button color." },
+            { prop: "title", type: "string", description: "Dialog heading (required)." },
+            { prop: "description", type: "string", description: "Body text explaining the action (required)." },
+            { prop: "confirmLabel", type: "string", default: '"Confirm"', description: "Text for the confirm button." },
+            { prop: "cancelLabel", type: "string", default: '"Cancel"', description: "Text for the cancel button." },
+          ],
+          [
+            { prop: "onConfirm", type: "() => void", description: "Called on confirm button click." },
+            { prop: "onCancel", type: "() => void", description: "Called on cancel button click." },
+            { prop: "loading", type: "boolean", default: "false", description: "Shows spinner and disables both buttons." },
+            { prop: "open", type: "boolean", description: "Controlled open state." },
+            { prop: "onOpenChange", type: "(open: boolean) => void", description: "Controlled open state handler." },
+            { prop: "children", type: "ReactNode", description: "Trigger element (wrapped in AlertDialogTrigger)." },
+          ],
+        ]}
+      />
+
+      <GuidelinesSection
+        title="Best Practices"
+        dos={[
+          "Use AlertDialog for destructive or irreversible confirmations (delete, reset, publish).",
+          "Match the variant to the action's tone — destructive for deletes, warning for reversible risk.",
+          "Keep the description specific: name what will change and how many records are affected.",
+          "Set loading during async confirms to prevent double submission.",
+        ]}
+        donts={[
+          "Don't use AlertDialog for regular forms or content — use Dialog.",
+          "Don't write vague labels like 'OK'; use an action verb ('Delete', 'Archive').",
+          "Don't omit the description — it carries the consequence of the action.",
+          "Don't allow dismissal of a destructive prompt without an explicit choice.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

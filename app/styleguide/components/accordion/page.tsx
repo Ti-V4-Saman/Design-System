@@ -9,42 +9,18 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-
-/* ---------- page-local presentation helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-xl border bg-card p-5">{children}</div>
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      {children}
-    </pre>
-  )
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Kbd,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 const FAQ = [
   {
@@ -65,22 +41,24 @@ const FAQ = [
 
 export default function AccordionPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Accordion</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Seções colapsáveis sobre o primitivo Radix Accordion (teclado, aria, animação de altura).
-          Duas variantes — lista dividida (<code>default</code>) e cartões (<code>card</code>) —
-          todas via tokens do CRM V4. Alterne o tema para ver em dark mode.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Accordion"
+        description={
+          <>
+            Seções colapsáveis sobre o primitivo Radix Accordion (teclado, aria, animação de altura).
+            Duas variantes — lista dividida (<code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">default</code>) e cartões (<code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">card</code>) —
+            todas via tokens do CRM V4.
+          </>
+        }
+      />
 
       <Section
         title="Variante default"
         description="Lista com divisórias. type=single collapsible permite fechar o item aberto."
       >
         <Demo>
-          <Accordion type="single" collapsible defaultValue="faq-0">
+          <Accordion type="single" collapsible defaultValue="faq-0" className="w-full">
             {FAQ.map((item, i) => (
               <AccordionItem key={i} value={`faq-${i}`}>
                 <AccordionTrigger>{item.q}</AccordionTrigger>
@@ -151,7 +129,7 @@ export default function AccordionPage() {
         description="Item desabilitado não abre e fica esmaecido (data-disabled)."
       >
         <Demo>
-          <Accordion type="single" collapsible>
+          <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="ok">
               <AccordionTrigger>Item habilitado</AccordionTrigger>
               <AccordionContent>Conteúdo acessível normalmente.</AccordionContent>
@@ -165,7 +143,7 @@ export default function AccordionPage() {
       </Section>
 
       <Section
-        title="Exemplo real — Central de ajuda (FAQ)"
+        title="Composição — Central de ajuda (FAQ)"
         description="Composição típica de CRM: FAQ com item de segurança destacado por ícone."
       >
         <Demo>
@@ -191,9 +169,44 @@ export default function AccordionPage() {
         </Demo>
       </Section>
 
-      <Section title="Uso & API" description="Composição declarativa; a variante fica no AccordionItem.">
-        <div className="space-y-4">
-          <CodeBlock>{`import {
+      <AccessibilitySection
+        items={[
+          <><Kbd>Tab</Kbd> navega entre gatilhos; <Kbd>↑</Kbd> <Kbd>↓</Kbd> movem entre itens.</>,
+          <><Kbd>Enter</Kbd> / <Kbd>Espaço</Kbd> abrem/fecham o item focado.</>,
+          <>Cada gatilho vive num cabeçalho e controla uma região com o aria correto (Radix).</>,
+          <>Item <code className="font-mono text-xs">disabled</code> é ignorado pela navegação e não abre.</>,
+        ]}
+      />
+
+      <DarkModeSection description="A mesma lista de accordion nos dois temas — divisórias, foco e texto via tokens.">
+        <Accordion type="single" collapsible defaultValue="dm-0" className="w-full">
+          {FAQ.slice(0, 2).map((item, i) => (
+            <AccordionItem key={i} value={`dm-${i}`}>
+              <AccordionTrigger>{item.q}</AccordionTrigger>
+              <AccordionContent>{item.a}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "Accordion.type", type: '"single" | "multiple"', description: "Um item aberto por vez ou vários simultâneos." },
+            { prop: "Accordion.collapsible", type: "boolean", default: "false", description: "Em single, permite fechar o item aberto." },
+            { prop: "Accordion", type: "value, defaultValue, onValueChange", description: "Estado controlado ou não da abertura." },
+          ],
+          [
+            { prop: "AccordionItem.value", type: "string", description: "Identificador do item (obrigatório)." },
+            { prop: "AccordionItem.variant", type: '"default" | "card"', default: '"default"', description: "Lista dividida ou cartão com superfície própria." },
+            { prop: "AccordionItem.disabled", type: "boolean", default: "false", description: "Impede abrir e esmaece o item." },
+            { prop: "AccordionTrigger / AccordionContent", type: "children", description: "Rótulo clicável (chevron automático) e corpo animado." },
+          ],
+        ]}
+      />
+
+      <Section title="Código" description="Composição declarativa; a variante fica no AccordionItem.">
+        <CodeBlock>{`import {
   Accordion, AccordionItem, AccordionTrigger, AccordionContent,
 } from "@/components/ui/accordion"
 
@@ -206,48 +219,20 @@ export default function AccordionPage() {
 
 // múltiplos abertos:
 <Accordion type="multiple" defaultValue={["a", "b"]}> … </Accordion>`}</CodeBlock>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Props</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><code>Accordion</code> — <code>type</code> (single · multiple), <code>collapsible</code>, <code>defaultValue</code> / <code>value</code></li>
-                <li><code>AccordionItem</code> — <code>value</code> (obrigatório), <code>variant</code> (default · card), <code>disabled</code></li>
-                <li><code>AccordionTrigger</code> — rótulo clicável (chevron automático)</li>
-                <li><code>AccordionContent</code> — corpo animado</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Acessibilidade & teclado</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><kbd className="rounded bg-muted px-1">Tab</kbd> navega entre gatilhos</li>
-                <li><kbd className="rounded bg-muted px-1">↑</kbd> <kbd className="rounded bg-muted px-1">↓</kbd> movem entre itens</li>
-                <li><kbd className="rounded bg-muted px-1">Enter</kbd> / <kbd className="rounded bg-muted px-1">Espaço</kbd> abrem/fecham</li>
-                <li>Cabeçalho e região com aria do Radix</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-success/40 bg-success/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-success">Do</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Use para agrupar conteúdo secundário / progressivo.</li>
-                <li>Prefira <code>card</code> quando as seções são independentes.</li>
-                <li>Mantenha os títulos curtos e escaneáveis.</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-destructive">Don&apos;t</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Não esconda ações críticas dentro de um item fechado.</li>
-                <li>Não use para navegação principal (use Tabs/menu).</li>
-                <li>Não aninhe accordions em muitos níveis.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use para agrupar conteúdo secundário / progressivo.",
+          "Prefira card quando as seções são independentes.",
+          "Mantenha os títulos curtos e escaneáveis.",
+        ]}
+        donts={[
+          "Não esconda ações críticas dentro de um item fechado.",
+          "Não use para navegação principal (use Tabs/menu).",
+          "Não aninhe accordions em muitos níveis.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

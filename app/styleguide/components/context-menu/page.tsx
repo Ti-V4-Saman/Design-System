@@ -29,48 +29,44 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
-
-/* ---------- page-local helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-xl border bg-card p-5">{children}</div>
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      {children}
-    </pre>
-  )
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Kbd,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 /** Dashed right-click target. */
 function Target({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-28 w-full items-center justify-center rounded-lg border border-dashed border-border bg-muted/30 text-center text-sm text-muted-foreground select-none">
       {children}
+    </div>
+  )
+}
+
+/** Non-portaled replica of the menu surface, to show it in both themes. */
+function MenuPreview() {
+  return (
+    <div className="w-52 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-[var(--shadow-dropdown)]">
+      <div className="flex items-center gap-2 rounded-sm bg-accent px-2 py-1.5 text-sm text-accent-foreground">
+        <Eye className="size-4" /> Ver detalhes
+        <span className="ml-auto text-xs tracking-widest text-muted-foreground">⏎</span>
+      </div>
+      <div className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm">
+        <Pencil className="size-4" /> Editar
+        <span className="ml-auto text-xs tracking-widest text-muted-foreground">⌘E</span>
+      </div>
+      <div className="my-1 h-px bg-border" />
+      <div className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-destructive">
+        <Trash2 className="size-4" /> Excluir
+      </div>
     </div>
   )
 }
@@ -83,16 +79,18 @@ export default function ContextMenuPage() {
   const [density, setDensity] = React.useState("comfortable")
 
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Context Menu</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Menu acionado por clique-direito (Radix ContextMenu). Compartilha a mesma linguagem visual
-          do Dropdown Menu — superfície <code>bg-popover</code> + <code>shadow-dropdown</code>, itens
-          com foco <code>accent</code> e destrutivo semântico. Posiciona no ponteiro; teclado e aria
-          pelo Radix.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Context Menu"
+        description={
+          <>
+            Menu acionado por clique-direito (Radix ContextMenu). Compartilha a mesma linguagem visual
+            do Dropdown Menu — superfície <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-popover</code> + <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">shadow-dropdown</code>, itens
+            com foco <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">accent</code> e destrutivo semântico. Posiciona no ponteiro; teclado e aria
+            pelo Radix.
+          </>
+        }
+      />
 
       <Section
         title="Básico"
@@ -126,7 +124,7 @@ export default function ContextMenuPage() {
       </Section>
 
       <Section
-        title="Checkbox, Radio & Submenu"
+        title="Variantes de item — Checkbox, Radio & Submenu"
         description="Alternar colunas (checkbox), densidade (radio) e ações aninhadas (submenu)."
       >
         <Demo>
@@ -165,7 +163,7 @@ export default function ContextMenuPage() {
       </Section>
 
       <Section
-        title="Exemplo real — card de deal"
+        title="Composição — card de deal"
         description="Clique-direito no card para as ações contextuais, incluindo submenu 'Atribuir a'."
       >
         <Demo>
@@ -211,9 +209,37 @@ export default function ContextMenuPage() {
         </Demo>
       </Section>
 
-      <Section title="Uso & API" description="Envolva o alvo com ContextMenuTrigger (asChild).">
-        <div className="space-y-4">
-          <CodeBlock>{`import {
+      <AccessibilitySection
+        items={[
+          <>Abre com a tecla <Kbd>Menu</Kbd> / <Kbd>Shift</Kbd>+<Kbd>F10</Kbd> no alvo focado.</>,
+          <><Kbd>↑</Kbd> <Kbd>↓</Kbd> navegam entre itens; <Kbd>→</Kbd> abre o submenu, <Kbd>←</Kbd> volta.</>,
+          <><Kbd>Esc</Kbd> fecha o menu; typeahead por digitação seleciona itens pelo rótulo.</>,
+          <>Item destrutivo usa <code className="font-mono text-xs">variant=&quot;destructive&quot;</code>; itens desabilitados são pulados.</>,
+        ]}
+      />
+
+      <DarkModeSection description="A mesma superfície de menu nos dois temas — bg-popover, foco accent e shadow-dropdown via tokens.">
+        <MenuPreview />
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "ContextMenuItem.variant", type: '"default" | "destructive"', default: '"default"', description: "Item comum ou de ação destrutiva." },
+            { prop: "ContextMenuItem", type: "inset, disabled", description: "Recuo para alinhar com itens de ícone; desabilita o item." },
+            { prop: "ContextMenuCheckboxItem", type: "checked, onCheckedChange", description: "Item alternável (colunas, toggles)." },
+            { prop: "ContextMenuRadioGroup / RadioItem", type: "value, onValueChange", description: "Seleção exclusiva dentro do grupo." },
+          ],
+          [
+            { prop: "ContextMenuSub", type: "ContextMenuSubTrigger + SubContent", description: "Menus aninhados." },
+            { prop: "ContextMenuShortcut", type: "children", description: "Exibe o atalho alinhado à direita." },
+            { prop: "ContextMenuLabel / Separator", type: "—", description: "Rótulo de grupo e divisória." },
+          ],
+        ]}
+      />
+
+      <Section title="Código" description="Envolva o alvo com ContextMenuTrigger (asChild).">
+        <CodeBlock>{`import {
   ContextMenu, ContextMenuTrigger, ContextMenuContent,
   ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut,
   ContextMenuSub, ContextMenuSubTrigger, ContextMenuSubContent,
@@ -229,45 +255,18 @@ export default function ContextMenuPage() {
     <ContextMenuItem variant="destructive"><Trash2 /> Excluir</ContextMenuItem>
   </ContextMenuContent>
 </ContextMenu>`}</CodeBlock>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Itens & props</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><code>ContextMenuItem</code> — <code>variant</code> (default · destructive), <code>inset</code>, <code>disabled</code></li>
-                <li><code>ContextMenuCheckboxItem</code> / <code>RadioGroup</code> / <code>RadioItem</code></li>
-                <li><code>ContextMenuSub</code> — menus aninhados</li>
-                <li><code>ContextMenuShortcut</code> — atalho à direita</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Acessibilidade & teclado</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Abre com <kbd className="rounded bg-muted px-1">Menu</kbd> / Shift+F10 no alvo focado</li>
-                <li><kbd className="rounded bg-muted px-1">↑</kbd> <kbd className="rounded bg-muted px-1">↓</kbd> navegam · <kbd className="rounded bg-muted px-1">→</kbd> abre submenu</li>
-                <li><kbd className="rounded bg-muted px-1">Esc</kbd> fecha · typeahead por digitação</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-success/40 bg-success/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-success">Do</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Use para ações contextuais de um item específico (card, linha).</li>
-                <li>Espelhe as ações também num kebab (nem todos descobrem o clique-direito).</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-destructive">Don&apos;t</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Não coloque ações críticas apenas no clique-direito.</li>
-                <li>Não use para navegação principal.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use para ações contextuais de um item específico (card, linha).",
+          "Espelhe as ações também num kebab (nem todos descobrem o clique-direito).",
+        ]}
+        donts={[
+          "Não coloque ações críticas apenas no clique-direito.",
+          "Não use para navegação principal.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

@@ -11,24 +11,17 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-
-function Section({ title, description, children }: { title: string; description?: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>}
-      </div>
-      {children}
-    </section>
-  )
-}
-function Demo({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-xl border bg-card p-5">{children}</div>
-}
-function CodeBlock({ children }: { children: string }) {
-  return <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">{children}</pre>
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 export default function PaginationPage() {
   const total = 8
@@ -40,15 +33,17 @@ export default function PaginationPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Pagination</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Navegação entre páginas (HTML semântico). A página atual é um botão <code>outline</code> com
-          <code> aria-current=&quot;page&quot;</code>; as demais são <code>ghost</code>. Reaproveita os tokens do
-          Button do CRM V4.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Pagination"
+        description={
+          <>
+            Navegação entre páginas (HTML semântico). A página atual é um botão <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">outline</code> com{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">aria-current=&quot;page&quot;</code>; as demais são <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">ghost</code>.
+            Reaproveita os tokens do Button do CRM V4.
+          </>
+        }
+      />
 
       <Section title="Padrão" description="Anterior/Próxima com números e elipse para faixas omitidas.">
         <Demo>
@@ -66,7 +61,7 @@ export default function PaginationPage() {
         </Demo>
       </Section>
 
-      <Section title="Funcional (controlado)" description="Estado de página real, com elipses dinâmicas — rodapé típico de tabela de CRM.">
+      <Section title="Composição — funcional (controlado)" description="Estado de página real, com elipses dinâmicas — rodapé típico de tabela de CRM.">
         <Demo>
           <div className="space-y-4">
             <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -99,9 +94,40 @@ export default function PaginationPage() {
         </Demo>
       </Section>
 
-      <Section title="Uso & API">
-        <div className="space-y-4">
-          <CodeBlock>{`import {
+      <AccessibilitySection
+        items={[
+          <>O <code className="font-mono text-xs">nav</code> raiz tem <code className="font-mono text-xs">aria-label=&quot;paginação&quot;</code> e a página atual recebe <code className="font-mono text-xs">aria-current=&quot;page&quot;</code>.</>,
+          <>Anterior/Próxima têm <code className="font-mono text-xs">aria-label</code> próprios; a elipse é <code className="font-mono text-xs">aria-hidden</code> com texto sr-only.</>,
+          <>Nos limites, desabilite Anterior/Próxima com <code className="font-mono text-xs">aria-disabled</code> + <code className="font-mono text-xs">pointer-events-none</code>.</>,
+        ]}
+      />
+
+      <DarkModeSection description="Os mesmos botões de página nos dois temas — variantes outline/ghost do Button por token.">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
+            <PaginationItem><PaginationLink href="#">1</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationLink href="#" isActive>2</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationNext href="#" /></PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "PaginationLink.isActive", type: "boolean", default: "false", description: "Marca a página atual (variante outline + aria-current)." },
+            { prop: "PaginationLink.size", type: 'Button["size"]', default: '"icon"', description: "Tamanho herdado do buttonVariants." },
+            { prop: "PaginationLink.asChild", type: "boolean", default: "false", description: "Renderiza como filho — ex.: Next Link." },
+            { prop: "PaginationPrevious / PaginationNext", type: "React.ComponentProps<PaginationLink>", description: "Links com chevron e rótulo (Anterior/Próxima)." },
+            { prop: "PaginationEllipsis", type: "React.ComponentProps<'span'>", description: "Marca faixas de páginas omitidas." },
+          ],
+        ]}
+      />
+
+      <Section title="Código">
+        <CodeBlock>{`import {
   Pagination, PaginationContent, PaginationItem, PaginationLink,
   PaginationPrevious, PaginationNext, PaginationEllipsis,
 } from "@/components/ui/pagination"
@@ -114,17 +140,21 @@ export default function PaginationPage() {
     <PaginationItem><PaginationNext href="?page=3" /></PaginationItem>
   </PaginationContent>
 </Pagination>`}</CodeBlock>
-          <div className="rounded-xl border border-border bg-card p-5 text-sm">
-            <p className="mb-2 font-medium text-foreground">Notas</p>
-            <ul className="space-y-1 text-muted-foreground">
-              <li><code>PaginationLink</code> — <code>isActive</code>, <code>size</code>, <code>asChild</code> (p/ Next Link)</li>
-              <li>Use <code>onClick + preventDefault</code> para paginação client-side.</li>
-              <li>Desabilite Anterior/Próxima nos limites (<code>aria-disabled</code> + pointer-events-none).</li>
-              <li><code>nav aria-label</code> e <code>aria-current=&quot;page&quot;</code> para leitores de tela.</li>
-            </ul>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use onClick + preventDefault para paginação client-side.",
+          "Desabilite Anterior/Próxima nos limites da faixa.",
+          "Use elipses para colapsar faixas longas de páginas.",
+          "Passe asChild para integrar com o Next Link.",
+        ]}
+        donts={[
+          "Não exiba dezenas de números — colapse com elipses.",
+          "Não deixe a página atual sem aria-current=\"page\".",
+          "Não esconda Anterior/Próxima; apenas desabilite-os nos limites.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

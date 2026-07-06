@@ -38,48 +38,37 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
-/* ---------- page-local presentation helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
+/** Non-portaled replica of the menu surface, to show it in both themes. */
+function MenuPreview() {
   return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
+    <div className="w-52 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-[var(--shadow-dropdown)]">
+      <div className="flex items-center gap-2 rounded-sm bg-accent px-2 py-1.5 text-sm text-accent-foreground">
+        <Eye className="size-4" /> Ver detalhes
+        <span className="ml-auto text-xs text-muted-foreground">⏎</span>
       </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="rounded-xl border bg-card p-5">
-      <div className="flex flex-wrap items-center gap-3">{children}</div>
+      <div className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm">
+        <Pencil className="size-4" /> Editar
+        <span className="ml-auto text-xs text-muted-foreground">⌘E</span>
+      </div>
+      <div className="my-1 h-px bg-border" />
+      <div className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-destructive">
+        <Trash2 className="size-4" /> Excluir
+      </div>
     </div>
   )
 }
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      {children}
-    </pre>
-  )
-}
-
-/* ---------- page ---------- */
 
 export default function DropdownMenuPage() {
   const [columns, setColumns] = React.useState({
@@ -99,21 +88,23 @@ export default function DropdownMenuPage() {
   ]
 
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Dropdown Menu</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Menu de ações sobre o primitivo Radix DropdownMenu (navegação por teclado, typeahead,
-          submenus, aria). Superfície e itens usam os tokens do CRM V4 — mesma linguagem do
-          Popover e do Select. Alterne o tema para ver em dark mode.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Dropdown Menu"
+        description={
+          <>
+            Menu de ações sobre o primitivo Radix DropdownMenu (navegação por teclado, typeahead,
+            submenus, aria). Superfície e itens usam os tokens do CRM V4 — mesma linguagem do
+            Popover e do Select.
+          </>
+        }
+      />
 
       <Section
         title="Básico"
         description="Itens com ícones, atalhos, separador e item destrutivo (token destructive)."
       >
-        <Demo>
+        <Demo center>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
@@ -146,7 +137,7 @@ export default function DropdownMenuPage() {
         title="Checkbox & Radio"
         description="Alternar colunas visíveis (checkbox) e ordenação (radio) — estado controlado, padrão comum em tabelas de CRM."
       >
-        <Demo>
+        <Demo center>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
@@ -192,7 +183,7 @@ export default function DropdownMenuPage() {
         title="Submenus & grupos"
         description="Ações aninhadas (mover para estágio, atribuir a) com rótulos de seção."
       >
-        <Demo>
+        <Demo center>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
@@ -239,7 +230,7 @@ export default function DropdownMenuPage() {
         title="Inset (alinhamento)"
         description="A prop inset (em Item e Label) recua o texto para alinhar itens sem indicador com os itens de checkbox/radio."
       >
-        <Demo>
+        <Demo center>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">Alinhamento inset</Button>
@@ -263,7 +254,7 @@ export default function DropdownMenuPage() {
         title="ActionsMenu (wrapper CRM)"
         description="Menu kebab dirigido por dados — passe um array de ações e o gatilho ⋯ + menu são montados para você."
       >
-        <Demo>
+        <Demo center>
           <ActionsMenu actions={rowActions} />
           <span className="text-sm text-muted-foreground">
             ← O padrão de ações de linha, pronto para tabelas.
@@ -272,7 +263,7 @@ export default function DropdownMenuPage() {
       </Section>
 
       <Section
-        title="Exemplos reais de CRM"
+        title="Composição — exemplos reais de CRM"
         description="Ações de linha na tabela, menu de conta com submenu de tema, e ações em massa numa seleção."
       >
         <div className="space-y-4">
@@ -297,7 +288,7 @@ export default function DropdownMenuPage() {
             ))}
           </div>
 
-          <Demo>
+          <Demo center>
             {/* Account menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -377,7 +368,7 @@ export default function DropdownMenuPage() {
         title="Alinhamento & estados"
         description="align start/center/end, gatilho desabilitado e item desabilitado."
       >
-        <Demo>
+        <Demo center>
           {(["start", "center", "end"] as const).map((align) => (
             <DropdownMenu key={align}>
               <DropdownMenuTrigger asChild>
@@ -396,13 +387,43 @@ export default function DropdownMenuPage() {
         </Demo>
       </Section>
 
-      <Section title="Uso & API" description="Import único; ActionsMenu para o caminho rápido ou os primitivos para controle total.">
+      <AccessibilitySection
+        items={[
+          <><kbd className="font-mono text-xs">↑</kbd> <kbd className="font-mono text-xs">↓</kbd> navegam pelos itens.</>,
+          <><kbd className="font-mono text-xs">→</kbd> abre submenu · <kbd className="font-mono text-xs">←</kbd> fecha.</>,
+          <><kbd className="font-mono text-xs">⏎</kbd> aciona · <kbd className="font-mono text-xs">Esc</kbd> fecha.</>,
+          <>Typeahead: digite para pular ao item. Foco retorna ao gatilho ao fechar.</>,
+        ]}
+      />
+
+      <DarkModeSection description="A mesma superfície de menu nos dois temas — bg-popover, accent no foco e shadow-dropdown via tokens.">
+        <MenuPreview />
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "DropdownMenuItem", type: "variant, inset, disabled", default: '"default"', description: "Item de ação; variant default · destructive." },
+            { prop: "DropdownMenuCheckboxItem", type: "checked, onCheckedChange", description: "Item alternável (toggle)." },
+            { prop: "DropdownMenuRadioGroup", type: "value, onValueChange", description: "Grupo de opções exclusivas." },
+            { prop: "DropdownMenuSub", type: "—", description: "Submenu aninhado (Trigger + SubContent)." },
+            { prop: "DropdownMenuContent", type: "align, side, sideOffset", description: "Superfície flutuante; posicionamento Radix." },
+            { prop: "DropdownMenuShortcut", type: "—", description: "Atalho alinhado à direita do item." },
+          ],
+          [
+            { prop: "ActionsMenu.actions", type: "ActionsMenuEntry[]", description: "Entradas do menu (ação, separador, label)." },
+            { prop: "ActionsMenu.trigger", type: "React.ReactNode", default: "kebab (⋯)", description: "Gatilho customizado." },
+            { prop: "ActionsMenu.align / side", type: '"start"|"center"|"end" / …', default: 'align="end"', description: "Posicionamento do menu." },
+          ],
+        ]}
+      />
+
+      <Section title="Código" description="Import único; ActionsMenu para o caminho rápido ou os primitivos para controle total.">
         <div className="space-y-4">
-          <div>
-            <p className="mb-2 text-sm font-medium">ActionsMenu (caminho rápido)</p>
-            <CodeBlock>{`import { ActionsMenu } from "@/components/crm-actions-menu"
+          <CodeBlock>{`import { ActionsMenu } from "@/components/crm-actions-menu"
 import { Eye, Pencil, Trash2 } from "lucide-react"
 
+// Caminho rápido — ações de linha dirigidas por dados
 <ActionsMenu
   align="end"
   actions={[
@@ -412,16 +433,14 @@ import { Eye, Pencil, Trash2 } from "lucide-react"
     { label: "Excluir", icon: Trash2, variant: "destructive", onSelect: remove },
   ]}
 />`}</CodeBlock>
-          </div>
-          <div>
-            <p className="mb-2 text-sm font-medium">Primitivos (checkbox / radio / submenu)</p>
-            <CodeBlock>{`import {
+          <CodeBlock>{`import {
   DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,
   DropdownMenuItem, DropdownMenuCheckboxItem, DropdownMenuRadioGroup,
   DropdownMenuRadioItem, DropdownMenuLabel, DropdownMenuSeparator,
   DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu"
 
+// Primitivos — checkbox / radio / submenu
 <DropdownMenu>
   <DropdownMenuTrigger asChild><Button>Exibir</Button></DropdownMenuTrigger>
   <DropdownMenuContent align="start">
@@ -432,52 +451,21 @@ import { Eye, Pencil, Trash2 } from "lucide-react"
     </DropdownMenuRadioGroup>
   </DropdownMenuContent>
 </DropdownMenu>`}</CodeBlock>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Itens & props</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><code>DropdownMenuItem</code> — <code>variant</code> (default · destructive), <code>inset</code>, <code>disabled</code></li>
-                <li><code>DropdownMenuCheckboxItem</code> — <code>checked</code> / <code>onCheckedChange</code></li>
-                <li><code>DropdownMenuRadioGroup</code> — <code>value</code> / <code>onValueChange</code></li>
-                <li><code>DropdownMenuSub</code> — menus aninhados</li>
-                <li><code>DropdownMenuShortcut</code> — atalho alinhado à direita</li>
-                <li><code>DropdownMenuContent</code> — <code>align</code>, <code>side</code>, <code>sideOffset</code></li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Acessibilidade & teclado</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><kbd className="rounded bg-muted px-1">↑</kbd> <kbd className="rounded bg-muted px-1">↓</kbd> navegam pelos itens</li>
-                <li><kbd className="rounded bg-muted px-1">→</kbd> abre submenu · <kbd className="rounded bg-muted px-1">←</kbd> fecha</li>
-                <li><kbd className="rounded bg-muted px-1">⏎</kbd> aciona · <kbd className="rounded bg-muted px-1">Esc</kbd> fecha</li>
-                <li>Typeahead: digite para pular ao item</li>
-                <li>Foco retorna ao gatilho ao fechar</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-success/40 bg-success/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-success">Do</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Use ícone kebab (⋯) para ações de linha em tabelas.</li>
-                <li>Coloque a ação destrutiva por último, após um separador.</li>
-                <li>Agrupe com labels quando houver muitas ações.</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-destructive">Don&apos;t</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Não use dropdown para seleção de formulário — use o Select.</li>
-                <li>Não aninhe mais de um nível de submenu.</li>
-                <li>Não misture destrutivo sem separá-lo das ações comuns.</li>
-              </ul>
-            </div>
-          </div>
         </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use ícone kebab (⋯) para ações de linha em tabelas.",
+          "Coloque a ação destrutiva por último, após um separador.",
+          "Agrupe com labels quando houver muitas ações.",
+        ]}
+        donts={[
+          "Não use dropdown para seleção de formulário — use o Select.",
+          "Não aninhe mais de um nível de submenu.",
+          "Não misture destrutivo sem separá-lo das ações comuns.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

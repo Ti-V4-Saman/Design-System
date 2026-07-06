@@ -4,40 +4,35 @@ import * as React from "react"
 import { Bold, Italic, Star, Underline } from "lucide-react"
 
 import { Toggle } from "@/components/ui/toggle"
-
-function Section({ title, description, children }: { title: string; description?: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>}
-      </div>
-      {children}
-    </section>
-  )
-}
-function Demo({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-xl border bg-card p-5"><div className="flex flex-wrap items-center gap-3">{children}</div></div>
-}
-function CodeBlock({ children }: { children: string }) {
-  return <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">{children}</pre>
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 export default function TogglePage() {
   const [fav, setFav] = React.useState(false)
 
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Toggle</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Botão de dois estados (on/off) — Radix Toggle. O estado pressionado usa os tokens
-          <code> accent</code>; variante <code>outline</code> adiciona borda. Tamanhos sm/default/lg.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Toggle"
+        description={
+          <>
+            Botão de dois estados (on/off) — Radix Toggle. O estado pressionado usa os tokens{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">accent</code>; variante <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">outline</code> adiciona borda. Tamanhos sm/default/lg.
+          </>
+        }
+      />
 
       <Section title="Variantes" description="default (fantasma) e outline.">
-        <Demo>
+        <Demo center>
           <Toggle aria-label="Negrito"><Bold /></Toggle>
           <Toggle variant="outline" aria-label="Itálico"><Italic /></Toggle>
           <Toggle>Com texto</Toggle>
@@ -46,15 +41,15 @@ export default function TogglePage() {
       </Section>
 
       <Section title="Tamanhos">
-        <Demo>
+        <Demo center>
           <Toggle size="sm" aria-label="sm"><Bold /></Toggle>
           <Toggle size="default" aria-label="default"><Bold /></Toggle>
           <Toggle size="lg" aria-label="lg"><Bold /></Toggle>
         </Demo>
       </Section>
 
-      <Section title="Ícone + texto, desabilitado, controlado">
-        <Demo>
+      <Section title="Estados" description="Ícone + texto, desabilitado e controlado (pressed).">
+        <Demo center>
           <Toggle variant="outline"><Underline /> Sublinhado</Toggle>
           <Toggle disabled aria-label="disabled"><Bold /></Toggle>
           <Toggle pressed={fav} onPressedChange={setFav} variant="outline" aria-label="Favoritar">
@@ -64,23 +59,59 @@ export default function TogglePage() {
         </Demo>
       </Section>
 
-      <Section title="Uso & API">
-        <div className="space-y-4">
-          <CodeBlock>{`import { Toggle } from "@/components/ui/toggle"
+      <AccessibilitySection
+        items={[
+          <>Expõe <code className="font-mono text-xs">aria-pressed</code> refletindo o estado on/off (Radix).</>,
+          <>Acionável por <code className="font-mono text-xs">Enter</code> e <code className="font-mono text-xs">Espaço</code>; focável por teclado com anel visível.</>,
+          <><code className="font-mono text-xs">aria-label</code> é obrigatório quando o toggle mostra apenas um ícone.</>,
+          <>Estado <code className="font-mono text-xs">disabled</code> remove o foco e reduz a opacidade.</>,
+        ]}
+      />
+
+      <DarkModeSection description="Estado pressionado (accent) e a borda outline vêm dos tokens — mesma leitura nos dois temas.">
+        <div className="flex flex-wrap items-center gap-3">
+          <Toggle aria-label="Negrito"><Bold /></Toggle>
+          <Toggle variant="outline" aria-label="Itálico"><Italic /></Toggle>
+          <Toggle variant="outline" defaultPressed><Underline /> Sublinhado</Toggle>
+        </div>
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "variant", type: '"default" | "outline"', default: '"default"', description: "default é fantasma; outline adiciona borda de input." },
+            { prop: "size", type: '"sm" | "default" | "lg"', default: '"default"', description: "Altura do controle (h-7 / h-8 / h-9)." },
+          ],
+          [
+            { prop: "pressed / defaultPressed", type: "boolean", description: "Estado on/off — controlado ou não." },
+            { prop: "onPressedChange", type: "(pressed: boolean) => void", description: "Callback ao alternar o estado." },
+            { prop: "disabled", type: "boolean", default: "false", description: "Bloqueia interação e reduz opacidade." },
+          ],
+        ]}
+      />
+
+      <Section title="Código">
+        <CodeBlock>{`import { Toggle } from "@/components/ui/toggle"
 
 <Toggle aria-label="Negrito"><Bold /></Toggle>
 <Toggle variant="outline" size="sm"><Italic /></Toggle>
 <Toggle pressed={on} onPressedChange={setOn}>Favoritar</Toggle>`}</CodeBlock>
-          <div className="rounded-xl border border-border bg-card p-5 text-sm">
-            <p className="mb-2 font-medium text-foreground">Notas</p>
-            <ul className="space-y-1 text-muted-foreground">
-              <li><code>variant</code> (default · outline), <code>size</code> (sm · default · lg), <code>disabled</code></li>
-              <li><code>pressed</code> / <code>onPressedChange</code> — controlado; <code>aria-label</code> obrigatório quando só ícone</li>
-              <li>Para escolher entre opções, use o Toggle Group.</li>
-            </ul>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use para um estado binário independente (ligar/desligar um recurso).",
+          "Dê aria-label quando o toggle for só ícone.",
+          "Reflita o estado no rótulo/ícone (ex.: Favoritar → Favoritado).",
+          "Use outline quando o toggle precisa de mais presença visual.",
+        ]}
+        donts={[
+          "Não use para escolher entre opções mutuamente exclusivas — use Toggle Group.",
+          "Não use no lugar de um Switch para preferências de formulário.",
+          "Não omita o rótulo acessível em toggles só de ícone.",
+          "Não empilhe muitos toggles soltos sem agrupá-los visualmente.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

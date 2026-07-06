@@ -3,24 +3,17 @@
 import * as React from "react"
 
 import { Progress } from "@/components/ui/progress"
-
-function Section({ title, description, children }: { title: string; description?: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <section className="scroll-mt-8 space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>}
-      </div>
-      {children}
-    </section>
-  )
-}
-function Demo({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-xl border bg-card p-5">{children}</div>
-}
-function CodeBlock({ children }: { children: string }) {
-  return <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">{children}</pre>
-}
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
 export default function ProgressPage() {
   const [value, setValue] = React.useState(13)
@@ -30,14 +23,16 @@ export default function ProgressPage() {
   }, [])
 
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Progress</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Barra de progresso determinada (Radix Progress). Trilha <code>bg-muted</code>, indicador
-          <code> bg-primary</code>; recolorível por token para estados semânticos. Alterne o tema para dark mode.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Progress"
+        description={
+          <>
+            Barra de progresso determinada (Radix Progress). Trilha <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-muted</code>,
+            indicador <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-primary</code>; recolorível por token para estados semânticos.
+          </>
+        }
+      />
 
       <Section title="Padrão (animado)" description="value controla o preenchimento; transição suave.">
         <Demo>
@@ -77,7 +72,7 @@ export default function ProgressPage() {
         </Demo>
       </Section>
 
-      <Section title="Exemplo real — onboarding" description="Progresso de etapas de configuração da conta.">
+      <Section title="Composição — onboarding" description="Progresso de etapas de configuração da conta.">
         <Demo>
           <div className="max-w-md space-y-2 rounded-lg border border-border bg-card p-4">
             <div className="flex items-center justify-between">
@@ -90,23 +85,53 @@ export default function ProgressPage() {
         </Demo>
       </Section>
 
-      <Section title="Uso & API">
-        <div className="space-y-4">
-          <CodeBlock>{`import { Progress } from "@/components/ui/progress"
+      <AccessibilitySection
+        items={[
+          <>Radix expõe <code className="font-mono text-xs">role=&quot;progressbar&quot;</code> + <code className="font-mono text-xs">aria-valuenow/min/max</code>.</>,
+          <>Acompanhe com um rótulo textual (%) para clareza.</>,
+          <>Para carregamento sem fim conhecido, prefira um Skeleton/Spinner.</>,
+        ]}
+      />
+
+      <DarkModeSection description="A mesma barra nos dois temas — trilha bg-muted e indicador por token.">
+        <div className="max-w-xs space-y-4">
+          <Progress value={72} />
+          <Progress value={82} indicatorClassName="bg-success" />
+          <Progress value={96} indicatorClassName="bg-destructive" />
+        </div>
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "value", type: "number", default: "—", description: "Preenchimento de 0 a 100 (determinado)." },
+            { prop: "indicatorClassName", type: "string", description: "Classe do indicador — recolor por token semântico (bg-success, bg-warning, bg-destructive)." },
+            { prop: "className", type: "string", description: "Classe da trilha — altura via h-1 / h-2 / h-3." },
+            { prop: "...props", type: "Radix Progress.Root", description: "Demais props do primitivo Radix Progress." },
+          ],
+        ]}
+      />
+
+      <Section title="Código">
+        <CodeBlock>{`import { Progress } from "@/components/ui/progress"
 
 <Progress value={72} />
 <Progress value={96} indicatorClassName="bg-destructive" />  // estado semântico
 <Progress value={60} className="h-1" />                       // altura`}</CodeBlock>
-          <div className="rounded-xl border border-border bg-card p-5 text-sm">
-            <p className="mb-2 font-medium text-foreground">Acessibilidade</p>
-            <ul className="space-y-1 text-muted-foreground">
-              <li>Radix expõe <code>role=&quot;progressbar&quot;</code> + <code>aria-valuenow/min/max</code>.</li>
-              <li>Acompanhe com um rótulo textual (%) para clareza.</li>
-              <li>Para carregamento sem fim conhecido, prefira um Skeleton/Spinner.</li>
-            </ul>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use para progresso determinado com fim conhecido (etapas, cotas, uploads).",
+          "Acompanhe a barra com um rótulo textual (%) ou contagem de etapas.",
+          "Recolora o indicador por token para refletir o estado semântico.",
+        ]}
+        donts={[
+          "Não use para carregamento indeterminado — prefira Skeleton ou Spinner.",
+          "Não confie só na cor; mantenha o rótulo textual.",
+          "Não anime o value de forma abrupta sem transição.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }

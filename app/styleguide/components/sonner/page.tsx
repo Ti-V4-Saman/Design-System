@@ -1,74 +1,59 @@
 "use client"
 
 import * as React from "react"
+import { CircleCheck } from "lucide-react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { crmToast } from "@/components/crm-toast"
+import {
+  AccessibilitySection,
+  ApiSection,
+  CodeBlock,
+  ComponentHeader,
+  DarkModeSection,
+  Demo,
+  GuidelinesSection,
+  Section,
+  StyleguidePage,
+} from "@/app/styleguide/_components"
 
-/* ---------- page-local helpers ---------- */
-
-function Section({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
+/** Non-portaled replica of a crmToast surface, to show it in both themes. */
+function ToastPreview() {
   return (
-    <section className="scroll-mt-8 space-y-4">
+    <div className="flex items-start gap-3 rounded-lg border border-border bg-popover p-4 text-sm text-popover-foreground shadow-[var(--shadow-dropdown)]">
+      <CircleCheck className="mt-0.5 size-4 shrink-0 text-success" />
       <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="max-w-2xl text-sm text-muted-foreground">{description}</p>
-        )}
+        <p className="font-medium text-foreground">Proposta enviada</p>
+        <p className="text-xs text-muted-foreground">Ana Souza receberá por e-mail em instantes.</p>
       </div>
-      {children}
-    </section>
-  )
-}
-
-function Demo({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="rounded-xl border bg-card p-5">
-      <div className="flex flex-wrap items-center gap-3">{children}</div>
     </div>
   )
 }
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-      {children}
-    </pre>
-  )
-}
-
-/* ---------- page ---------- */
 
 export default function SonnerPage() {
   const fakeSave = () =>
     new Promise<string>((resolve) => window.setTimeout(() => resolve("Acme Inc."), 1600))
 
   return (
-    <div className="mx-auto max-w-5xl space-y-12 py-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Sonner (Toast)</h1>
-        <p className="max-w-2xl text-muted-foreground">
-          Notificações não-bloqueantes via <code>sonner</code>, tematizadas para o CRM V4 (superfície
-          <code> bg-popover</code>, <code>shadow-dropdown</code>, ícones semânticos por token). O host
-          <code> &lt;Toaster /&gt;</code> já está montado no layout raiz. Dispare com o helper{" "}
-          <code>crmToast</code>. Alterne o tema para ver em dark mode.
-        </p>
-      </header>
+    <StyleguidePage>
+      <ComponentHeader
+        title="Sonner (Toast)"
+        description={
+          <>
+            Notificações não-bloqueantes via <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">sonner</code>, tematizadas para o CRM V4 (superfície{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">bg-popover</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">shadow-dropdown</code>, ícones semânticos por token). O host{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">&lt;Toaster /&gt;</code> já está montado no layout raiz. Dispare com o helper{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">crmToast</code>. Alterne o tema para ver em dark mode.
+          </>
+        }
+      />
 
       <Section
         title="Tipos semânticos"
         description="success, warning, error e info usam os tokens semânticos; default é neutro; loading mostra spinner."
       >
-        <Demo>
+        <Demo center>
           <Button variant="outline" onClick={() => crmToast.message("Notificação simples")}>
             Default
           </Button>
@@ -106,7 +91,7 @@ export default function SonnerPage() {
         title="Com descrição"
         description="Título + descrição secundária (text-muted-foreground)."
       >
-        <Demo>
+        <Demo center>
           <Button
             variant="outline"
             onClick={() =>
@@ -124,7 +109,7 @@ export default function SonnerPage() {
         title="Com ação"
         description="Botão de ação (primary) e cancelar — ex.: desfazer uma exclusão."
       >
-        <Demo>
+        <Demo center>
           <Button
             variant="outline"
             onClick={() =>
@@ -153,7 +138,7 @@ export default function SonnerPage() {
         title="Promise (async)"
         description="loading → success/error automaticamente conforme a promessa resolve."
       >
-        <Demo>
+        <Demo center>
           <Button
             variant="outline"
             onClick={() =>
@@ -185,7 +170,7 @@ export default function SonnerPage() {
         title="Exemplos reais de CRM"
         description="Feedbacks típicos do produto."
       >
-        <Demo>
+        <Demo center>
           <Button
             variant="outline"
             onClick={() =>
@@ -213,9 +198,36 @@ export default function SonnerPage() {
         </Demo>
       </Section>
 
-      <Section title="Uso & API" description="Monte o Toaster uma vez; dispare de qualquer client component.">
-        <div className="space-y-4">
-          <CodeBlock>{`// 1) Uma vez, no layout raiz:
+      <AccessibilitySection
+        items={[
+          <>Renderizado numa região <code className="font-mono text-xs">aria-live</code> (sonner) — anunciado por leitores de tela.</>,
+          <>Não rouba o foco: é não-bloqueante e não interrompe o fluxo do usuário.</>,
+          <>Empilha e expande no hover; some sozinho por timer (<code className="font-mono text-xs">duration</code>).</>,
+          <>Ícones semânticos reforçam o tipo além da cor (não dependa só da cor).</>,
+        ]}
+      />
+
+      <DarkModeSection description="A superfície do toast — bg-popover, shadow-dropdown e ícone semântico — vem dos tokens nos dois temas.">
+        <ToastPreview />
+      </DarkModeSection>
+
+      <ApiSection
+        groups={[
+          [
+            { prop: "crmToast.message", type: "(msg, opts?) => id", description: "Toast neutro (default), sem ícone semântico." },
+            { prop: "crmToast.success / warning / error / info", type: "(msg, opts?) => id", description: "Ícone lucide tingido pelo token semântico correspondente." },
+            { prop: "crmToast.loading", type: "(msg, opts?) => id", description: "Toast com spinner; atualize depois via opção id." },
+          ],
+          [
+            { prop: "crmToast.promise", type: "(promise, { loading, success, error })", description: "loading → success/error conforme a promessa resolve." },
+            { prop: "crmToast.dismiss", type: "(id?) => void", description: "Fecha um toast por id, ou todos se omitido." },
+            { prop: "opts (ExternalToast)", type: "{ description, action, duration, id }", description: "Opções repassadas ao sonner; action = { label, onClick }." },
+          ],
+        ]}
+      />
+
+      <Section title="Código" description="Monte o Toaster uma vez; dispare de qualquer client component.">
+        <CodeBlock>{`// 1) Uma vez, no layout raiz:
 import { Toaster } from "@/components/ui/sonner"
 <Toaster />
 
@@ -225,47 +237,22 @@ import { crmToast } from "@/components/crm-toast"
 crmToast.success("Deal salvo", { description: "..." })
 crmToast.error("Falha", { action: { label: "Tentar de novo", onClick: retry } })
 crmToast.promise(save(), { loading: "Salvando…", success: "Salvo", error: "Erro" })`}</CodeBlock>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">API (crmToast)</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><code>message / success / warning / error / info</code> — ícone semântico por token</li>
-                <li><code>loading</code>, <code>promise</code>, <code>dismiss</code> — passam ao sonner</li>
-                <li>Opções: <code>description</code>, <code>action</code>, <code>duration</code>, <code>id</code></li>
-                <li>Posição/tema definidos no <code>Toaster</code> (bottom-right)</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-5 text-sm">
-              <p className="mb-2 font-medium text-foreground">Acessibilidade</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Região <code>aria-live</code> (sonner) — anunciado por leitores de tela</li>
-                <li>Foco não é roubado (não-bloqueante)</li>
-                <li>Empilha e expande no hover; auto-dismiss com timer</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-success/40 bg-success/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-success">Do</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Use para confirmar ações (salvo, enviado, importado).</li>
-                <li>Ofereça &quot;Desfazer&quot; em ações reversíveis.</li>
-                <li>Mensagens curtas; detalhe na descrição.</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-5 text-sm">
-              <p className="mb-2 font-medium text-destructive">Don&apos;t</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Não use para erros que exigem decisão — use Dialog.</li>
-                <li>Não empilhe muitos toasts simultâneos.</li>
-                <li>Não coloque conteúdo essencial só no toast (some sozinho).</li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </Section>
-    </div>
+
+      <GuidelinesSection
+        dos={[
+          "Use para confirmar ações (salvo, enviado, importado).",
+          "Ofereça “Desfazer” em ações reversíveis.",
+          "Mensagens curtas; detalhe na descrição.",
+          "Escolha o tipo semântico que combina com o resultado.",
+        ]}
+        donts={[
+          "Não use para erros que exigem decisão — use Dialog.",
+          "Não empilhe muitos toasts simultâneos.",
+          "Não coloque conteúdo essencial só no toast (some sozinho).",
+          "Não dependa apenas da cor para transmitir o tipo.",
+        ]}
+      />
+    </StyleguidePage>
   )
 }
