@@ -1,0 +1,413 @@
+# Prompt 2: Component Development
+
+Develop the Hover Card for the CRM V4 Design System.
+
+The objective is **NOT** to reproduce the default shadcn/ui appearance.
+
+The objective is to create a production-ready component that becomes part of the CRM V4 Design System.
+
+The Styleguide is the official approval environment for every component.
+
+---
+
+# Design Authority
+
+The visual source of truth depends on what is available.
+
+Always follow this priority:
+
+1. Figma designs (when provided)
+2. Design inspiration screenshots (when provided)
+3. Existing system screenshots (when provided)
+4. Components already implemented in the CRM V4 Design System
+5. Project documentation (.md)
+6. Design tokens defined in `globals.css`
+7. shadcn/ui
+
+Important:
+
+Not every component will have a Figma file or screenshots.
+
+When no design references are provided:
+
+- DO NOT stop the implementation.
+- DO NOT ask for screenshots by default.
+- Continue using the CRM V4 Design System as the visual source of truth.
+
+Only request Figma or screenshots when reproducing a very specific or highly customized interface is impossible without them.
+
+shadcn/ui defines only:
+
+- accessibility
+- Radix primitives
+- implementation patterns
+- component architecture
+
+It does NOT define the visual design.
+
+---
+
+# Workflow
+
+## 1. Analyze Available References
+
+Determine which references exist.
+
+### If Figma or screenshots exist
+
+Extract:
+
+- layout
+- spacing
+- padding
+- margins
+- typography
+- colors
+- hierarchy
+- border radius
+- shadows
+- interactions
+- hover
+- focus
+- active
+- disabled
+- loading
+- empty state
+- responsiveness
+- component composition
+
+Reproduce them as faithfully as possible.
+
+### If no references exist
+
+Use the CRM V4 Design System as the visual reference.
+
+Analyze the components already implemented and maintain:
+
+- spacing
+- typography
+- shadows
+- radius
+- density
+- hierarchy
+- interaction patterns
+
+The new component must feel like it belongs to the same product.
+
+---
+
+## 2. Check if the Component Exists in shadcn
+
+Use shadcn MCP:
+
+- search_items_in_registries
+- view_items_in_registries
+- get_item_examples_from_registries
+
+Decision:
+
+Exists
+→ install it.
+
+Doesn't exist
+→ build it.
+
+Remember:
+
+This affects only the technical implementation.
+
+It does NOT define the visual design.
+
+---
+
+## 3. Install shadcn Component
+
+Install:
+
+```bash
+npx shadcn@latest add [component-name]
+```
+
+Review:
+
+- Props
+- Variants
+- Accessibility
+- Keyboard Navigation
+- Radix primitives
+
+Keep only the implementation benefits.
+
+---
+
+## 4. Recreate the Design
+
+Treat shadcn as the implementation layer only.
+
+Modify it until it matches:
+
+- Figma
+- Screenshots
+- OR the existing CRM V4 Design System.
+
+You may:
+
+- replace layouts
+- change DOM structure
+- change spacing
+- change typography
+- create wrappers
+- create compound components
+- add variants
+- add icons
+- add animations
+- reorganize markup
+
+Never preserve the default shadcn styling if it conflicts with the CRM V4 Design System.
+
+---
+
+## 5. Apply the CRM V4 Design System
+
+Use only Design Tokens.
+
+Never hardcode colors.
+
+Use:
+
+- bg-primary
+- bg-card
+- bg-muted
+- text-primary
+- text-muted-foreground
+- border-border
+- rounded-lg
+- shadow-card
+
+Follow:
+
+- spacing scale
+- typography scale
+- semantic colors
+- border radius
+- shadows
+
+---
+
+## 6. Build the Entire Component Family
+
+Do not build only the requested component.
+
+Whenever applicable, build the complete family.
+
+Examples:
+
+Table
+
+- Base Table
+- Data Table
+- Compact Table
+- Empty State
+- Loading State
+- Selection
+- Sorting
+- Filtering
+- Pagination
+
+Cards
+
+- Base Card
+- KPI Card
+- Chart Card
+- Entity Card
+- Activity Card
+- Profile Card
+- Empty Card
+
+Forms
+
+- Input
+- Select
+- Combobox
+- MultiSelect
+- Textarea
+- Date Picker
+- Attachment
+
+Charts
+
+- Line
+- Area
+- Bar
+- Stacked
+- Pie
+- Donut
+- KPI Trend
+- Sparkline
+- Funnel
+- Radar
+
+Only skip variants that truly do not belong to the same family.
+
+---
+
+## 7. Component Showcase
+
+Create:
+
+```
+app/styleguide/components/[component-name]/page.tsx
+```
+
+The Styleguide is the official visual approval environment.
+
+Every showcase must contain:
+
+### Variants
+
+All supported variants.
+
+### Sizes
+
+All supported sizes.
+
+### States
+
+- default
+- hover
+- focus
+- active
+- selected
+- disabled
+- loading
+- empty
+- success
+- warning
+- error
+
+### Light / Dark
+
+Both themes.
+
+### Real Examples
+
+Examples based on real CRM scenarios.
+
+### Composition
+
+How the component integrates with other components.
+
+### Responsive
+
+Desktop
+Tablet
+Mobile
+
+### Code Examples
+
+Basic
+Advanced
+Composition
+
+---
+
+## 8. Documentation
+
+Document:
+
+- Props
+- Types
+- Defaults
+- Variants
+- Accessibility
+- Keyboard shortcuts
+- Best practices
+- Usage guidelines
+- Do / Don't examples
+
+---
+
+## 9. Update Navigation
+
+Add the component to:
+
+```
+app/styleguide/navigation.ts
+```
+
+---
+
+# Visual Consistency
+
+If Figma exists:
+
+Reproduce it faithfully.
+
+If it does not:
+
+The CRM V4 Design System becomes the visual source of truth.
+
+The new component must match the existing:
+
+- Buttons
+- Inputs
+- Cards
+- Tables
+- Calendar
+- Charts
+- Dialogs
+- Forms
+- Navigation
+- Feedback
+- Typography
+
+Never create a component that looks visually disconnected from the Design System.
+
+---
+
+# Autonomous Design Rule
+
+Do not ask for Figma or screenshots for every component.
+
+Assume that many Design System foundation components will not have dedicated designs.
+
+When no reference exists:
+
+Continue using the CRM V4 Design System.
+
+Only request additional design references when reproducing a very specific interface is impossible without them.
+
+---
+
+# Output
+
+Deliver:
+
+- Production-ready component
+- Complete component family (when applicable)
+- CRM V4 Design System compliant
+- Styleguide documentation
+- Responsive
+- Accessible
+- Dark Mode compatible
+- Semantic Design Tokens
+- Real examples
+- Reusable architecture
+
+---
+
+# Principles
+
+✔ Figma overrides everything when provided.
+
+✔ Screenshots override the Design System when provided.
+
+✔ The Design System is the default visual source when no references exist.
+
+✔ The Markdown documentation defines behavior and business rules.
+
+✔ shadcn/ui is infrastructure only.
+
+✔ Every component must strengthen the CRM V4 Design System.
+
+✔ Build systems, not isolated components.

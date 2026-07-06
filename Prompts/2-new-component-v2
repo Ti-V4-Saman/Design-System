@@ -1,0 +1,382 @@
+# Prompt 2: Component Development
+
+Develop the Command for the CRM V4 Design System.
+
+The objective is **NOT** to reproduce the default shadcn/ui appearance.
+
+The objective is to create a production-ready component that **matches the provided design references** while using shadcn/ui only as the technical foundation.
+
+---
+
+# Design Authority (Highest Priority)
+
+When multiple sources are provided, always follow this priority order:
+
+1. Figma designs
+2. Design inspiration screenshots
+3. Existing system screenshots
+4. Project documentation (.md)
+5. Design tokens defined in `globals.css`
+6. shadcn/ui
+
+**Important**
+
+shadcn/ui defines implementation patterns, accessibility and primitives.
+
+It does **NOT** define the visual design.
+
+Never preserve the default shadcn appearance if it conflicts with the provided references.
+
+---
+
+# Workflow
+
+## 1. Analyze the Provided References
+
+Before writing any code, carefully analyze all provided materials.
+
+Extract:
+
+- layout
+- spacing
+- padding
+- margins
+- typography
+- hierarchy
+- iconography
+- border radius
+- shadows
+- colors
+- interactions
+- hover states
+- active states
+- focus states
+- disabled states
+- loading states
+- empty states
+- responsive behavior
+- component composition
+
+The final result should be visually indistinguishable from the provided references.
+
+---
+
+## 2. Check if the Component Exists in shadcn
+
+Use shadcn MCP:
+
+- `search_items_in_registries`
+- `view_items_in_registries`
+- `get_item_examples_from_registries`
+
+Decision:
+
+- Exists → install it
+- Doesn't exist → build it
+
+Remember:
+
+This decision affects only the technical implementation.
+
+It does **NOT** affect the visual design.
+
+---
+
+## 3. Install shadcn Component
+
+Install using:
+
+```bash
+npx shadcn@latest add [component-name]
+```
+
+This creates the base implementation inside:
+
+```
+components/ui/
+```
+
+Review:
+
+- Props
+- Variants
+- Accessibility
+- Keyboard navigation
+- Radix primitives
+
+Keep these implementation benefits.
+
+---
+
+## 4. Recreate the Design
+
+Treat the installed shadcn component only as the starting point.
+
+Modify it until it faithfully reproduces the provided design.
+
+You may:
+
+- replace layouts
+- change spacing
+- change paddings
+- change typography
+- change DOM structure
+- add wrappers
+- create compound components
+- create new variants
+- add animations
+- add icons
+- change interactions
+- reorganize markup
+
+Do **NOT** keep the default shadcn styling if it differs from the design references.
+
+Preserve only:
+
+- accessibility
+- Radix primitives
+- keyboard navigation
+- TypeScript API
+- good component architecture
+
+---
+
+## 5. Apply the CRM V4 Design System
+
+Every visual decision must use the Design System.
+
+Use:
+
+- CSS variables
+- Tailwind semantic classes
+- spacing scale
+- typography scale
+- shadows
+- border radius
+- semantic colors
+
+Never hardcode colors.
+
+Prefer:
+
+```
+bg-primary
+bg-card
+bg-muted
+text-primary
+text-muted-foreground
+border-border
+rounded-lg
+shadow-card
+```
+
+---
+
+## 6. Build Missing Features
+
+If the screenshots include functionality not present in shadcn, implement it.
+
+Examples:
+
+- advanced tables
+- status badges
+- inline actions
+- filters
+- search bars
+- bulk actions
+- avatars
+- statistics
+- custom pagination
+- sortable columns
+- expandable rows
+- grouped sections
+- kanban cards
+- timeline widgets
+
+Use shadcn only as infrastructure.
+
+---
+
+## 7. Component Showcase
+
+Create:
+
+```
+app/styleguide/components/[component-name]/page.tsx
+```
+
+Include:
+
+### Variants
+
+- all variants
+- all sizes
+- all colors
+
+### States
+
+- default
+- hover
+- focus
+- active
+- disabled
+- loading
+- empty
+- error
+- success
+
+### Dark Mode
+
+Provide examples for both themes.
+
+### Interactive Examples
+
+Demonstrate:
+
+- real-world usage
+- composition
+- props
+- responsiveness
+
+### Code Examples
+
+Include:
+
+- imports
+- common usage
+- advanced usage
+
+---
+
+## 8. Documentation
+
+Document:
+
+- Props
+- Types
+- Defaults
+- Variants
+- Accessibility
+- Keyboard shortcuts (if applicable)
+- Composition examples
+
+---
+
+## 9. Update Styleguide Navigation
+
+Add the component to:
+
+```
+app/styleguide/navigation.ts
+```
+
+inside the Components section.
+
+---
+
+# Visual Fidelity Rules
+
+The provided screenshots are the visual source of truth.
+
+The finished component should match:
+
+- spacing
+- typography
+- colors
+- shadows
+- borders
+- radius
+- icon sizes
+- alignments
+- density
+- row heights
+- paddings
+- visual hierarchy
+
+Do not "approximate."
+
+Reproduce the design as accurately as possible.
+
+---
+
+# Design System Consistency
+
+Every new component must look like it belongs to the CRM V4 ecosystem.
+
+Examples:
+
+If the provided Table differs from shadcn Table:
+
+→ Build the Table shown in the references.
+
+If the provided Dialog differs from shadcn Dialog:
+
+→ Build the Dialog shown in the references.
+
+If the provided Select differs from shadcn Select:
+
+→ Build the Select shown in the references.
+
+If the provided Badge differs from shadcn Badge:
+
+→ Build the Badge shown in the references.
+
+Visual consistency always takes priority over shadcn defaults.
+
+---
+
+# Directory Structure
+
+```
+components/
+├── ui/                    # Base shadcn components
+│   ├── button.tsx
+│   ├── table.tsx
+│   ├── dialog.tsx
+│   └── ...
+│
+├── table/
+├── form/
+├── dashboard/
+├── data-display/
+└── [CustomComponent].tsx
+
+app/
+└── styleguide/
+    └── components/
+        └── [component-name]/
+            └── page.tsx
+```
+
+---
+
+# Output
+
+The final deliverable must include:
+
+- Production-ready component
+- Fully integrated with the CRM V4 Design System
+- Matches the provided screenshots/Figma
+- Uses shadcn only as infrastructure
+- Uses semantic design tokens
+- Added to the Styleguide
+- Fully documented
+- Accessible
+- Responsive
+- Dark mode compatible
+
+---
+
+# Important Principles
+
+✔ Figma is the visual source of truth.
+
+✔ Screenshots define the UI.
+
+✔ The Markdown documentation defines functionality.
+
+✔ The Design System defines tokens.
+
+✔ shadcn/ui provides only the implementation foundation.
+
+Never allow the default shadcn appearance to override the provided design.

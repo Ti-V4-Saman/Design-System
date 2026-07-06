@@ -1,0 +1,331 @@
+# Prompt 1.5 — CRM V4 Component Standards
+
+The Design Tokens have already been implemented.
+
+From this point forward, every component created for the CRM V4 Design System must follow the same visual language.
+
+These rules become the default for every future component unless explicitly overridden by a Figma or design reference.
+
+---
+
+# Design Philosophy
+
+The CRM V4 is a professional enterprise system.
+
+The visual language should be closer to:
+
+- HubSpot
+- Linear
+- Atlassian
+- Notion
+- Stripe Dashboard
+
+Avoid the exaggerated rounded appearance commonly found in many Tailwind examples.
+
+Components should feel:
+
+- professional
+- clean
+- dense
+- consistent
+- enterprise
+- timeless
+
+---
+
+# Radius Rules
+
+Use these values consistently.
+
+## Form Controls
+
+Input
+Select
+Textarea
+Combobox
+DatePicker
+Button
+
+→ rounded-md (~6px)
+
+Never use:
+
+rounded-xl
+rounded-2xl
+
+---
+
+## Floating Components
+
+Popover
+Dropdown
+Context Menu
+Command
+Tooltip
+
+→ rounded-lg (~8px)
+
+---
+
+## Containers
+
+Card
+Dialog
+Drawer
+Calendar
+Table containers
+
+→ rounded-lg (~10px)
+
+---
+
+## Pills
+
+Badge
+Tag
+Status
+
+→ rounded-full
+
+---
+
+## Avatars
+
+Always fully circular.
+
+---
+
+# Density
+
+Prefer medium density.
+
+Avoid oversized paddings.
+
+Good enterprise density is preferred over "marketing website" spacing.
+
+---
+
+# Typography
+
+Prefer:
+
+- medium hierarchy
+- semibold titles
+- regular body
+- muted descriptions
+
+Avoid oversized headings.
+
+---
+
+# Shadows
+
+Only use semantic shadows.
+
+Cards:
+
+shadow-card
+
+Floating:
+
+shadow-dropdown
+
+Dialogs:
+
+shadow-modal
+
+---
+
+# Borders
+
+Borders should be subtle.
+
+Prefer:
+
+border-border
+
+Avoid thick outlines.
+
+---
+
+# Buttons
+
+Buttons should have:
+
+- compact radius
+- balanced horizontal padding
+- consistent heights
+
+Support:
+
+Primary
+
+Secondary
+
+Outline
+
+Ghost
+
+Link
+
+Success
+
+Warning
+
+Danger
+
+Icon Button
+
+Loading
+
+Disabled
+
+Button Group
+
+Split Button
+
+Toolbar examples
+
+---
+
+# Inputs
+
+Every input family should demonstrate:
+
+Default
+
+Disabled
+
+Readonly
+
+Error
+
+Success
+
+Loading
+
+Prefix
+
+Suffix
+
+Search
+
+Clear Button
+
+Validation
+
+Real CRM examples
+
+---
+
+# Tables
+
+Every table family should demonstrate:
+
+Loading
+
+Empty
+
+Error
+
+Selection
+
+Sorting
+
+Filtering
+
+Pagination
+
+Bulk Actions
+
+Expandable
+
+Responsive
+
+---
+
+# Component Families
+
+Do not create isolated components.
+
+Every component should represent a complete family.
+
+Examples:
+
+Button
+
+Input
+
+Card
+
+Dialog
+
+Calendar
+
+Table
+
+Badge
+
+Toast
+
+Chart
+
+Combobox
+
+Tooltip
+
+Tabs
+
+Each family should include every variant naturally expected for an enterprise CRM.
+
+---
+
+# Styleguide Rules
+
+The Styleguide is the official approval environment.
+
+Every component page must include:
+
+Overview
+
+Variants
+
+Sizes
+
+States
+
+Dark Mode
+
+Accessibility
+
+Composition
+
+Real CRM examples
+
+Responsive examples
+
+Code examples
+
+API
+
+Best Practices
+
+Do / Don't
+
+---
+
+# Visual Consistency
+
+Every component must look like it belongs to the same ecosystem.
+
+A user should never be able to tell which component came from shadcn and which one was custom-built.
+
+Everything should feel like one cohesive Design System.
+
+---
+
+# Future Components
+
+All future components automatically inherit these standards.
+
+No additional confirmation is required unless a Figma explicitly overrides these rules.
