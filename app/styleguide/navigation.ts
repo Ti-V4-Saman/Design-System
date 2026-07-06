@@ -88,6 +88,9 @@ export const navigation: NavSection[] = [
     title: "Patterns & Templates",
     items: [
       { name: "Patterns", href: "/styleguide/patterns" },
+      { name: "Template · Dashboard", href: "/styleguide/templates/dashboard" },
+      { name: "Template · Customer Detail", href: "/styleguide/templates/customer-detail" },
+      { name: "Template · Sales Pipeline", href: "/styleguide/templates/sales-pipeline" },
     ],
   },
 ]
