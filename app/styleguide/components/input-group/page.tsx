@@ -35,6 +35,7 @@ import {
 import {
   SearchInput,
   CurrencyInput,
+  PhoneInput,
   PasswordInput,
   CopyInput,
 } from "@/components/input-group"
@@ -136,6 +137,7 @@ const PRIMITIVE_PARTS: ApiRow[] = [
 const FAMILY_PROPS: ApiRow[] = [
   { prop: "SearchInput", type: "value/onValueChange · loading · clearable · onClear", default: "clearable=true", description: "Busca com ícone, spinner e botão limpar." },
   { prop: "CurrencyInput", type: "currency · code · ...input", default: `currency="$"`, description: "Símbolo de moeda + numérico alinhado à direita." },
+  { prop: "PhoneInput", type: "countryCode · ...input", default: `countryCode="+55"`, description: "DDI fixo + máscara BR ao digitar (caret preservado). formatBRPhone exportado à parte." },
   { prop: "PasswordInput", type: "...input", default: "—", description: "Senha com alternância mostrar/ocultar." },
   { prop: "CopyInput", type: "value · mono · onCopy", default: "mono=true", description: "Valor somente-leitura + botão copiar com feedback." },
 ]
@@ -228,6 +230,18 @@ export default function InputGroupPage() {
           </Row>
           <Row label="CurrencyInput — símbolo + código">
             <CurrencyInput defaultValue="12500.00" code="USD" />
+          </Row>
+          <Row label="PhoneInput — máscara BR ao digitar (celular e fixo)">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <PhoneInput defaultValue="(11) 98765-4321" />
+              <PhoneInput defaultValue="(11) 3456-7890" />
+            </div>
+          </Row>
+          <Row label="PhoneInput — vazio (digite para ver a máscara) e desabilitado">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <PhoneInput placeholder="(11) 98765-4321" />
+              <PhoneInput defaultValue="(11) 98765-4321" disabled />
+            </div>
           </Row>
           <Row label="PasswordInput — mostrar/ocultar">
             <PasswordInput defaultValue="s3nha-secreta" autoComplete="off" />
@@ -453,12 +467,19 @@ export default function InputGroupPage() {
           </div>
           <div className="space-y-2">
             <p className="text-xs font-medium text-muted-foreground">Presets de CRM</p>
-            <CodeBlock>{`import { SearchInput, CurrencyInput, PasswordInput, CopyInput } from "@/components/input-group"
+            <CodeBlock>{`import {
+  SearchInput, CurrencyInput, PhoneInput, PasswordInput, CopyInput,
+} from "@/components/input-group"
 
 <SearchInput value={q} onValueChange={setQ} loading={isFetching} />
 <CurrencyInput code="USD" defaultValue="4000.00" />
+<PhoneInput countryCode="+55" defaultValue="11987654321" />
 <PasswordInput autoComplete="new-password" />
-<CopyInput value={apiKey} />`}</CodeBlock>
+<CopyInput value={apiKey} />
+
+// A máscara também é reutilizável fora do preset:
+import { formatBRPhone } from "@/components/input-group"
+formatBRPhone("11987654321") // "(11) 98765-4321"`}</CodeBlock>
           </div>
         </div>
       </Section>

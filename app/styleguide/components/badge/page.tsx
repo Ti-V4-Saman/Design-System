@@ -3,7 +3,7 @@
 import { ArrowUpRight, Check, Clock, Sparkles, TriangleAlert, X } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
-import { StatusBadge } from "@/components/badge"
+import { PriorityBadge, StatusBadge, Tag } from "@/components/badge"
 import {
   AccessibilitySection,
   ApiSection,
@@ -55,6 +55,25 @@ export default function BadgePage() {
         </Demo>
       </Section>
 
+      <Section title="Tag (removível)" description="Chip de rótulo/filtro sobre o Badge. Passe onRemove para exibir o X de dispensar — para facetas aplicadas e rótulos livres.">
+        <Demo center className="gap-2">
+          <Tag>Marketing</Tag>
+          <Tag variant="success" onRemove={() => {}}>Cliente ativo</Tag>
+          <Tag variant="warning" onRemove={() => {}}>Fatura pendente</Tag>
+          <Tag variant="outline" onRemove={() => {}}>São Paulo</Tag>
+          <Tag variant="muted" onRemove={() => {}}>Indicação</Tag>
+        </Demo>
+      </Section>
+
+      <Section title="PriorityBadge" description="Nível de prioridade → tom semântico + rótulo (Baixa · Média · Alta · Urgente). Urgente pulsa para chamar atenção.">
+        <Demo center className="gap-3">
+          <PriorityBadge priority="low" />
+          <PriorityBadge priority="medium" />
+          <PriorityBadge priority="high" />
+          <PriorityBadge priority="urgent" />
+        </Demo>
+      </Section>
+
       <Section title="Com ícone" description="Ícone antes do texto (size 3) para reforçar o significado.">
         <Demo center className="gap-3">
           <Badge variant="success"><Check /> Aprovado</Badge>
@@ -94,11 +113,21 @@ export default function BadgePage() {
             </div>
           </div>
           <div>
-            <p className="mb-2 text-xs font-medium text-muted-foreground">Prioridade</p>
+            <p className="mb-2 text-xs font-medium text-muted-foreground">Prioridade (PriorityBadge)</p>
             <div className="flex flex-wrap gap-2">
-              <Badge variant="destructive">Alta</Badge>
-              <Badge variant="warning">Média</Badge>
-              <Badge variant="muted">Baixa</Badge>
+              <PriorityBadge priority="urgent" />
+              <PriorityBadge priority="high" />
+              <PriorityBadge priority="medium" />
+              <PriorityBadge priority="low" />
+            </div>
+          </div>
+          <div>
+            <p className="mb-2 text-xs font-medium text-muted-foreground">Filtros aplicados (Tag)</p>
+            <div className="flex flex-wrap gap-2">
+              <Tag variant="outline" onRemove={() => {}}>Estágio: Discussão</Tag>
+              <Tag variant="outline" onRemove={() => {}}>Dono: Ana</Tag>
+              <Tag variant="outline" onRemove={() => {}}>Valor &gt; R$ 10k</Tag>
+              <Tag variant="muted" onRemove={() => {}}>São Paulo</Tag>
             </div>
           </div>
         </Demo>
@@ -127,7 +156,7 @@ export default function BadgePage() {
 
       <Section title="Código">
         <CodeBlock>{`import { Badge } from "@/components/ui/badge"
-import { StatusBadge } from "@/components/badge"
+import { StatusBadge, Tag, PriorityBadge } from "@/components/badge"
 
 <Badge variant="success"><Check /> Paga</Badge>
 <Badge variant="warning">Média</Badge>
@@ -135,6 +164,13 @@ import { StatusBadge } from "@/components/badge"
 // Status com dot (e pulse para "ao vivo")
 <StatusBadge tone="success">Ganho</StatusBadge>
 <StatusBadge tone="success" pulse>Ao vivo</StatusBadge>
+
+// Tag removível (chip de filtro/rótulo) — onRemove exibe o ×
+<Tag variant="outline" onRemove={() => remove(id)}>São Paulo</Tag>
+
+// PriorityBadge — nível → tom + rótulo (urgent pulsa)
+<PriorityBadge priority="high" />
+<PriorityBadge priority="urgent" label="SLA estourado" />
 
 // Badge como link
 <Badge asChild variant="outline"><a href="/leads">Ver leads</a></Badge>`}</CodeBlock>
@@ -150,6 +186,15 @@ import { StatusBadge } from "@/components/badge"
             { prop: "StatusBadge.tone", type: '"primary"|"success"|"warning"|"destructive"|"muted"', default: '"muted"', description: "Tom do dot + tint." },
             { prop: "StatusBadge.pulse", type: "boolean", default: "false", description: "Dot pulsante para estados ao vivo." },
           ],
+          [
+            { prop: "Tag.variant", type: "= Badge.variant", default: '"secondary"', description: "Herda os variants do Badge." },
+            { prop: "Tag.onRemove", type: "() => void", default: "—", description: "Exibe o botão × de dispensar e chama no clique." },
+            { prop: "Tag.removeLabel", type: "string", default: '"Remover"', description: "aria-label do botão de remover." },
+          ],
+          [
+            { prop: "PriorityBadge.priority", type: '"low"|"medium"|"high"|"urgent"', default: "—", description: "Nível → tom + rótulo pt-BR (urgent pulsa)." },
+            { prop: "PriorityBadge.label", type: "ReactNode", default: "auto", description: "Sobrescreve o rótulo padrão (Baixa/Média/Alta/Urgente)." },
+          ],
         ]}
       />
 
@@ -159,12 +204,15 @@ import { StatusBadge } from "@/components/badge"
           "Combine cor + texto (e ícone/dot) para acessibilidade.",
           "Mantenha rótulos curtos (1–2 palavras).",
           "Use StatusBadge para estados de registro em tabelas.",
+          "Use Tag para facetas de filtro aplicadas e rótulos dispensáveis (onRemove).",
+          "Use PriorityBadge para prioridade — nível → tom + rótulo padronizados.",
         ]}
         donts={[
           "Não use badge como botão — use Button.",
           "Não dependa só da cor para transmitir o estado.",
           "Não empilhe muitos badges na mesma linha.",
           "Não use o variant sólido (default) para status tonais.",
+          "Não recrie chips removíveis à mão — use Tag (foco/aria já resolvidos).",
         ]}
       />
       <DesignNotes
