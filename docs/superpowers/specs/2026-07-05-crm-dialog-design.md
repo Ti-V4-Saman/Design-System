@@ -1,8 +1,15 @@
 # CRM V4 — Família Dialog (Design Spec)
 
 **Data:** 2026-07-05
-**Status:** Aprovado para implementação
+**Status:** Aprovado para implementação — **parcialmente revisado (2026-07-25)**
 **Fonte da verdade visual:** Design System CRM V4 (sem referência externa)
+
+> ⚠️ **Revisão 2026-07-25** — ver `2026-07-25-crm-create-edit-drawer-design.md`.
+> A decisão "`FormDialog` = criar/editar entidade" deste spec foi **revista**: o padrão canônico
+> de **criar/editar entidade principal** passou a ser **Drawer/Sheet (`FormSheet`)**. O `FormDialog`
+> continua válido, mas com escopo estreitado para **ação leve aninhada dentro de outro fluxo**
+> (não o formulário dono da entidade). O resto deste spec (variantes de tamanho, showcase, API,
+> fronteira com `CRMAlertDialog`) segue valendo.
 
 ## Objetivo
 
